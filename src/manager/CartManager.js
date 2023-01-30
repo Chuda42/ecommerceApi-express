@@ -65,11 +65,6 @@ class CartManager {
             this.#carts = carts;
             await this.save();
 
-            /* add products in order, if it is a duplicate product increment quantity */
-            for(const product of productList){
-                await this.addProductToCart(lastId, product.id);
-            }
-
             console.log(`Cart ${lastId} added successfully`);
 
         } catch (error) {
@@ -88,7 +83,9 @@ class CartManager {
             if (!!cart) {
                 const productManager = new ProductManager(PRODUCT_PATH);
                 for(const product of cart.products){
-                    resultado.push(await productManager.getProductById(product.id));
+                    let productInfo = await productManager.getProductById(product.product);
+                    productInfo.quantity = product.quantity;
+                    resultado.push(productInfo);
                 }
                 return resultado;
             };
@@ -107,11 +104,11 @@ class CartManager {
 
             let cart = carts.map(cart => {
                 if (cart.id == cartId) {
-                    if (!cart.products.find(product => product.id == productId)) {
-                        cart.products.push({id: productId, quantity: 1});
+                    if (!cart.products.find(product => product.product == productId)) {
+                        cart.products.push({product: productId, quantity: 1});
                     }else{
                         cart.products.map(product => {
-                            if (product.id == productId) {
+                            if (product.product == productId) {
                                 product.quantity++;
                             }
                         })
