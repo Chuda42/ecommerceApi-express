@@ -26,8 +26,14 @@ ProductRouter.get('/', async (req, res) => {
     } 
 });
 
-ProductRouter.get('/:id', async (req, res) => {
-    return res.json('product by id');
+ProductRouter.get('/:pid', async (req, res) => {
+    try{
+        const productManager = new ProductManager(PRODUCT_PATH);
+        const product = await productManager.getProductById(req.params.pid);
+        res.status(200).json(product);
+    }catch(error){
+        res.status(400).json({status: 'error', error: error.message});
+    }
 });
 
 /* export */
