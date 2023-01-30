@@ -61,7 +61,7 @@ ProductRouter.put('/:pid', async (req, res) => {
 ProductRouter.delete('/:pid', async (req, res) => {
     try{
         const productManager = new ProductManager(PRODUCT_PATH);
-        await productManager.deleteProduct(req.params.pid);
+        await productManager.deleteProduct(parseInt(req.params.pid));
         res.status(200).json({status: 'ok', message: 'Deleted product'});
     }catch(error){
         res.status(400).json({status: 'error', error: error.message});

@@ -114,9 +114,11 @@ class ProductManager {
 
     }
 
-    async udateProduct(id, updateProduct) {
+    async updateProduct(id, updateProduct) {
         try {
             await this.dontExist();
+            if(!await this.getProductById(id)) 
+                throw new Error(`Product ${id} does not exist`);
 
             let { lastId, products } = await this.getObject();
             const sameCode = products.find(product => product.code === updateProduct.code);
@@ -125,7 +127,7 @@ class ProductManager {
             }
 
             products.map(product => {
-                if (product.id === id) {
+                if (product.id === parseInt(id)) {
                     product.title = (updateProduct.title) ?? product.title;
                     product.description = (updateProduct.description) ?? product.description;
                     product.price = (updateProduct.price) ?? product.price;
