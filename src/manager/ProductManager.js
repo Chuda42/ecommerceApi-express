@@ -153,18 +153,20 @@ class ProductManager {
             let { lastId, products } = await this.getObject();
 
             const initialLength = products.length;
-            console.log(initialLength);
-            products = products.filter((product) => {
-                product.id != id
-            })
-            console.log(products);
-            const finalLength = products.length;
+            let finalProducts = [];
+            for(const element of products){
+                console.log(element.id);
+                if(element.id != id){
+                    finalProducts.push(element);
+                }
+            }
+            const finalLength = finalProducts.length;
             if (initialLength === finalLength){
                 throw new Error(`El elemento con el id ${id} no existe por lo tanto no se elemino.`);
             }
 
             this.#lastId = lastId;
-            this.#products = products;
+            this.#products = finalProducts;
             await this.save();
 
             console.log(`Producto con el id ${id}, eliminado correctamente`);
