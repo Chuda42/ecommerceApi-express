@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* routes */
+app.use('/api/products', require('./routes/product.router'));
 
 /* server */
 const server = app.listen(SERVER_PORT, () => {
