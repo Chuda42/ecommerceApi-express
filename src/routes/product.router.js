@@ -36,5 +36,16 @@ ProductRouter.get('/:pid', async (req, res) => {
     }
 });
 
+ProductRouter.post('/', async (req, res) => {
+    try{
+        const productManager = new ProductManager(PRODUCT_PATH);
+        const product = req.body;
+        await productManager.addProduct(product);
+        res.status(200).json({status: 'ok', message: 'Added product'});
+    }catch(error){
+        res.status(400).json({status: 'error', error: error.message});
+    }
+});
+
 /* export */
 module.exports = ProductRouter;

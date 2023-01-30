@@ -65,8 +65,7 @@ class ProductManager {
             let { lastId, products } = await this.getObject();
 
             if (!await this.isValidProduct(product)) {
-                console.error("Producto no valido");
-                return;
+                throw new Error('Product not valid');
             };
 
             lastId++;
@@ -80,7 +79,7 @@ class ProductManager {
             console.log(`Producto agregado correctamente con el id ${lastId}`);
 
         } catch (error) {
-            console.log(error.message);
+            throw error;
         }
     }
 
