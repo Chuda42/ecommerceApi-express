@@ -1,6 +1,9 @@
 /* imports */
 const fs = require('fs');
+const ProductManager = require('./ProductManager');
 
+/* const */
+const PRODUCT_PATH = './products.json';
 
 class CartManager {
     /*Atributes*/
@@ -79,10 +82,15 @@ class CartManager {
             await this.dontExist();
 
             let { carts } = await this.getObject();
+            let resultado = [];
 
             const cart = carts.find(cart => cart.id == cartId);
             if (!!cart) {
-                return cart.products;
+                const productManager = new ProductManager(PRODUCT_PATH);
+                for(const product of cart.products){
+                    resultado.push(await productManager.getProductById(product.id));
+                }
+                return resultado;
             };
 
             throw new Error('Cart not found');
