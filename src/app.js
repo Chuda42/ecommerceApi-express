@@ -2,7 +2,7 @@
 const express = require('express');
 
 /* app */
-const SERVER_PORT = 8080;
+const SERVER_PORT = 8081;
 const app = express();
 
 /* middlewares */

@@ -46,7 +46,7 @@ class CartManager {
 
     }
 
-    async addCart(productList) {
+    async addCart() {
         try {
             await this.dontExist();
 

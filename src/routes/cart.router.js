@@ -24,9 +24,8 @@ CartRouter.get('/:cid', async (req, res) => {
 
 CartRouter.post('/', async (req, res) => {
     try {
-        const {body} = req;
         const cartManager = new CartManager(CART_PATH);
-        await cartManager.addCart(body);
+        await cartManager.addCart();
         res.status(200).json({status: 'success', message: 'Cart created'});
     } catch (error) {
         console.log(error.message);
