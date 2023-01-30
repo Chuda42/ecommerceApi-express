@@ -155,7 +155,6 @@ class ProductManager {
             const initialLength = products.length;
             let finalProducts = [];
             for(const element of products){
-                console.log(element.id);
                 if(element.id != id){
                     finalProducts.push(element);
                 }
