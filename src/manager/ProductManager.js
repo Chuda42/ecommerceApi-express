@@ -78,7 +78,7 @@ class ProductManager {
             this.#products = products;
             await this.save();
 
-            console.log(`Producto agregado correctamente con el id ${lastId}`);
+            console.log(`Product added successfully with id ${lastId}`);
 
         } catch (error) {
             throw error;
@@ -123,7 +123,7 @@ class ProductManager {
             let { lastId, products } = await this.getObject();
             const sameCode = products.find(product => product.code === updateProduct.code);
             if(!!sameCode){
-                throw new Error(`No se puede actualizar el producto, debido a que ya existe otro producto con el valor code: ${updateProduct.code}`);
+                throw new Error(`Cannot update product, because another product already exists with value code: ${updateProduct.code}`);
             }
 
             products.map(product => {
@@ -163,14 +163,14 @@ class ProductManager {
             }
             const finalLength = finalProducts.length;
             if (initialLength === finalLength){
-                throw new Error(`El elemento con el id ${id} no existe por lo tanto no se elemino.`);
+                throw new Error(`The product with id ${id} does not exist so it was not removed.`);
             }
 
             this.#lastId = lastId;
             this.#products = finalProducts;
             await this.save();
 
-            console.log(`Producto con el id ${id}, eliminado correctamente`);
+            console.log(`Product with id ${id}, deleted successfully`);
         } catch (error) {
             throw error;
         }
