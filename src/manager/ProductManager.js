@@ -42,8 +42,8 @@ class ProductManager {
     }
 
     async isValidProduct(product) {
-        let { title, description, price, thumbnail, code, stock } = product;
-        let notVoid = !!title && !!description && !!price && !!thumbnail && !!code && !!stock;
+        let { title, description, price, thumbnail, code, stock, category } = product;
+        let notVoid = !!title && !!description && !!price && !!thumbnail && !!code && !!stock && !!category;
         if (!notVoid) return false;
 
         try {
@@ -70,6 +70,7 @@ class ProductManager {
 
             lastId++;
             product.id = lastId;
+            product.status = true;
             products.push(product);
 
             this.#lastId = lastId;
@@ -104,10 +105,10 @@ class ProductManager {
                 return prod;
             };
             console.error('Not found');
-            throw new Error(`El producto con el id ${id} no existe`);
+            throw new Error(`Product ${id} does not exist`);
         } catch (error) {
             console.log(error.message);
-            throw new Error(`El producto con el id ${id} no existe`);
+            throw error;
         }
 
     }
@@ -119,8 +120,7 @@ class ProductManager {
             let { lastId, products } = await this.getObject();
             const sameCode = products.find(product => product.code === updateProduct.code);
             if(!!sameCode){
-                console.log(`No se puede actualizar el producto, debido a que ya existe otro producto con el valor code: ${updateProduct.code}`);
-                return
+                throw new Error(`No se puede actualizar el producto, debido a que ya existe otro producto con el valor code: ${updateProduct.code}`);
             }
 
             products.map(product => {
@@ -131,6 +131,8 @@ class ProductManager {
                     product.thumbnail = (updateProduct.thumbnail) ?? product.thumbnail;
                     product.code = (updateProduct.code) ?? product.code;
                     product.stock = (updateProduct.stock) ?? product.stock;
+                    product.category = (updateProduct.category) ?? product.category;
+                    product.status = (updateProduct.status) ?? product.status;
                     return;
                 }
             })
@@ -140,7 +142,7 @@ class ProductManager {
             await this.save();
 
         } catch (error) {
-            console.log(error.message);
+            throw error;
         }
     }
 
@@ -155,8 +157,7 @@ class ProductManager {
             })
             const finalLength = products.length;
             if (initialLength == finalLength){
-                console.log(`El elemento con el id ${id} no existe por lo tanto no se elemino.`);
-                return;
+                throw new Error(`El elemento con el id ${id} no existe por lo tanto no se elemino.`);
             }
 
             this.#lastId = lastId;
@@ -165,7 +166,7 @@ class ProductManager {
 
             console.log(`Producto con el id ${id}, eliminado correctamente`);
         } catch (error) {
-            console.log(error.message);
+            throw error;
         }
     }
 }

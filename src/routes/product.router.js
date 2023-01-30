@@ -47,5 +47,26 @@ ProductRouter.post('/', async (req, res) => {
     }
 });
 
+ProductRouter.put('/:pid', async (req, res) => {
+    try{
+        const productManager = new ProductManager(PRODUCT_PATH);
+        const product = req.body;
+        await productManager.updateProduct(req.params.pid, product);
+        res.status(200).json({status: 'ok', message: 'Updated product'});
+    }catch(error){
+        res.status(400).json({status: 'error', error: error.message});
+    }
+});
+
+ProductRouter.delete('/:pid', async (req, res) => {
+    try{
+        const productManager = new ProductManager(PRODUCT_PATH);
+        await productManager.deleteProduct(req.params.pid);
+        res.status(200).json({status: 'ok', message: 'Deleted product'});
+    }catch(error){
+        res.status(400).json({status: 'error', error: error.message});
+    }
+});
+
 /* export */
 module.exports = ProductRouter;

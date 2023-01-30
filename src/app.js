@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 
 /* routes */
 app.use('/api/products', require('./routes/product.router'));
+app.use('/api/carts', require('./routes/cart.router'));
 
 /* server */
 const server = app.listen(SERVER_PORT, () => {
