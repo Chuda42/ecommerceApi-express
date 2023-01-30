@@ -42,8 +42,8 @@ class ProductManager {
     }
 
     async isValidProduct(product) {
-        let { title, description, price, thumbnail, code, stock, category } = product;
-        let notVoid = !!title && !!description && !!price && !!thumbnail && !!code && !!stock && !!category;
+        let { title, description, price, code, stock, category } = product;
+        let notVoid = !!title && !!description && !!price && !!code && !!stock && !!category;
         if (!notVoid) return false;
 
         try {
@@ -70,7 +70,8 @@ class ProductManager {
 
             lastId++;
             product.id = lastId;
-            product.status = true;
+            product.thumbnails = product.thumbnails ?? [];
+            product.status = product.status ?? true;
             products.push(product);
 
             this.#lastId = lastId;
@@ -128,7 +129,7 @@ class ProductManager {
                     product.title = (updateProduct.title) ?? product.title;
                     product.description = (updateProduct.description) ?? product.description;
                     product.price = (updateProduct.price) ?? product.price;
-                    product.thumbnail = (updateProduct.thumbnail) ?? product.thumbnail;
+                    product.thumbnails = (updateProduct.thumbnails) ?? product.thumbnails;
                     product.code = (updateProduct.code) ?? product.code;
                     product.stock = (updateProduct.stock) ?? product.stock;
                     product.category = (updateProduct.category) ?? product.category;
@@ -152,11 +153,13 @@ class ProductManager {
             let { lastId, products } = await this.getObject();
 
             const initialLength = products.length;
+            console.log(initialLength);
             products = products.filter((product) => {
                 product.id != id
             })
+            console.log(products);
             const finalLength = products.length;
-            if (initialLength == finalLength){
+            if (initialLength === finalLength){
                 throw new Error(`El elemento con el id ${id} no existe por lo tanto no se elemino.`);
             }
 
