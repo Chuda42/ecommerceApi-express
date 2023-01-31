@@ -41,21 +41,37 @@ class ProductManager {
 
     }
 
-    async isValidProduct(product) {
+    async isNotVoid(product) {
         let { title, description, price, code, stock, category } = product;
+        /* void validation */
         let notVoid = !!title && !!description && !!price && !!code && !!stock && !!category;
-        if (!notVoid) return false;
+        if (!notVoid) throw new Error('Any field can be void');
 
         try {
             let products = await this.getProducts();
             let sameId = products.find(prod => prod.code === code);
-            if (!!sameId) return false;
+            if (!!sameId) throw new Error('Product code already exists');
     
-            return true;
+            return;
         }catch(error) {
-            console.log(error.message);
+            throw error;
         }
 
+    }
+
+    async isValidTypes(product) {
+        let { title, description, price, code, stock, category, thumbnails, status } = product;
+        /* types validations */
+        let isValidTypes = (typeof title === 'undefined' || typeof title === 'string') 
+                        && (typeof description === 'undefined' || typeof description === 'string')
+                        && (typeof price === 'undefined' || typeof price === 'number')
+                        && (typeof code === 'undefined' || typeof code === 'string') 
+                        && (typeof stock === 'undefined' || typeof stock === 'number')
+                        && (typeof category === 'undefined' || typeof category === 'string')
+                        && (typeof thumbnails === 'undefined' || Array.isArray(product.thumbnails))
+                        && (typeof status === 'undefined' || typeof status === 'boolean');
+
+        if (!isValidTypes) throw new Error('Invalid types');
     }
 
     async addProduct(product) {
@@ -64,10 +80,9 @@ class ProductManager {
 
             let { lastId, products } = await this.getObject();
 
-            if (!await this.isValidProduct(product)) {
-                throw new Error('Product not valid');
-            };
-
+            await this.isNotVoid(product); // throws error if not valid
+            await this.isValidTypes(product); // throws error if not valid
+            
             lastId++;
             product.id = lastId;
             product.thumbnails = product.thumbnails ?? [];
@@ -125,6 +140,8 @@ class ProductManager {
             if(!!sameCode){
                 throw new Error(`Cannot update product, because another product already exists with value code: ${updateProduct.code}`);
             }
+
+            await this.isValidTypes(updateProduct); // throws error if not valid types
 
             products.map(product => {
                 if (product.id === parseInt(id)) {
