@@ -96,12 +96,31 @@ class CartManager {
         }
     }
 
+    async isCart(cartId) {
+        try {
+            await this.dontExist();
+
+            let { carts } = await this.getObject();
+
+            const cart = carts.find(cart => cart.id == cartId);
+            if (!!cart) {
+                return;
+            };
+
+            throw new Error('Cart not found');
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async addProductToCart(cartId, productId) {
         try {
             await this.dontExist();
 
             let { lastId, carts } = await this.getObject();
 
+            await this.isCart(cartId); //throw error if cart not exist
+            
             let cart = carts.map(cart => {
                 if (cart.id == cartId) {
                     if (!cart.products.find(product => product.product == productId)) {
@@ -115,16 +134,13 @@ class CartManager {
                     }
                     return cart;
                 }
-            }) ?? null;
+            });
 
-            if (!!cart) {
-                this.#lastId = lastId;
-                this.#carts = carts;
-                await this.save();
-                return;
-            }
-
-            throw new Error('Cart not found');
+            this.#lastId = lastId;
+            this.#carts = carts;
+            await this.save();
+            return;
+            
         } catch (error) {
             throw error;
         }
