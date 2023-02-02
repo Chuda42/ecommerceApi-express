@@ -1,18 +1,24 @@
 /* imports */
 const express = require('express');
+const { Server } = require('socket.io');
 const handlebars = require('express-handlebars');
 const path =  require('path');
-const websocketServer = require('socket.io');
+const prodMan = require('./manager/ProductManager');
+
+/* const */
+const PRODUCT_PATH = './products.json';
 
 /* app */
 const SERVER_PORT = 8081;
 const app = express();
 
-/* handlebars config */
+/* handlebars settings */
 app.engine('handlebars', handlebars.engine());
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
+/* settings */
+app.use(express.static('public'));
 
 /* middlewares */
 app.use(express.json());
@@ -24,10 +30,25 @@ app.use('/api/products', require('./routes/product.router'));
 app.use('/api/carts', require('./routes/cart.router'));
 
 
-/* server */
-const server = app.listen(SERVER_PORT, () => {
+/* http server */
+const httpServer = app.listen(SERVER_PORT, () => {
     console.log(`Server on port ${SERVER_PORT}`);
 });
-server.on('error', (err) =>{
+httpServer.on('error', (err) =>{
     console.log(`Server error: ${err}`);
 })
+
+/* websocket server */
+const io = new Server(httpServer);
+
+
+/* websockets */
+io.on('connection', async (socket) => {
+    console.log('New client connected');
+
+    let products = await new prodMan(PRODUCT_PATH).getProducts();
+    console.log(products);
+
+    socket.emit('productsList', products);
+    
+});

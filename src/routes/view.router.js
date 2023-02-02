@@ -13,6 +13,12 @@ viewRouter.get('/',(req, res) => {
     } );
 })
 
+viewRouter.get('/realtimeproducts', (req, res)=> {
+    res.render('realTimeProducts', {
+        title: 'Realtime Products'
+    });
+})
+
 
 /* export */
 module.exports = viewRouter;
