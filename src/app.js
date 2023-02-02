@@ -1,7 +1,7 @@
 /* imports */
 const express = require('express');
 const handlebars = require('express-handlebars');
-const { dirname } = require('path');
+const path =  require('path');
 const websocketServer = require('socket.io');
 
 /* app */
@@ -10,8 +10,8 @@ const app = express();
 
 /* handlebars config */
 app.engine('handlebars', handlebars.engine());
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
-app.set('views', dirname(__filename) + '/views');
 
 
 /* middlewares */
@@ -19,9 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* routes */
+app.use('/',  require('./routes/view.router'));
 app.use('/api/products', require('./routes/product.router'));
 app.use('/api/carts', require('./routes/cart.router'));
-app.use('/', require('./routes/view.router'));
+
 
 /* server */
 const server = app.listen(SERVER_PORT, () => {

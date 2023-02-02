@@ -1,12 +1,12 @@
 /* imports */
-const Router = require('express');
+const { Router } = require('express');
 
 
 /* router */
-const ViewRouter = Router();
+const viewRouter = Router();
 
 /* http methods */
-ViewRouter.get('/',(req, res) => {
+viewRouter.get('/',(req, res) => {
     res.render('index', {
         title: 'Home',
         nombre: 'Manu'
@@ -15,4 +15,4 @@ ViewRouter.get('/',(req, res) => {
 
 
 /* export */
-module.exports = ViewRouter;
+module.exports = viewRouter;

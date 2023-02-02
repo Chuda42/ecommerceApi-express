@@ -1,5 +1,5 @@
 /* imports */
-const Router = require('express');
+const { Router } = require('express');
 const ProductManager = require('../manager/ProductManager');
 
 /* const */
