@@ -79,7 +79,7 @@ class ProductManager {
             await this.dontExist();
 
             let { lastId, products } = await this.getObject();
-
+            
             await this.isNotVoid(product); // throws error if not valid
             await this.isValidTypes(product); // throws error if not valid
             

@@ -1,12 +1,16 @@
 /* imports */
 const { Router } = require('express');
 const ProductManager = require('../manager/ProductManager');
+const httpLogMiddleware = require('../middleware/httpLog.middleware');
 
 /* const */
 const PRODUCT_PATH = './products.json';
 
 /* Router */
 const ProductRouter = Router();
+
+/* Routes middlewares */
+ProductRouter.use(httpLogMiddleware);
 
 /* http methods */
 ProductRouter.get('/', async (req, res) => {
@@ -40,9 +44,18 @@ ProductRouter.post('/', async (req, res) => {
     try{
         const productManager = new ProductManager(PRODUCT_PATH);
         const product = req.body;
+
+        product.price = parseInt(product.price);
+        product.stock = parseInt(product.stock);
+
         await productManager.addProduct(product);
+
+       /* get io server */
+        req.app.get('io').sockets.emit('newProduct', product);
+
         res.status(200).json({status: 'ok', message: 'Added product'});
     }catch(error){
+        console.log(error.message);
         res.status(400).json({status: 'error', error: error.message});
     }
 });
@@ -51,6 +64,10 @@ ProductRouter.put('/:pid', async (req, res) => {
     try{
         const productManager = new ProductManager(PRODUCT_PATH);
         const product = req.body;
+
+        product.price = parseInt(product.price);
+        product.stock = parseInt(product.stock);
+
         await productManager.updateProduct(req.params.pid, product);
         res.status(200).json({status: 'ok', message: 'Updated product'});
     }catch(error){

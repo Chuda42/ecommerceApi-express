@@ -25,29 +25,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* routes */
-app.use('/',  require('./routes/view.router'));
+app.use('/', require('./routes/view.router'));
 app.use('/api/products', require('./routes/product.router'));
 app.use('/api/carts', require('./routes/cart.router'));
 
 
 /* http server */
 const httpServer = app.listen(SERVER_PORT, () => {
-    console.log(`Server on port ${SERVER_PORT}`);
+    console.log(`[SERVER] Server listen on port ${SERVER_PORT}`);
 });
 httpServer.on('error', (err) =>{
-    console.log(`Server error: ${err}`);
+    console.log(`[SERVER] Server error: ${err}`);
 })
 
 /* websocket server */
 const io = new Server(httpServer);
 
+/* set io server */
+app.set('io', io);
 
 /* websockets */
 io.on('connection', async (socket) => {
-    console.log('New client connected');
+    console.log('[SOCKET] New client connected');
 
-    let products = await new prodMan(PRODUCT_PATH).getProducts();
-    console.log(products);
+    let products = await new prodMan(PRODUCT_PATH).getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
 
     socket.emit('productsList', products);
     

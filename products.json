@@ -1,1 +1,115 @@
-{"lastId":1,"products":[]}
+{
+    "lastId": 31,
+    "products": [
+        {
+            "title": "Harry Potter y la piedra filosofal",
+            "description": "Libro 1 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp1",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 1
+        },
+        {
+            "title": "Harry Potter y la camara secreta",
+            "description": "Libro 2 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp2",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 2
+        },
+        {
+            "title": "Harry Potter y el prisionero de Azkaban",
+            "description": "Libro 3 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp3",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 3
+        },
+        {
+            "title": "Harry Potter y el caliz de fuego",
+            "description": "Libro 4 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp4",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 4
+        },
+        {
+            "title": "Harry Potter y la orden del fenix",
+            "description": "Libro 5 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp5",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 5
+        },
+        {
+            "title": "Harry Potter y el principe mestizo",
+            "description": "Libro 6 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp6",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 6
+        },
+        {
+            "title": "Harry Potter y las reliquias de la muerte",
+            "description": "Libro 7 de la saga de Harry Potter",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "hp7",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 7
+        },
+        {
+            "title": "Codigo Da Vinci",
+            "description": "Libro de Dan Brown",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "cdv1",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 8
+        },
+        {
+            "title": "Origen",
+            "description": "Libro de Dan Brown",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "or1",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 9
+        },
+        {
+            "title": "Inferno",
+            "description": "Libro de Dan Brown, muuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
+            "price": 200,
+            "thumbnail": "Sin imagen",
+            "code": "in1",
+            "stock": 25,
+            "status": true,
+            "category": "action",
+            "id": 10
+        }
+    ]
+}

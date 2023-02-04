@@ -1,2 +1,70 @@
-<h1>home</h1>
+<form class="row g-3 m-3">
+    <div class="col-md-4">
+        <label for="inputTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="inputTitle4" placeholder="Enter the product title">
+    </div>
+    <div class="col-4">
+        <label for="inputCode" class="form-label">Code</label>
+        <input type="text" class="form-control" id="inputCode" placeholder="Enter the product code">
+    </div>
+    <div class="col-2">
+        <label for="inputPrice" class="form-label">Price</label>
+        <input type="number" min="0" class="form-control" id="inputPrice" placeholder="Enter the product price">
+    </div>
+    <div class="col-md-2">
+        <label for="inputStatus" class="form-label">Status</label>
+        <select id="inputStatus" class="form-select">
+            <option selected value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
 
+    <div class="col-md-12">
+        <label for="inputDescription" class="form-label">Description</label>
+        <input type="Text" class="form-control" id="inputDescription4" placeholder="Enter the product description">
+    </div>
+
+
+    <div class="col-md-2">
+        <label for="inputThumbnail" class="form-label">Thumbnail</label>
+        <input type="text" class="form-control" id="inputThumbnail">
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary">Add Product</button>
+    </div>
+</form>
+
+<div class="accordion accordion-flush" id="productsAccordion">
+    {{#each products}}
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading{{id}}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapse{{id}}" aria-expanded="false" aria-controls="flush-collapse{{id}}">
+                Product Id: {{id}}. Product title: {{title}}
+            </button>
+        </h2>
+        <div id="flush-collapse{{id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{id}}"
+            data-bs-parent="#productsAccordion">
+            <div class="accordion-body">
+                <ul>
+                    <li>Description: {{description}}</li>
+                    <li>Price: ${{price}}</li>
+                    <li>Code: {{code}}</li>
+                    <li>
+                        {{#if status}}
+                        Status: Active
+                        {{else}}
+                        Status: Inactive
+                        {{/if}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {{/each}}
+</div>
+
+</div>
