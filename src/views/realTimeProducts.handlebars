@@ -1,19 +1,53 @@
-<h1>real time products</h1>
+<form class="row g-3 m-3">
+    <div class="col-md-4">
+        <label for="inputTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="inputTitle" placeholder="Enter the product title">
+    </div>
+    <div class="col-4">
+        <label for="inputCode" class="form-label">Code</label>
+        <input type="text" class="form-control" id="inputCode" placeholder="Enter the product code">
+    </div>
+    <div class="col-md-2">
+        <label for="inputStatus" class="form-label">Status</label>
+        <select id="inputStatus" class="form-select">
+            <option selected value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
 
-<form action="" method="post">
-    <input type="text" name="title" id="productTitle" placeholder="product Title">
-    <input type="text" name="description" id="productDescription" placeholder="product description">
-    <input type="number" name="price" id="productPrice" placeholder="product price">
-    <input type="text" name="code" id="productCode" placeholder="product codes">
-    <input type="number" name="stock" id="productStock" placeholder="product stock">
-    <input type="text" name="category" id="productCategory" placeholder="product category">
+    <div class="col-1">
+        <label for="inputPrice" class="form-label">Price ($)</label>
+        <input type="number" min="0" class="form-control" id="inputPrice" placeholder="0">
+    </div>
 
-    <input type="submit" id="submitForm" value="Add Product">
+    <div class="col-1">
+        <label for="inputStock" class="form-label">Stock</label>
+        <input type="number" min="0" class="form-control" id="inputStock" placeholder="0">
+    </div>
+
+    <div class="col-md-10">
+        <label for="inputDescription" class="form-label">Description</label>
+        <input type="Text" class="form-control" id="inputDescription" placeholder="Enter the product description">
+    </div>
+
+    <div class="col-md-2">
+        <label for="inputCategory" class="form-label">Category</label>
+        <input type="Text" class="form-control" id="inputCategory">
+    </div>
+
+
+
+    <div class="col-md-2">
+        <label for="inputThumbnail" class="form-label">Thumbnail</label>
+        <input type="text" class="form-control" id="inputThumbnail">
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary" id="submitForm">Add Product</button>
+    </div>
 </form>
 
-<div id="productsContainer">
-    <ul>
-    </ul>
+<div class="accordion accordion-flush" id="productsContainer">    
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

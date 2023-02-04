@@ -11,7 +11,6 @@ const viewRouter = Router();
 
 /* http methods */
 viewRouter.get('/', httpLogMiddleware, async (req, res) => {
-    console.log(await new ProductManager(PRODCUT_PATH).getProducts());
     res.render('home', {
         title: 'Home',
         products: await new ProductManager(PRODCUT_PATH).getProducts()

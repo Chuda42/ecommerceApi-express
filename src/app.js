@@ -46,7 +46,7 @@ app.set('io', io);
 
 /* websockets */
 io.on('connection', async (socket) => {
-    console.log('[SOCKET] New client connected');
+    console.log(`[SOCKET] New client connected -> ${socket.id}`);
 
     let products = await new prodMan(PRODUCT_PATH).getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
 
