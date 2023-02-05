@@ -1,7 +1,8 @@
 /* imports */
-const Router = require('express');
+const { Router } = require('express');
 const CartManager = require('../manager/CartManager');
 const ProductManager = require('../manager/ProductManager');
+const httpLogMiddleware = require('../middleware/httpLog.middleware');
 
 /* const */
 const CART_PATH = './cart.json';
@@ -9,6 +10,9 @@ const PRODUCT_PATH = './products.json';
 
 /* Router */
 const CartRouter = Router();
+
+/* Router middlewares */
+CartRouter.use(httpLogMiddleware);
 
 /* http methods */
 CartRouter.get('/:cid', async (req, res) => {
