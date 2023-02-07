@@ -5,13 +5,18 @@ class ProductManager {
     #path
     #products
     #lastId
+    
     /*Methods*/
+
+    /* PRIVATE METHODS */
     constructor(path) {
         this.#path = path;
     }
 
-    async dontExist() {
-        /*Si el archivo no existe lo crea*/
+    /**
+     *  Check if persistence file exists, if not, create it
+     */
+    async #dontExist() {
         if (!fs.existsSync(this.#path)) {
             await fs.promises.writeFile(this.#path, JSON.stringify({
                 lastId: 0,
@@ -20,7 +25,10 @@ class ProductManager {
         }
     }
 
-    async save(){
+    /** 
+     * Commit changes to persistence
+    */
+    async #save(){
         try{
             await fs.promises.writeFile(this.#path, JSON.stringify({
                 lastId: this.#lastId,
@@ -31,7 +39,10 @@ class ProductManager {
         }
     }
 
-    async getObject(){
+    /**
+     * Get object from persistence, parse it into object and return it
+    */
+    async #getObject(){
         try{
             const content = await fs.promises.readFile(this.#path);
             return JSON.parse(content);
@@ -41,11 +52,17 @@ class ProductManager {
 
     }
 
-    async isNotVoid(product) {
+    /**
+     *  Check if product has one or more void fields
+     *  @param {object} product
+     *  @return {void}
+     *  @throws {Error} if product has one or more void fields
+    */
+    async #isNotVoid(product) {
         let { title, description, price, code, stock, category } = product;
         /* void validation */
         let notVoidPrice = typeof price === 'number' && price >= 0;
-        let notVoidStock = typeof price === 'number' && price >= 0;
+        let notVoidStock = typeof stock === 'number' && stock >= 0;
         let notVoid = !!title && !!description && notVoidPrice && !!code && notVoidStock && !!category;
         if (!notVoid) throw new Error('Any field can be void, except thumbnails');
 
@@ -61,7 +78,13 @@ class ProductManager {
 
     }
 
-    async isValidTypes(product) {
+    /**
+     *  Check if product has one or more invalid types fields
+     *  @param {object} product
+     *  @return {void}
+     *  @throws {Error} if product has one or invalid types fields
+    */
+    async #isValidTypes(product) {
         let { title, description, price, code, stock, category, thumbnails, status } = product;
         /* types validations */
         let isValidTypes = (typeof title === 'undefined' || typeof title === 'string') 
@@ -76,14 +99,21 @@ class ProductManager {
         if (!isValidTypes) throw new Error('Invalid types');
     }
 
+    /* PUBLIC METHODS */
+
+    /**
+     *  Store new product in persistence, prodcut must be an object with the following structure: {id, title, description, price, thumbnails, code, stock, category, status}
+     *  @param {object} product 
+     *  @throws {Error} if product has one or more void fields, or if product has one or more invalid types 
+     */
     async addProduct(product) {
         try {
-            await this.dontExist();
+            await this.#dontExist();
 
-            let { lastId, products } = await this.getObject();
+            let { lastId, products } = await this.#getObject();
             
-            await this.isNotVoid(product); // throws error if not valid
-            await this.isValidTypes(product); // throws error if not valid
+            await this.#isNotVoid(product);
+            await this.#isValidTypes(product);
             
             lastId++;
             product.id = lastId;
@@ -93,7 +123,7 @@ class ProductManager {
 
             this.#lastId = lastId;
             this.#products = products;
-            await this.save();
+            await this.#save();
 
             console.log(`Product added successfully with id ${lastId}`);
 
@@ -102,19 +132,29 @@ class ProductManager {
         }
     }
 
+    /**
+     * Return products in persistence
+     * @returns {Array<object>} products
+     */
     async getProducts() {
         try {
-            await this.dontExist();
-            const {products} = await this.getObject();
+            await this.#dontExist();
+            const {products} = await this.#getObject();
             return products;
         } catch (error) {
             console.log(error.message);
         }
     }
 
+    /**
+     * Return product in persistence where product.id equals parameter id
+     * @param {int} id 
+     * @returns {object} product
+     * @throws {Error} if product where product.id equals id does not exist
+     */
     async getProductById(id) {
         try {
-            await this.dontExist();
+            await this.#dontExist();
 
             const products = await this.getProducts();
 
@@ -131,19 +171,33 @@ class ProductManager {
 
     }
 
+    /**
+     * Update product in persistence where product.id equals parameter id
+     * @param {int} id 
+     * @param {{title: string | undefined,
+     *          description: string | undefined,
+     *          price: int | undefined,
+     *          thumbnails: Array<string> | undefined,
+     *          code: string | undefined,
+     *          stock: int | undefined,
+     *          status: boolean | undefined,
+     *          category: string | undefined}} updateProduct 
+     * @throws {Error} if product where product.id equals id does not exist
+     * @throws {Error} if updateProduct has one or more invalid types
+     */
     async updateProduct(id, updateProduct) {
         try {
-            await this.dontExist();
+            await this.#dontExist();
             if(!await this.getProductById(id)) 
                 throw new Error(`Product ${id} does not exist`);
 
-            let { lastId, products } = await this.getObject();
+            let { lastId, products } = await this.#getObject();
             const sameCode = products.find(product => product.code === updateProduct.code);
             if(!!sameCode){
                 throw new Error(`Cannot update product, because another product already exists with value code: ${updateProduct.code}`);
             }
 
-            await this.isValidTypes(updateProduct); // throws error if not valid types
+            await this.#isValidTypes(updateProduct);
 
             products.map(product => {
                 if (product.id === parseInt(id)) {
@@ -161,7 +215,7 @@ class ProductManager {
 
             this.#lastId = lastId;
             this.#products = products;
-            await this.save();
+            await this.#save();
 
         } catch (error) {
             throw error;
@@ -170,8 +224,8 @@ class ProductManager {
 
     async deleteProduct(id) {
         try {
-            await this.dontExist();
-            let { lastId, products } = await this.getObject();
+            await this.#dontExist();
+            let { lastId, products } = await this.#getObject();
 
             const initialLength = products.length;
             let finalProducts = [];
@@ -187,7 +241,7 @@ class ProductManager {
 
             this.#lastId = lastId;
             this.#products = finalProducts;
-            await this.save();
+            await this.#save();
 
             console.log(`Product with id ${id}, deleted successfully`);
         } catch (error) {
