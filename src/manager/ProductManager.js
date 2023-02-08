@@ -6,8 +6,6 @@ const fs = require('fs');
 class ProductManager {
     /*Atributes*/
     #path
-    #products
-    #lastId
     
     /* Methods */
 
@@ -35,14 +33,14 @@ class ProductManager {
 
     /** 
      * Commit changes to persistence
+     * @param {int} lastId - lastId of products
+     * @param {Array<object>} products - array of products
     */
     async #save(lastId, products){
         try{
-            this.#lastId = lastId;
-            this.#products = products;
             await fs.promises.writeFile(this.#path, JSON.stringify({
-                lastId: this.#lastId,
-                products: this.#products
+                lastId: lastId,
+                products: products
             }));
         }catch(error) {
             console.log(error.message);
