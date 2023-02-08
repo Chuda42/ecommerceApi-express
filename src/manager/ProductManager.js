@@ -128,9 +128,9 @@ class ProductManager {
     /* PUBLIC METHODS */
 
     /**
-     *  Store new product in persistence, prodcut must be an object with the following structure: {id, title, description, price, thumbnails, code, stock, category, status}
-     *  @param {{
-     *      id: string,
+    *  Store new product in persistence
+    *  @param {{
+    *      id: string,
     *       title: string,
     *       description: string,
     *       price: int,
@@ -139,7 +139,7 @@ class ProductManager {
     *       stock: int,
     *       status: boolean | undefined,
     *       category: string}} product 
-     *  @throws {Error} if product has one or more void fields, or if product has one or more invalid types 
+     *  @throws {Error} - if product has one or more void fields, or if product has one or more invalid types 
      */
     async addProduct(product) {
         try {
