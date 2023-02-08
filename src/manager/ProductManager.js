@@ -12,17 +12,17 @@ class ProductManager {
 
     /* Constructors */
     /**
-     * @param {string} path - path to persistence file
-     * @return {ProductManager}
-     */
+    * @param {string} path - path to persistence file
+    * @return {ProductManager}
+    */
     constructor(path) {
         this.#path = path;
     }
 
     /* PRIVATE METHODS */
     /**
-     *  Check if persistence file exists, if not, create it
-     */
+    *  Check if persistence file exists, if not, create it
+    */
     async #dontExist() {
         if (!fs.existsSync(this.#path)) {
             await fs.promises.writeFile(this.#path, JSON.stringify({
@@ -33,9 +33,9 @@ class ProductManager {
     }
 
     /** 
-     * Commit changes to persistence
-     * @param {int} lastId - lastId of products
-     * @param {Array<object>} products - array of products
+    * Commit changes to persistence
+    * @param {int} lastId - lastId of products
+    * @param {Array<object>} products - array of products
     */
     async #save(lastId, products){
         try{
