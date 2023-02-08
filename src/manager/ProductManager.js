@@ -45,7 +45,7 @@ class ProductManager {
         let { title, description, price, code, stock, category } = product;
         /* void validation */
         let notVoidPrice = typeof price === 'number' && price >= 0;
-        let notVoidStock = typeof price === 'number' && price >= 0;
+        let notVoidStock = typeof stock === 'number' && stock >= 0;
         let notVoid = !!title && !!description && notVoidPrice && !!code && notVoidStock && !!category;
         if (!notVoid) throw new Error('Any field can be void, except thumbnails');
 
