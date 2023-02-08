@@ -1,18 +1,26 @@
 const fs = require('fs');
 
+/**
+ * ProductManager class, provides a persistence manager to store products
+ */
 class ProductManager {
     /*Atributes*/
     #path
     #products
     #lastId
     
-    /*Methods*/
+    /* Methods */
 
-    /* PRIVATE METHODS */
+    /* Constructors */
+    /**
+     * @param {string} path - path to persistence file
+     * @return {ProductManager}
+     */
     constructor(path) {
         this.#path = path;
     }
 
+    /* PRIVATE METHODS */
     /**
      *  Check if persistence file exists, if not, create it
      */
@@ -55,8 +63,14 @@ class ProductManager {
 
     /**
      *  Check if product has one or more void fields
-     *  @param {object} product
-     *  @throws {Error} if product has one or more void fields
+     *  @param {{
+    *       title: string,
+    *       description: string,
+    *       price: int,
+    *       code: string,
+    *       stock: int,
+    *       category: string}} product
+     *  @throws {Error} - if product has one or more void fields
     */
     async #isNotVoid(product) {
         let { title, description, price, code, stock, category } = product;
@@ -80,7 +94,15 @@ class ProductManager {
 
     /**
      *  Check if product has one or more invalid types fields
-     *  @param {object} product
+     *  @param {{
+    *       title: string,
+    *       description: string,
+    *       price: int,
+    *       thumbnails: Array<string> | undefined,
+    *       code: string,
+    *       stock: int,
+    *       status: boolean | undefined,
+    *       category: string}} product
      *  @throws {Error} if product has one or invalid types fields
     */
     async #isValidTypes(product) {
@@ -102,7 +124,16 @@ class ProductManager {
 
     /**
      *  Store new product in persistence, prodcut must be an object with the following structure: {id, title, description, price, thumbnails, code, stock, category, status}
-     *  @param {object} product 
+     *  @param {{
+     *      id: string,
+    *       title: string,
+    *       description: string,
+    *       price: int,
+    *       thumbnails: Array<string> | undefined,
+    *       code: string,
+    *       stock: int,
+    *       status: boolean | undefined,
+    *       category: string}} product 
      *  @throws {Error} if product has one or more void fields, or if product has one or more invalid types 
      */
     async addProduct(product) {
@@ -233,7 +264,7 @@ class ProductManager {
     /**
      * Delete product in persistence where product.id equals parameter id
      * @param {int} id
-     * @throws {Error} if product where product.id equals id does not exist 
+     * @throws {Error} if product where product.id equals id does not exist
      */
     async deleteProduct(id) {
         try {
