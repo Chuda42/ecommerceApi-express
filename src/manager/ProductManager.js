@@ -49,8 +49,8 @@ class ProductManager {
     }
 
     /**
-     * Get object from persistence, parse it into object and return it
-     * @return {Promise<{lastId: int, products: Array<object>}>}
+    * Get object from persistence, parse it into object and return it
+    * @return {Promise<{lastId: int, products: Array<object>}>}
     */
     async #getObject(){
         try{
@@ -62,15 +62,15 @@ class ProductManager {
     }
 
     /**
-     *  Check if product has one or more void fields
-     *  @param {{
+    *  Check if product has one or more void fields
+    *  @param {{
     *       title: string,
     *       description: string,
     *       price: int,
     *       code: string,
     *       stock: int,
     *       category: string}} product
-     *  @throws {Error} - if product has one or more void fields
+    *  @throws {Error} - if product has one or more void fields
     */
     async #isNotVoid(product) {
         let { title, description, price, code, stock, category } = product;
@@ -82,8 +82,8 @@ class ProductManager {
     }
 
     /**
-     * Check if product with product.code equals code already exists
-     * @param {string} code
+    * Check if product with product.code equals code already exists
+    * @param {string} code
     */
     async #isValidCode(code){
         try {
@@ -99,8 +99,8 @@ class ProductManager {
     }
 
     /**
-     *  Check if product has one or more invalid types fields
-     *  @param {{
+    *  Check if product has one or more invalid types fields
+    *  @param {{
     *       title: string,
     *       description: string,
     *       price: int,
@@ -109,7 +109,7 @@ class ProductManager {
     *       stock: int,
     *       status: boolean | undefined,
     *       category: string}} product
-     *  @throws {Error} if product has one or invalid types fields
+    *  @throws {Error} if product has one or invalid types fields
     */
     async #isValidTypes(product) {
         let { title, description, price, code, stock, category, thumbnails, status } = product;
@@ -140,8 +140,8 @@ class ProductManager {
     *       stock: int,
     *       status: boolean | undefined,
     *       category: string}} product 
-     *  @throws {Error} - if product has one or more void fields, or if product has one or more invalid types 
-     */
+    *  @throws {Error} - if product has one or more void fields, or if product has one or more invalid types 
+    */
     async addProduct(product) {
         try {
             await this.#dontExist();
@@ -168,9 +168,9 @@ class ProductManager {
     }
 
     /**
-     * Return products in persistence
-     * @returns {Promise<Array<object>>} products
-     */
+    * Return products in persistence
+    * @returns {Promise<Array<object>>} products
+    */
     async getProducts() {
         try {
             await this.#dontExist();
@@ -182,20 +182,20 @@ class ProductManager {
     }
 
     /**
-     * Return product in persistence where product.id equals parameter id
-     * @param {int} id 
-     * @returns {Promise<{
-     *      id: string,
-     *      title: string,
-     *      description: string,
-     *      price: int,
-     *      thumbnails: Array<string>,
-     *      code: string,
-     *      stock: int,
-     *      status: boolean,
-     *      category: string}>} product
-     * @throws {Error} if product where product.id equals id does not exist
-     */
+    * Return product in persistence where product.id equals parameter id
+    * @param {int} id 
+    * @returns {Promise<{
+    *      id: string,
+    *      title: string,
+    *      description: string,
+    *      price: int,
+    *      thumbnails: Array<string>,
+    *      code: string,
+    *      stock: int,
+    *      status: boolean,
+    *      category: string}>} product
+    * @throws {Error} if product where product.id equals id does not exist
+    */
     async getProductById(id) {
         try {
             await this.#dontExist();
@@ -216,19 +216,19 @@ class ProductManager {
     }
 
     /**
-     * Update product in persistence where product.id equals parameter id
-     * @param {int} id 
-     * @param {{title: string | undefined,
-     *          description: string | undefined,
-     *          price: int | undefined,
-     *          thumbnails: Array<string> | undefined,
-     *          code: string | undefined,
-     *          stock: int | undefined,
-     *          status: boolean | undefined,
-     *          category: string | undefined}} updateProduct 
-     * @throws {Error} if product where product.id equals id does not exist
-     * @throws {Error} if updateProduct has one or more invalid types
-     */
+    * Update product in persistence where product.id equals parameter id
+    * @param {int} id 
+    * @param {{title: string | undefined,
+    *          description: string | undefined,
+    *          price: int | undefined,
+    *          thumbnails: Array<string> | undefined,
+    *          code: string | undefined,
+    *          stock: int | undefined,
+    *          status: boolean | undefined,
+    *          category: string | undefined}} updateProduct 
+    * @throws {Error} if product where product.id equals id does not exist
+    * @throws {Error} if updateProduct has one or more invalid types
+    */
     async updateProduct(id, updateProduct) {
         try {
             await this.#dontExist();
@@ -263,10 +263,10 @@ class ProductManager {
     }
 
     /**
-     * Delete product in persistence where product.id equals parameter id
-     * @param {int} id
-     * @throws {Error} if product where product.id equals id does not exist
-     */
+    * Delete product in persistence where product.id equals parameter id
+    * @param {int} id
+    * @throws {Error} if product where product.id equals id does not exist
+    */
     async deleteProduct(id) {
         try {
             await this.#dontExist();
