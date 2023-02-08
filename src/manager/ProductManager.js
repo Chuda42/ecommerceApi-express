@@ -36,8 +36,10 @@ class ProductManager {
     /** 
      * Commit changes to persistence
     */
-    async #save(){
+    async #save(lastId, products){
         try{
+            this.#lastId = lastId;
+            this.#products = products;
             await fs.promises.writeFile(this.#path, JSON.stringify({
                 lastId: this.#lastId,
                 products: this.#products
@@ -58,7 +60,6 @@ class ProductManager {
         }catch(error) {
             console.log(error.message);
         }
-
     }
 
     /**
@@ -74,22 +75,28 @@ class ProductManager {
     */
     async #isNotVoid(product) {
         let { title, description, price, code, stock, category } = product;
-        /* void validation */
+        /* void validations */
         let notVoidPrice = typeof price === 'number' && price >= 0;
         let notVoidStock = typeof stock === 'number' && stock >= 0;
         let notVoid = !!title && !!description && notVoidPrice && !!code && notVoidStock && !!category;
-        if (!notVoid) throw new Error('Any field can be void, except thumbnails');
+        if (!notVoid) throw new Error('Any field can be void, except thumbnails and status');
+    }
 
+    /**
+     * Check if product with product.code equals code already exists
+     * @param {string} code
+    */
+    async #isValidCode(code){
         try {
             let products = await this.getProducts();
-            let sameId = products.find(prod => prod.code === code);
-            if (!!sameId) throw new Error('Product code already exists');
-    
+            const sameCode = products.find(product => product.code === code);
+            if(!!sameCode){
+                throw new Error(`Product with value code: ${code} already exists `);
+            }
             return;
         }catch(error) {
             throw error;
         }
-
     }
 
     /**
@@ -142,6 +149,7 @@ class ProductManager {
 
             let { lastId, products } = await this.#getObject();
             
+            await this.#isValidCode(product.code);
             await this.#isNotVoid(product);
             await this.#isValidTypes(product);
             
@@ -151,9 +159,7 @@ class ProductManager {
             product.status = product.status ?? true;
             products.push(product);
 
-            this.#lastId = lastId;
-            this.#products = products;
-            await this.#save();
+            await this.#save(lastId, products);
 
             console.log(`Product added successfully with id ${lastId}`);
 
@@ -229,13 +235,10 @@ class ProductManager {
             await this.#dontExist();
             if(!await this.getProductById(id)) 
                 throw new Error(`Product ${id} does not exist`);
-
+            
             let { lastId, products } = await this.#getObject();
-            const sameCode = products.find(product => product.code === updateProduct.code);
-            if(!!sameCode){
-                throw new Error(`Cannot update product, because another product already exists with value code: ${updateProduct.code}`);
-            }
 
+            await this.#isValidCode(updateProduct.code);
             await this.#isValidTypes(updateProduct);
 
             products.map(product => {
@@ -252,9 +255,8 @@ class ProductManager {
                 }
             })
 
-            this.#lastId = lastId;
-            this.#products = products;
-            await this.#save();
+            
+            await this.#save(lastId, products);
 
         } catch (error) {
             throw error;
@@ -283,9 +285,7 @@ class ProductManager {
                 throw new Error(`The product with id ${id} does not exist so it was not removed.`);
             }
 
-            this.#lastId = lastId;
-            this.#products = finalProducts;
-            await this.#save();
+            await this.#save(lastId, finalProducts);
 
             console.log(`Product with id ${id}, deleted successfully`);
         } catch (error) {
