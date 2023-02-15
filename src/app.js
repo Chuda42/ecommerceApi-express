@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* Db conection */
-mongoose.connect('mongodb+srv://admin:adminCoder2023@ecommerce.umhiq1n.mongodb.net/ecommerce?retryWrites=true&w=majority', (error) => {
+mongoose.connect('', (error) => {
     if (error) {
         console.log(`[DB] Error: ${error.message}`);
         process.exit()
