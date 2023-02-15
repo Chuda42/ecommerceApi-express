@@ -2,6 +2,7 @@
 const express = require('express');
 const { Server } = require('socket.io');
 const handlebars = require('express-handlebars');
+const mongoose = require('mongoose');
 const path =  require('path');
 const prodMan = require('./manager/ProductManager');
 
@@ -23,6 +24,16 @@ app.use(express.static('public'));
 /* middlewares */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+/* Db conection */
+mongoose.connect('mongodb+srv://admin:adminCoder2023@ecommerce.umhiq1n.mongodb.net/ecommerce?retryWrites=true&w=majority', (error) => {
+    if (error) {
+        console.log(`[DB] Error: ${error.message}`);
+        process.exit()
+    } else {
+        console.log(`[DB] Connected`);
+    }
+})
 
 /* routes */
 app.use('/', require('./routes/view.router'));

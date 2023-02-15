@@ -7,7 +7,7 @@ const fs = require('fs');
 class ProductManager {
     /*Atributes*/
     #path
-    
+
     /* Methods */
 
     /* Constructors */
@@ -37,13 +37,13 @@ class ProductManager {
     * @param {int} lastId - lastId of products
     * @param {Array<object>} products - array of products
     */
-    async #save(lastId, products){
-        try{
+    async #save(lastId, products) {
+        try {
             await fs.promises.writeFile(this.#path, JSON.stringify({
                 lastId: lastId,
                 products: products
             }));
-        }catch(error) {
+        } catch (error) {
             console.log(error.message);
         }
     }
@@ -52,11 +52,11 @@ class ProductManager {
     * Get object from persistence, parse it into object and return it
     * @return {Promise<{lastId: int, products: Array<object>}>}
     */
-    async #getObject(){
-        try{
+    async #getObject() {
+        try {
             const content = await fs.promises.readFile(this.#path);
             return JSON.parse(content);
-        }catch(error) {
+        } catch (error) {
             console.log(error.message);
         }
     }
@@ -85,15 +85,15 @@ class ProductManager {
     * Check if product with product.code equals code already exists
     * @param {string} code
     */
-    async #isValidCode(code){
+    async #isValidCode(code) {
         try {
             let products = await this.getProducts();
             const sameCode = products.find(product => product.code === code);
-            if(!!sameCode){
+            if (!!sameCode) {
                 throw new Error(`Product with value code: ${code} already exists `);
             }
             return;
-        }catch(error) {
+        } catch (error) {
             throw error;
         }
     }
@@ -114,14 +114,14 @@ class ProductManager {
     async #isValidTypes(product) {
         let { title, description, price, code, stock, category, thumbnails, status } = product;
         /* types validations */
-        let isValidTypes = (typeof title === 'undefined' || typeof title === 'string') 
-                        && (typeof description === 'undefined' || typeof description === 'string')
-                        && (typeof price === 'undefined' || typeof price === 'number')
-                        && (typeof code === 'undefined' || typeof code === 'string') 
-                        && (typeof stock === 'undefined' || typeof stock === 'number')
-                        && (typeof category === 'undefined' || typeof category === 'string')
-                        && (typeof thumbnails === 'undefined' || Array.isArray(product.thumbnails))
-                        && (typeof status === 'undefined' || typeof status === 'boolean');
+        let isValidTypes = (typeof title === 'undefined' || typeof title === 'string')
+            && (typeof description === 'undefined' || typeof description === 'string')
+            && (typeof price === 'undefined' || typeof price === 'number')
+            && (typeof code === 'undefined' || typeof code === 'string')
+            && (typeof stock === 'undefined' || typeof stock === 'number')
+            && (typeof category === 'undefined' || typeof category === 'string')
+            && (typeof thumbnails === 'undefined' || Array.isArray(product.thumbnails))
+            && (typeof status === 'undefined' || typeof status === 'boolean');
 
         if (!isValidTypes) throw new Error('Invalid types');
     }
@@ -147,11 +147,11 @@ class ProductManager {
             await this.#dontExist();
 
             let { lastId, products } = await this.#getObject();
-            
+
             await this.#isValidCode(product.code);
             await this.#isNotVoid(product);
             await this.#isValidTypes(product);
-            
+
             lastId++;
             product.id = lastId;
             product.thumbnails = product.thumbnails ?? [];
@@ -174,7 +174,7 @@ class ProductManager {
     async getProducts() {
         try {
             await this.#dontExist();
-            const {products} = await this.#getObject();
+            const { products } = await this.#getObject();
             return products;
         } catch (error) {
             console.log(error.message);
@@ -232,9 +232,9 @@ class ProductManager {
     async updateProduct(id, updateProduct) {
         try {
             await this.#dontExist();
-            if(!await this.getProductById(id)) 
+            if (!await this.getProductById(id))
                 throw new Error(`Product ${id} does not exist`);
-            
+
             let { lastId, products } = await this.#getObject();
 
             await this.#isValidCode(updateProduct.code);
@@ -254,7 +254,7 @@ class ProductManager {
                 }
             })
 
-            
+
             await this.#save(lastId, products);
 
         } catch (error) {
@@ -274,13 +274,13 @@ class ProductManager {
 
             const initialLength = products.length;
             let finalProducts = [];
-            for(const element of products){
-                if(element.id != id){
+            for (const element of products) {
+                if (element.id != id) {
                     finalProducts.push(element);
                 }
             }
             const finalLength = finalProducts.length;
-            if (initialLength === finalLength){
+            if (initialLength === finalLength) {
                 throw new Error(`The product with id ${id} does not exist so it was not removed.`);
             }
 
