@@ -2,9 +2,11 @@
 const { Router } = require('express');
 const ProductManager = require('../manager/ProductManager');
 const httpLogMiddleware = require('../middleware/httpLog.middleware');
+const ProductController = require('../controller/product.controller'); 
 
 /* const */
 const PRODUCT_PATH = './products.json';
+const ProController = new ProductController();
 
 /* Router */
 const ProductRouter = Router();
@@ -30,7 +32,7 @@ ProductRouter.get('/', async (req, res) => {
     } 
 });
 
-ProductRouter.get('/:pid', async (req, res) => {
+/* ProductRouter.get('/:pid', async (req, res) => {
     try{
         const productManager = new ProductManager(PRODUCT_PATH);
         const product = await productManager.getProductById(req.params.pid);
@@ -38,7 +40,7 @@ ProductRouter.get('/:pid', async (req, res) => {
     }catch(error){
         res.status(400).json({status: 'error', error: error.message});
     }
-});
+}); */
 
 ProductRouter.post('/', async (req, res) => {
     try{
@@ -88,6 +90,8 @@ ProductRouter.delete('/:pid', async (req, res) => {
         res.status(400).json({status: 'error', error: error.message});
     }
 });
+
+ProductRouter.get('/test', ProController.getProducts)
 
 /* export */
 module.exports = ProductRouter;

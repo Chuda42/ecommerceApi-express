@@ -5,12 +5,14 @@ const handlebars = require('express-handlebars');
 const mongoose = require('mongoose');
 const path =  require('path');
 const prodMan = require('./manager/ProductManager');
+/* .env config */
+require('dotenv').config();
 
 /* const */
 const PRODUCT_PATH = './products.json';
 
 /* app */
-const SERVER_PORT = 8081;
+const SERVER_PORT = process.env.SERVER_PORT || 8080;
 const app = express();
 
 /* handlebars settings */
@@ -26,14 +28,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /* Db conection */
-mongoose.connect('', (error) => {
+/* mongoose.connect('', (error) => {
     if (error) {
         console.log(`[DB] Error: ${error.message}`);
         process.exit()
     } else {
         console.log(`[DB] Connected`);
     }
-})
+}) */
 
 /* routes */
 app.use('/', require('./routes/view.router'));
