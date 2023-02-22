@@ -31,8 +31,7 @@ export default class ViewController{
 
   async getChat(req, res) {
     res.render('chat', {
-      title: 'Chat',
-      messages: await chatService.getMessages()
+      title: 'Chat'
     });
   }
 
