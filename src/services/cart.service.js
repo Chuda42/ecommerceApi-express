@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import Utils from "../utils.js";
 
+import PersistenceController from "../dao/mongo.container.js";
+import ProductSchema from "../dao/models/product.schema.js";
+
 export default class CartService{
   constructor(persistenceController){
     this.persistenceController = persistenceController;
@@ -86,6 +89,12 @@ export default class CartService{
   async addProductToCart(cid, pid){
     try {
       const objPid = mongoose.Types.ObjectId(pid);
+
+      const perControlerProduct = new PersistenceController(Utils.DB_COLLECTION_PRODUCTS ,ProductSchema);
+      const product = await perControlerProduct.getObjectById(pid);
+      if(!product){
+        throw new Error('Product not found');
+      }
 
       const query = [
         { $project: { 

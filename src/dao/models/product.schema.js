@@ -33,7 +33,7 @@ const ProductSchema = new mongoose.Schema({
     max: 100
   },
 
-  thumbnail:{
+  thumbnails:{
     type: [String],
     default: [],
   },
