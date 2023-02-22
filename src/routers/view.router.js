@@ -16,6 +16,8 @@ viewRouter.route('/', httpLogMiddleware)
 viewRouter.route('/realtimeproducts', httpLogMiddleware)
           .get(viewController.getRealTimeProducts)
 
+viewRouter.route('/chat', httpLogMiddleware)
+          .get(viewController.getChat)
 
 /* export */
 export default viewRouter;

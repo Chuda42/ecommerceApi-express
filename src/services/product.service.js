@@ -11,6 +11,7 @@ export default class ProductService{
 
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
+      throw error;
     }
   }
   
