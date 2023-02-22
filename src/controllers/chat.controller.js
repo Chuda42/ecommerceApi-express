@@ -31,7 +31,7 @@ export default class ChatController{
       let newMessage = await this.chatService.addMessage(message);
 
       /* get io server */
-      //req.app.get('io').sockets.emit('newMessage', newMessage);
+      req.app.get('io').sockets.emit('newMessage', message);
 
       res.status(200).json({ status: 'ok', message: 'Added message' });
     } catch (error) {

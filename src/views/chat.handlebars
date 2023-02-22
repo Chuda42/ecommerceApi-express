@@ -1,35 +1,19 @@
-<h1>hola chat</h1>
+<h1>Live chat</h1>
 <div class="container-md">
-  <ul>
-    {{#each messages}}
-      <li>
-        <strong>{{user}}</strong>: {{message}}
-      </li>
-    {{/each}}
-  </ul>
+  
+  <ul id="chatBox"></ul>
 
   <form class="row g-3 m-3" id="chat-form">
     <div class="col-11">
-      <input type="Text" class="form-control" id="messageContent" placeholder="Escribe un mensaje" />
+      <input type="Text" class="form-control" id="inputMsg" placeholder="Escribe un mensaje" />
     </div>
     <div class="col-1">
-      <button class="btn btn-primary" id="enviarMsgBtn">
+      <button class="btn btn-primary" id="sendMsgBtn">
         <i class="fa-regular fa-paper-plane"></i>
       </button>
     </div>
   </form>
-
 </div>
-
-
-
-
-
-
-
-
-
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/chat.js"></script>
