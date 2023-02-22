@@ -1,10 +1,10 @@
 /* imports */
-const fs = require('fs');
+import fs from 'fs';
 
 /**
  * ProductManager class, provides a persistence manager to store products
-*/
-class ProductManager {
+ */
+export default class ProductManager {
   /*Atributes*/
   #path
 
@@ -64,12 +64,13 @@ class ProductManager {
   /**
   *  Check if product has one or more void fields
   *  @param {{
-  *       title: string,
-  *       description: string,
-  *       price: int,
-  *       code: string,
-  *       stock: int,
-  *       category: string}} product
+  *    title: string,
+  *    description: string,
+  *    price: int,
+  *    code: string,
+  *    stock: int,
+  *    category: string
+  *  }} product
   *  @throws {Error} - if product has one or more void fields
   */
   async #isNotVoid(product) {
@@ -101,14 +102,15 @@ class ProductManager {
   /**
   *  Check if product has one or more invalid types fields
   *  @param {{
-  *       title: string,
-  *       description: string,
-  *       price: int,
-  *       thumbnails: Array<string> | undefined,
-  *       code: string,
-  *       stock: int,
-  *       status: boolean | undefined,
-  *       category: string}} product
+  *    title: string,
+  *    description: string,
+  *    price: int,
+  *    thumbnails: Array<string> | undefined,
+  *    code: string,
+  *    stock: int,
+  *    status: boolean | undefined,
+  *    category: string
+  *   }} product
   *  @throws {Error} if product has one or invalid types fields
   */
   async #isValidTypes(product) {
@@ -131,15 +133,16 @@ class ProductManager {
   /**
   *  Store new product in persistence
   *  @param {{
-  *      id: string,
-  *       title: string,
-  *       description: string,
-  *       price: int,
-  *       thumbnails: Array<string> | undefined,
-  *       code: string,
-  *       stock: int,
-  *       status: boolean | undefined,
-  *       category: string}} product 
+  *    id: string,
+  *    title: string,
+  *    description: string,
+  *    price: int,
+  *    thumbnails: Array<string> | undefined,
+  *    code: string,
+  *    stock: int,
+  *    status: boolean | undefined,
+  *    category: string
+  *   }} product 
   *  @throws {Error} - if product has one or more void fields, or if product has one or more invalid types 
   */
   async addProduct(product) {
@@ -185,15 +188,15 @@ class ProductManager {
   * Return product in persistence where product.id equals parameter id
   * @param {int} id 
   * @returns {Promise<{
-  *      id: string,
-  *      title: string,
-  *      description: string,
-  *      price: int,
-  *      thumbnails: Array<string>,
-  *      code: string,
-  *      stock: int,
-  *      status: boolean,
-  *      category: string}>} product
+  *   id: string,
+  *   title: string,
+  *   description: string,
+  *   price: int,
+  *   thumbnails: Array<string>,
+  *   code: string,
+  *   stock: int,
+  *   status: boolean,
+  *   category: string}>} product
   * @throws {Error} if product where product.id equals id does not exist
   */
   async getProductById(id) {
@@ -204,28 +207,30 @@ class ProductManager {
 
       let prod = products.find(product => product.id == id);
       if (!!prod) {
-          return prod;
+        return prod;
       };
       console.error('Not found');
       throw new Error(`Product ${id} does not exist`);
-    
     } catch (error) {
       console.log(error.message);
       throw error;
     }
+
   }
 
   /**
   * Update product in persistence where product.id equals parameter id
   * @param {int} id 
-  * @param {{title: string | undefined,
-  *          description: string | undefined,
-  *          price: int | undefined,
-  *          thumbnails: Array<string> | undefined,
-  *          code: string | undefined,
-  *          stock: int | undefined,
-  *          status: boolean | undefined,
-  *          category: string | undefined}} updateProduct 
+  * @param {{
+  *   title: string | undefined,
+  *   description: string | undefined,
+  *   price: int | undefined,
+  *   thumbnails: Array<string> | undefined,
+  *   code: string | undefined,
+  *   stock: int | undefined,
+  *   status: boolean | undefined,
+  *   category: string | undefined
+  *  }} updateProduct 
   * @throws {Error} if product where product.id equals id does not exist
   * @throws {Error} if updateProduct has one or more invalid types
   */
@@ -253,7 +258,6 @@ class ProductManager {
           return;
         }
       })
-
 
       await this.#save(lastId, products);
 
@@ -292,5 +296,3 @@ class ProductManager {
     }
   }
 }
-
-module.exports = ProductManager;
