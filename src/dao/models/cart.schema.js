@@ -1,4 +1,4 @@
-/* Imports */
+/* imports */
 import mongoose from 'mongoose';
 
 import Utils from '../../utils.js';

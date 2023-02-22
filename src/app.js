@@ -12,6 +12,10 @@ import MongoContainer from './dao/mongo.container.js';
 import ProductService from './services/product.service.js';
 import ProductSchema from './dao/models/product.schema.js';
 import cartRouter from './routers/cart.router.js';
+import chatRouter from './routers/chat.router.js';
+
+import ChatService from './services/chat.service.js';
+import MessageSchema from './dao/models/message.schema.js';
 
 /* app */
 const app = express();
@@ -43,7 +47,7 @@ mongoose.connect(Utils.DB_URL, (error) => {
 app.use('/', viewRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-
+app.use('/api/chats', chatRouter);
 
 /* http server */
 const httpServer = app.listen(Utils.SERVER_PORT, () => {
@@ -67,6 +71,10 @@ io.on('connection', async (socket) => {
   let productService = new ProductService(perisitenceManager)
   let products = await productService.getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
 
+  let chatService = new ChatService(new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema));
+  let messages = await chatService.getMessages();
+
   socket.emit('productsList', products);
+  socket.emit('messagesList', messages);
     
 });

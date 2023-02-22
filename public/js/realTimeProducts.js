@@ -146,6 +146,8 @@ const createAccordionItem = (product) => {
   `
 }
 
+/* socket events */
+
 /* listen inital product list */
 socket.on('productsList', (products) => {
   let html = "";
