@@ -17,6 +17,9 @@ import MessageSchema from './dao/models/message.schema.js';
 import CartSchema from './dao/models/cart.schema.js';
 
 /* import persistence */
+import ProductDao from './dao/product.dao.js';
+import CartDao from './dao/cart.dao.js';
+import MessageDao from './dao/message.dao.js';
 import MongoContainer from './dao/mongo.container.js';
 
 /**
@@ -26,22 +29,42 @@ import MongoContainer from './dao/mongo.container.js';
  */
 export default class Factory{
 
+  /* DAO */
+  static getProductDao(){
+    const persistenceController = new MongoContainer(Utils.DB_COLLECTION_PRODUCTS, ProductSchema);
+    const productDao = new ProductDao(persistenceController);
+    return productDao;
+  }
+
+  static getMessagesDao(){
+    const persistenceController = new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema);
+    const messagesDao = MessageDao(persistenceController);
+    return messagesDao;
+  }
+
+  static getCartDao(){
+    const productPersistenceController = this.getProductDao();
+    const persistenceController = new MongoContainer(Utils.DB_COLLECTION_CARTS, CartSchema);
+    const cartDao = new CartDao(persistenceController, productPersistenceController);
+    return cartDao;
+  }
+
   /* SERVICES */
   static getProductService(){
-    const peristenceController = new MongoContainer(Utils.DB_COLLECTION_PRODUCTS, ProductSchema);
-    const productService = new ProductService(peristenceController);
+    const productDao  = this.getProductDao();
+    const productService = new ProductService(productDao);
     return productService;
   }
 
   static getChatService(){
-    const peristenceController = new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema);
-    const chatService = new ChatService(peristenceController);
+    const messageesDao = this.getMessagesDao();
+    const chatService = new ChatService(messageesDao);
     return chatService;
   }
 
   static getCartService(){
-    const persistenceController = new MongoContainer(Utils.DB_COLLECTION_CARTS, CartSchema);
-    const cartService = new CartService(persistenceController);
+    const cartDao = this.getCartDao();
+    const cartService = new CartService(cartDao);
     return cartService;
   }
 

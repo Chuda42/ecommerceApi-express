@@ -2,17 +2,18 @@
  * class ChatService
  */
 export default class ChatService{
-  constructor(persistenceController){
-    this.persistenceController = persistenceController;
+  constructor(messagesPersistence){
+    this.messagesPersistence = messagesPersistence;
   }
 
   async getMessages(){
     try {
 
-      let messages = this.persistenceController.getObjects();
+      let messages = this.messagesPersistence.getMessages();
       return messages;
 
     } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }    
   }
@@ -20,10 +21,11 @@ export default class ChatService{
   async addMessage(message){
     try {
 
-      let newMessage = await this.persistenceController.saveObject(message);
+      let newMessage = await this.messagesPersistence.addMessage(message);
       return newMessage;
 
     }catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }

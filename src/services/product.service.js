@@ -6,11 +6,11 @@ export default class ProductService{
   async getProducts(){
     try {
 
-      let products = this.persistenceController.getObjects();
+      let products = this.persistenceController.getProducts();
       return products;
 
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -18,10 +18,11 @@ export default class ProductService{
   async addProduct(product){
     try {
 
-      let newProduct = await this.persistenceController.saveObject(product);
+      let newProduct = await this.persistenceController.addProduct(product);
       return newProduct;
 
     }catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -29,15 +30,11 @@ export default class ProductService{
   async getProductById(pid){
     try {
         
-      let product = await this.persistenceController.getObjectById(pid);
-
-      if (product === null) {
-        throw new Error(`Product with id ${pid} not found`);
-      }
-
+      let product = await this.persistenceController.getProductById(pid);
       return product;
     
     }catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -45,11 +42,11 @@ export default class ProductService{
   async updateProduct(pid, product){
     try {
         
-      let updatedProduct = await this.persistenceController.updateObject(pid, product);
-
+      let updatedProduct = await this.persistenceController.updateProduct(pid, product);
       return updatedProduct;
 
     }catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -57,13 +54,11 @@ export default class ProductService{
   async deleteProduct(pid){
     try {
         
-      let deleted = await this.persistenceController.deleteObject(pid);
-      if(deleted === null){
-        throw new Error(`Product with id ${pid} not found`);
-      }
+      let deleted = await this.persistenceController.deleteProduct(pid);
       return deleted;
 
     }catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
