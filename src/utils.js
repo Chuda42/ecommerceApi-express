@@ -27,7 +27,4 @@ export default class Utils {
   static DB_COLLECTION_PRODUCTS = process.env.DB_COLLECTION_PRODUCTS || 'products';
   static DB_COLLECTION_MESSAGES = process.env.DB_COLLECTION_MESSAGES || 'messages';
   static DB_COLLECTION_CARTS = process.env.DB_COLLECTION_CARTS || 'carts';
-
-  /* ROUTES */
 }
-
