@@ -2,16 +2,10 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import ProductController from '../controllers/product.controller.js';
-import ProductService from '../services/product.service.js';
-import MongoContainer from '../dao/mongo.container.js';
-import ProductSchema from '../dao/models/product.schema.js'
-import Utils from '../utils.js';
+import Factory from '../factory.js';
 
-/* const */
-const peristenceController = new MongoContainer(Utils.DB_COLLECTION_PRODUCTS, ProductSchema);
-const productService = new ProductService(peristenceController);
-const proController = new ProductController(productService);
+/* controller */
+const proController = Factory.getProductController();
 
 /* Router */
 const productRouter = Router();
