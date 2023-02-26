@@ -5,6 +5,7 @@ import Utils from './utils.js';
 import ProductController from './controllers/product.controller.js';
 import ChatController from './controllers/chat.controller.js';
 import CartController from './controllers/cart.controller.js';
+import ViewController from './controllers/view.controller.js';
 
 /* import services */
 import ProductService from './services/product.service.js';
@@ -38,7 +39,7 @@ export default class Factory{
 
   static getMessagesDao(){
     const persistenceController = new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema);
-    const messagesDao = MessageDao(persistenceController);
+    const messagesDao = new MessageDao(persistenceController);
     return messagesDao;
   }
 
@@ -85,5 +86,11 @@ export default class Factory{
     const cartService = this.getCartService();
     const cartController = new CartController(cartService);
     return cartController;
+  }
+
+  static getViewController(){
+    const productService = this.getProductService();
+    const viewController = new ViewController(productService);
+    return viewController;
   }
 }

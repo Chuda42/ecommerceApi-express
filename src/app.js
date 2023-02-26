@@ -4,19 +4,14 @@ import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
 import path from 'path';
+
 import Utils from './utils.js';
 import Factory from './Factory.js'
 
 import viewRouter from './routers/view.router.js';
 import productRouter from './routers/product.router.js';
-/* import MongoContainer from './dao/mongo.container.js';
-import ProductService from './services/product.service.js';
-import ProductSchema from './dao/models/product.schema.js'; */
 import cartRouter from './routers/cart.router.js';
 import chatRouter from './routers/chat.router.js';
-
-/* import ChatService from './services/chat.service.js';
-import MessageSchema from './dao/models/message.schema.js'; */
 
 /* app */
 const app = express();
@@ -68,12 +63,9 @@ app.set('io', io);
 io.on('connection', async (socket) => {
   console.log(`[SOCKET] New client connected -> ${socket.id}`);
 
-  /* let perisitenceManager = new MongoContainer(Utils.DB_COLLECTION_PRODUCTS, ProductSchema);
-  let productService = new ProductService(perisitenceManager) */
   let productService = Factory.getProductService();
   let products = await productService.getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
 
-  //let chatService = new ChatService(new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema));
   let chatService = Factory.getChatService();
   let messages = await chatService.getMessages();
 

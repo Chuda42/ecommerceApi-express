@@ -1,4 +1,5 @@
 /* imports */
+import mongoose from "mongoose";
 import Utils from '../utils.js'
 
 export default class CartDao {
@@ -94,6 +95,7 @@ export default class CartDao {
       }
 
       const query = [
+        //if product exist, add 1 to quantity
         { $project: { 
             products: { 
               $map: { 
@@ -104,14 +106,14 @@ export default class CartDao {
                     { $eq: ['$$product.product', objPid] },
                     { product: '$$product.product', quantity: { $add: ['$$product.quantity', 1] } },
                     "$$product"
-                  ]
-                    
+                  ]  
                 }
               } 
             } 
           } 
         },
 
+        //if product not exist, add product to cart
         { $addFields: {
             products: {
               $concatArrays: [

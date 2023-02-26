@@ -1,25 +1,24 @@
-import mongoose from 'mongoose';
-
-import ProductService from '../services/product.service.js';
-import MongoContainer from '../dao/mongo.container.js';
-import ProductSchema from '../dao/models/product.schema.js';
-import ChatService from '../services/chat.service.js';
-import MessageSchema from '../dao/models/message.schema.js';
-import Utils from '../utils.js';
-
-const perisitenceManager = new MongoContainer(Utils.DB_COLLECTION_PRODUCTS, ProductSchema);
-const productService = new ProductService(perisitenceManager)
-const chatService = new ChatService(new MongoContainer(Utils.DB_COLLECTION_MESSAGES, MessageSchema));
-
 /**
  * class ViewController
  */
 export default class ViewController{
+
+  constructor(productService){
+    this.productService = productService;
+
+    Object.getOwnPropertyNames(ViewController.prototype).forEach((key) => {
+      if (key !== 'constructor' && key !== 'productService') {
+        this[key] = this[key].bind(this);
+      }
+    });
+  }  
   
   async getHome(req, res){
+    const products = await this.productService.getProducts()
+
     res.render('home', {
       title: 'Home',
-      products: await productService.getProducts()
+      products: products
     });
   }
 

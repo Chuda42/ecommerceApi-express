@@ -2,11 +2,13 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import ViewController from '../controllers/view.controller.js';
+import Factory from '../factory.js';
+
+/* controller */
+const viewController = Factory.getViewController();
 
 /* router */
 const viewRouter = Router();
-const viewController = new ViewController();
 
 /* http methods */
 
