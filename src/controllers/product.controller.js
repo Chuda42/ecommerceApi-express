@@ -7,12 +7,6 @@ export default class ProductController{
     this.productService = productService;
 
     //setting context to this
-   /*  this.getProducts = this.getProducts.bind(this);
-    this.addProduct = this.addProduct.bind(this);
-    this.getProductById = this.getProductById.bind(this); 
-    this.updateProduct = this.updateProduct.bind(this);
-    this.deleteProduct = this.deleteProduct.bind(this); */
-    //auto binding
     Object.getOwnPropertyNames(ProductController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'productService') {
         this[key] = this[key].bind(this);
@@ -22,17 +16,33 @@ export default class ProductController{
 
   async getProducts(req, res){
     try {
-      const productList = await this.productService.getProducts();
-  
-      const { limit } = req.query ?? -1;
-  
-      if (limit > 0) {
-        res.status(200).json(productList.slice(0, limit));
-      } else {
-        res.status(200).json(productList);
+      //filtering query params
+      let { limit= 10,
+            page= 1,
+            sort= '',
+            query={} } = req.query;
+      
+      const options = { limit, page, sort : {price: sort} , query};
+      //getting products
+      const productList = await this.productService.getProducts(options);
+      
+      //building response
+      const response = {
+        status: 'success',
+        payload: productList.docs,
+        totalPages: productList.totalPages,
+        page: productList.page,
+        nextPage: productList.nextPage,
+        prevPage: productList.prevPage,
+        hasPrevPage: productList.hasPrevPage,
+        hasNextPage: productList.hasNextPage
       }
+
+      res.status(200).json(response);
+
     } catch (error) {
       console.log(error.message);
+      res.status(400).json({ status: 'error', error: error.message });
     }
   }
 

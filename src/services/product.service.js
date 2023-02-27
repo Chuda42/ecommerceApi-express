@@ -3,10 +3,10 @@ export default class ProductService{
     this.persistenceController = persistenceController;
   }
 
-  async getProducts(){
+  async getProducts(options){
     try {
 
-      let products = this.persistenceController.getProducts();
+      let products = this.persistenceController.getProducts(options);
       return products;
 
     } catch (error) {

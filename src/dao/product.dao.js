@@ -4,9 +4,9 @@ export default class ProductDao{
     this.persistenceController = persistenceController;
   }
 
-  async getProducts(){
+  async getProducts({ limit, page, sort, query}){
     try {
-      let products = await this.persistenceController.getObjects();
+      let products = await this.persistenceController.getPaginate({ limit, page, sort, query});
       return products;
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
