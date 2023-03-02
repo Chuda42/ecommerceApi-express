@@ -1,0 +1,16 @@
+<div class="alert alert-dark m-2" role="alert">
+  <strong>ID: {{data.product._id}} <input type="hidden" id="productId" value="{{data.product._id}}"> </strong><br>
+  <strong>Title: {{data.product.title}}</strong><br>
+  Description: {{data.product.description}}<br>
+  Price: <code>${{data.product.price}}</code><br>
+  Code: <code>{{data.product.code}}</code><br>
+  Status: {{data.product.status}}<br>
+  Stock: <code>{{data.product.stock}}</code><br>
+  Category: {{data.product.category}}<br>
+  Thumbnails:{{#each data.product.thumbnails}} {{this}};{{/each}}<br>
+</div>
+<div class="m-2">
+    <button type="button" class="btn btn-outline-success btn-lg btn-block" id = "btnAddToCart">Add to Cart</button>
+</div>
+
+<script src="/js/productDetail.js"></script>

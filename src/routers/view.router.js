@@ -21,5 +21,14 @@ viewRouter.route('/realtimeproducts', httpLogMiddleware)
 viewRouter.route('/chat', httpLogMiddleware)
           .get(viewController.getChat)
 
+viewRouter.route('/products', httpLogMiddleware)
+          .get(viewController.getProducts)
+          
+viewRouter.route('/products/:id', httpLogMiddleware)
+          .get(viewController.getProductDetail)
+
+viewRouter.route('/cart/:id', httpLogMiddleware)
+          .get(viewController.getCart)
+
 /* export */
 export default viewRouter;

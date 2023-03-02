@@ -20,28 +20,34 @@ export default class ProductController{
       let { limit= 10,
             page= 1,
             sort= '',
-            query={} } = req.query;
+            query } = req.query;
       
-      const options = { limit, page, sort : {price: sort} , query};
+      query = (query)? JSON.parse(query) : {};
+      
+      const options = { limit, page, sort : {price: sort} , query };
       //getting products
       const productList = await this.productService.getProducts(options);
       
+      //linking pagination
+      const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?limit=${limit}&page=${productList.prevPage}&sort=${sort}&query=${JSON.stringify(query)}` : null;
+      const nextPage = (productList.hasNextPage) ? `${req.baseUrl}?limit=${limit}&page=${productList.nextPage}&sort=${sort}&query=${JSON.stringify(query)}` : null;
+
       //building response
       const response = {
         status: 'success',
         payload: productList.docs,
         totalPages: productList.totalPages,
         page: productList.page,
-        nextPage: productList.nextPage,
-        prevPage: productList.prevPage,
+        nextPage: nextPage,
+        prevPage: prevPage,
         hasPrevPage: productList.hasPrevPage,
         hasNextPage: productList.hasNextPage
       }
 
       res.status(200).json(response);
-
+      
     } catch (error) {
-      console.log(error.message);
+      console.log(`[ERROR] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }

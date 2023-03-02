@@ -78,6 +78,12 @@ export default class CartDao {
         }
       ]
       const cartJoinedProducts = await this.persistenceController.aggregateQuery(query); //array of one element with the cart joined with the products
+      
+      //if cart not exist
+      if(cartJoinedProducts.length === 0){
+        throw new Error('Cart not found');
+      }
+
       const onlyProducts = cartJoinedProducts[0].products;
       return onlyProducts
     } catch (error) {
@@ -87,6 +93,7 @@ export default class CartDao {
 
   async addProductToCart(cid, pid){
     try {
+      const objCid = mongoose.Types.ObjectId(cid);
       const objPid = mongoose.Types.ObjectId(pid);
 
       const existProduct = await this.productPersistenceController.existProduct(objPid);
@@ -141,7 +148,7 @@ export default class CartDao {
         }
       ]
 
-      const cart = await this.persistenceController.updateObject(cid ,query);
+      const cart = await this.persistenceController.updateObject(objCid ,query);
       return cart
     } catch (error) {
       throw error;
