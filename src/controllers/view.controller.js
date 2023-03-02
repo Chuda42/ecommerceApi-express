@@ -15,20 +15,13 @@ export default class ViewController{
   }  
   
   async getHome(req, res){
-    //filtering query params
-    let { limit= 10,
-      page= 1,
-      sort= '',
-      query={} } = req.query;
-
-    const options = { limit, page, sort : {price: sort} , query};
     //getting products
-    const productList = await this.productService.getProducts(options);
+    const productList = await this.productService.getProducts();
 
     //building response
     const data = {
       status : 'success',
-      payload : JSON.parse(JSON.stringify(productList.docs)),
+      payload : JSON.parse(JSON.stringify(productList)),
     }
 
     res.render('home', {
@@ -46,7 +39,7 @@ export default class ViewController{
 
     const options = { limit, page, sort : {price: sort} , query};
     //getting products
-    const productList = await this.productService.getProducts(options);
+    const productList = await this.productService.getProductsPaginate(options);
     
     //linking pagination
     const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?page=${productList.prevPage}` : null;

@@ -33,7 +33,6 @@ btnAddToCart.addEventListener('click', function (e) {
     })
 
     .catch(error => {
-
       swal.fire({
         title: 'Error',
         text: error.message,

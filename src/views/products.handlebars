@@ -33,11 +33,21 @@
   {{#each data.payload}}
 
     <div class="accordion-item">
-      <h2 class="accordion-header" id="flush-heading{{_id}}">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-          data-bs-target="#flush-collapse{{_id}}" aria-expanded="false" aria-controls="flush-collapse{{_id}}">
-          Product Id: {{_id}}. Product title: {{title}}
-        </button>
+      <h2 class="accordion-header" id="flush-heading${product._id}">
+        <div class="row">
+          <div class="col-11">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#flush-collapse{{_id}}" aria-expanded="false" aria-controls="flush-collapse{{_id}}">
+              Product Id: {{_id}}. Product title: {{title}}
+            </button>
+          </div>
+          <div class="col">
+            <button class="btn btn-info" id="infoProduct{{_id}}"><i class="fa-solid fa-info"></i></button>
+          </div>
+          <div class="col">
+            <button class="btn btn-warning" id="addCartProduct{{_id}}"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </div>
       </h2>
       <div id="flush-collapse{{_id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{_id}}"
         data-bs-parent="#productsAccordion">

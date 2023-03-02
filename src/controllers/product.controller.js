@@ -26,7 +26,7 @@ export default class ProductController{
       
       const options = { limit, page, sort : {price: sort} , query };
       //getting products
-      const productList = await this.productService.getProducts(options);
+      const productList = await this.productService.getProductsPaginate(options);
       
       //linking pagination
       const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?limit=${limit}&page=${productList.prevPage}&sort=${sort}&query=${JSON.stringify(query)}` : null;
