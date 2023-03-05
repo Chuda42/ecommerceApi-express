@@ -121,4 +121,25 @@ export default class CartController{
       });
     }
   }
+
+  async updateProductsToCart(req, res) {
+    try {
+      const { cid } = req.params;
+
+      const products  = req.body;
+
+      await this.cartService.updateProductsToCart(cid, products);
+
+      res.status(200).json({
+        status: 'success',
+        message: `Many products added to cart: ${cid}`
+      });
+
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
 }

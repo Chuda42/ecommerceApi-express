@@ -14,12 +14,12 @@ const cartRouter = Router();
 cartRouter.use(httpLogMiddleware);
 
 /* http methods */
-
- cartRouter.route('/')
+cartRouter.route('/')
           .post(cartController.addCart)
 
 cartRouter.route('/:cid')
           .get(cartController.getProductsCart)
+          .put(cartController.updateProductsToCart)
           .delete(cartController.deleteAllProductsFromCart)
 
 cartRouter.route('/:cid/product/:pid')

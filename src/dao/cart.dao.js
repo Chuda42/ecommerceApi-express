@@ -247,4 +247,25 @@ export default class CartDao {
       throw error;
     }
   }
+
+  async updateProductsToCart(cid, products){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+
+      const query = [
+        { $set: { products: products } }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
