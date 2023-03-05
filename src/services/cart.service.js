@@ -62,4 +62,15 @@ export default class CartService{
       throw error;
     }
   }
+
+  async deleteAllProductsFromCart(cid){
+    try {
+      const cart = await this.persistenceController.deleteAllProductsFromCart(cid);
+      return cart
+    } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
+      throw error;
+    }
+  }
+
 }

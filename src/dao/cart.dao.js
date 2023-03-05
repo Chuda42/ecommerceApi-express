@@ -217,10 +217,34 @@ export default class CartDao {
       ]
 
       const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
       return cart
     } catch (error) {
       throw error;
     }
   }
 
+  async deleteAllProductsFromCart(cid){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+
+      const query = [
+        { $set: { products: [] } }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
 }

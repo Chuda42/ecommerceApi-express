@@ -102,4 +102,23 @@ export default class CartController{
       });
     }
   }
+
+  async deleteAllProductsFromCart(req, res) {
+    try {
+      const { cid } = req.params;
+
+      await this.cartService.deleteAllProductsFromCart(cid);
+
+      res.status(200).json({
+        status: 'success',
+        message: `All products deleted from cart: ${cid}`
+      });
+
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
 }

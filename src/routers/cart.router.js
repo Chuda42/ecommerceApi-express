@@ -20,6 +20,7 @@ cartRouter.use(httpLogMiddleware);
 
 cartRouter.route('/:cid')
           .get(cartController.getProductsCart)
+          .delete(cartController.deleteAllProductsFromCart)
 
 cartRouter.route('/:cid/product/:pid')
           .post(cartController.addProductToCart)
