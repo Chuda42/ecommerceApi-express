@@ -22,9 +22,9 @@ export default class CartDao {
 
   async getProductsCart(cid){
     try {
-      const objCid =  mongoose.Types.ObjectId(cid)
-      const productsCollection = Utils.DB_COLLECTION_PRODUCTS;
-      const query = [
+      //const objCid =  mongoose.Types.ObjectId(cid)
+      //const productsCollection = Utils.DB_COLLECTION_PRODUCTS;
+      /* const query = [
         { $match: { _id: objCid } },
 
         //join products
@@ -76,9 +76,19 @@ export default class CartDao {
             }
           }
         }
-      ]
-      const cartJoinedProducts = await this.persistenceController.aggregateQuery(query); //array of one element with the cart joined with the products
-      const onlyProducts = cartJoinedProducts[0].products;
+      ] */
+      //const cartJoinedProducts = await this.persistenceController.aggregateQuery(query); //array of one element with the cart joined with the products
+      const cart = await this.persistenceController.getObjectById(cid);
+      //if cart not exist
+      /* if(cartJoinedProducts.length === 0){
+        throw new Error('Cart not found');
+      } */
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      //const onlyProducts = cartJoinedProducts[0].products;
+      const onlyProducts = cart.products;
       return onlyProducts
     } catch (error) {
       throw error;
@@ -87,6 +97,7 @@ export default class CartDao {
 
   async addProductToCart(cid, pid){
     try {
+      const objCid = mongoose.Types.ObjectId(cid);
       const objPid = mongoose.Types.ObjectId(pid);
 
       const existProduct = await this.productPersistenceController.existProduct(objPid);
@@ -141,10 +152,124 @@ export default class CartDao {
         }
       ]
 
-      const cart = await this.persistenceController.updateObject(cid ,query);
+      const cart = await this.persistenceController.updateObject(objCid ,query);
       return cart
     } catch (error) {
       throw error;
     }
   }
+
+  async deleteProductFromCart(cid, pid){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+      const objPid = mongoose.Types.ObjectId(pid);
+
+      const existProduct = await this.productPersistenceController.existProduct(objPid);
+      if(!existProduct){
+        throw new Error('Product not found');
+      }
+
+      const query = [
+        //if product exist, delete product from cart
+        { $addFields: {
+            products: {
+              $filter: {
+                input: '$products',
+                as: 'product',
+                cond: { $not: { $eq: ['$$product.product', objPid] } }
+              }
+            }
+          }
+        }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async udateProductQuantityInCart(cid, pid, quantity){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+      const objPid = mongoose.Types.ObjectId(pid);
+
+      const existProduct = await this.productPersistenceController.existProduct(objPid);
+      if(!existProduct){
+        throw new Error('Product not found');
+      }
+
+      const query = [
+        //if product exist, update quantity
+        { $project: { 
+            products: { 
+              $map: { 
+                input: '$products',
+                as: 'product',
+                in: {
+                  $cond: [
+                    { $eq: ['$$product.product', objPid] },
+                    { product: '$$product.product', quantity: quantity },
+                    "$$product"
+                  ]  
+                }
+              } 
+            } 
+          } 
+        }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteAllProductsFromCart(cid){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+
+      const query = [
+        { $set: { products: [] } }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProductsToCart(cid, products){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+
+      const query = [
+        { $set: { products: products } }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+
+      if(!cart){
+        throw new Error('Cart not found');
+      }
+
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

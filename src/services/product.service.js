@@ -3,6 +3,18 @@ export default class ProductService{
     this.persistenceController = persistenceController;
   }
 
+  async getProductsPaginate(options){
+    try {
+
+      let products = this.persistenceController.getProductsPaginate(options);
+      return products;
+
+    } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
+      throw error;
+    }
+  }
+
   async getProducts(){
     try {
 

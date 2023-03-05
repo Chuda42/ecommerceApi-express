@@ -89,8 +89,9 @@ export default class Factory{
   }
 
   static getViewController(){
+    const cartService = this.getCartService();
     const productService = this.getProductService();
-    const viewController = new ViewController(productService);
+    const viewController = new ViewController(productService, cartService);
     return viewController;
   }
 }

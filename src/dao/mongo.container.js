@@ -75,4 +75,24 @@ export default class MongoContainer{
       throw error;
     }
   }
+
+  async getPaginate({ limit, page, sort, query }){
+    try {
+      let options = {
+        page: page,
+        limit: limit,
+        sort: sort,
+        lean: true,
+        collation: {
+          locale: 'en'
+        }
+      };
+
+      let result = await this.model.paginate(query, options);
+      return result;
+
+    } catch (error) {
+      throw error;
+    }
+  }
 }
