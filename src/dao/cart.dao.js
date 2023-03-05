@@ -22,9 +22,9 @@ export default class CartDao {
 
   async getProductsCart(cid){
     try {
-      const objCid =  mongoose.Types.ObjectId(cid)
-      const productsCollection = Utils.DB_COLLECTION_PRODUCTS;
-      const query = [
+      //const objCid =  mongoose.Types.ObjectId(cid)
+      //const productsCollection = Utils.DB_COLLECTION_PRODUCTS;
+      /* const query = [
         { $match: { _id: objCid } },
 
         //join products
@@ -76,15 +76,19 @@ export default class CartDao {
             }
           }
         }
-      ]
-      const cartJoinedProducts = await this.persistenceController.aggregateQuery(query); //array of one element with the cart joined with the products
-      
+      ] */
+      //const cartJoinedProducts = await this.persistenceController.aggregateQuery(query); //array of one element with the cart joined with the products
+      const cart = await this.persistenceController.getObjectById(cid);
       //if cart not exist
-      if(cartJoinedProducts.length === 0){
+      /* if(cartJoinedProducts.length === 0){
+        throw new Error('Cart not found');
+      } */
+      if(!cart){
         throw new Error('Cart not found');
       }
 
-      const onlyProducts = cartJoinedProducts[0].products;
+      //const onlyProducts = cartJoinedProducts[0].products;
+      const onlyProducts = cart.products;
       return onlyProducts
     } catch (error) {
       throw error;
