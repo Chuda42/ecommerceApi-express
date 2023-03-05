@@ -80,4 +80,26 @@ export default class CartController{
       });
     }
   }
+
+  async udateProductQuantityInCart(req, res) {
+    try {
+      const { cid, pid } = req.params;
+
+      let { quantity } = req.body;
+      quantity = parseInt(quantity);
+
+      await this.cartService.udateProductQuantityInCart(cid, pid, quantity);
+
+      res.status(200).json({
+        status: 'success',
+        message: `Product: ${pid} quantity updated in cart: ${cid}`
+      });
+
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
 }

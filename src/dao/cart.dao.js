@@ -186,4 +186,41 @@ export default class CartDao {
     }
   }
 
+  async udateProductQuantityInCart(cid, pid, quantity){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+      const objPid = mongoose.Types.ObjectId(pid);
+
+      const existProduct = await this.productPersistenceController.existProduct(objPid);
+      if(!existProduct){
+        throw new Error('Product not found');
+      }
+
+      const query = [
+        //if product exist, update quantity
+        { $project: { 
+            products: { 
+              $map: { 
+                input: '$products',
+                as: 'product',
+                in: {
+                  $cond: [
+                    { $eq: ['$$product.product', objPid] },
+                    { product: '$$product.product', quantity: quantity },
+                    "$$product"
+                  ]  
+                }
+              } 
+            } 
+          } 
+        }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
