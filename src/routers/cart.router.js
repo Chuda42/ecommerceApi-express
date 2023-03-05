@@ -23,6 +23,7 @@ cartRouter.route('/:cid')
 
 cartRouter.route('/:cid/product/:pid')
           .post(cartController.addProductToCart)
+          .delete(cartController.deleteProductFromCart)
 
 /* export */
 export default cartRouter;

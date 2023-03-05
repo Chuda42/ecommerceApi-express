@@ -16,9 +16,13 @@ export default class CartController{
 
   async addCart(req, res) {
     try {
-
       await this.cartService.addCart();
-      res.status(200).json({ status: 'success', message: 'Cart created' });
+      
+      res.status(200).json({
+        status: 'success',
+        message: 'Cart created'
+      });
+
     } catch (error) {
       console.log(error.message);
     }
@@ -32,7 +36,11 @@ export default class CartController{
       res.status(200).json(products);
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
-      res.status(400).json({ status: 'error', message: error.message });
+
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
     }
   }
 
@@ -41,10 +49,35 @@ export default class CartController{
       const { cid, pid } = req.params;
 
       await this.cartService.addProductToCart(cid, pid);
-      res.status(200).json({ status: 'success', message: 'Product added to cart' });
+
+      res.status(200).json({
+        status: 'success',
+        message: `Product: ${pid} added to cart: ${cid}`
+      });
+
     } catch (error) {
-      res.status(400).json({ status: 'error', message: error.message });
+      res.status(400).json({
+        status: 'error', message: error.message
+      });
     }
   }
 
+  async deleteProductFromCart(req, res) {
+    try {
+      const { cid, pid } = req.params;
+
+      await this.cartService.deleteProductFromCart(cid, pid);
+
+      res.status(200).json({
+        status: 'success',
+        message: `Product: ${pid} deleted from cart: ${cid}`
+      });
+
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
 }

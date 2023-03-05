@@ -154,4 +154,36 @@ export default class CartDao {
       throw error;
     }
   }
+
+  async deleteProductFromCart(cid, pid){
+    try {
+      const objCid = mongoose.Types.ObjectId(cid);
+      const objPid = mongoose.Types.ObjectId(pid);
+
+      const existProduct = await this.productPersistenceController.existProduct(objPid);
+      if(!existProduct){
+        throw new Error('Product not found');
+      }
+
+      const query = [
+        //if product exist, delete product from cart
+        { $addFields: {
+            products: {
+              $filter: {
+                input: '$products',
+                as: 'product',
+                cond: { $not: { $eq: ['$$product.product', objPid] } }
+              }
+            }
+          }
+        }
+      ]
+
+      const cart = await this.persistenceController.updateObject(objCid ,query);
+      return cart
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

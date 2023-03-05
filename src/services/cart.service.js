@@ -32,4 +32,15 @@ export default class CartService{
       throw error;
     }
   }
+
+  async deleteProductFromCart(cid, pid){
+    try {
+      const cart = await this.persistenceController.deleteProductFromCart(cid, pid);
+      return cart
+    } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
+      throw error;
+    }
+  }
+
 }
