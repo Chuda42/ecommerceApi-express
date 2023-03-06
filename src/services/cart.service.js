@@ -79,14 +79,7 @@ export default class CartService{
         throw new Error('Products list is empty');
       }
 
-      let productListParsed = products.map(product =>{
-        return {
-          product: product.product,
-          quantity: product.quantity
-        }
-      })
-
-      const cart = await this.persistenceController.updateProductsToCart(cid, productListParsed);
+      const cart = await this.persistenceController.updateProductsToCart(cid, products);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
