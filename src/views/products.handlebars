@@ -43,10 +43,16 @@
             </button>
           </div>
           <div class="col">
-            <button class="btn btn-info" id="infoProduct{{_id}}"><i class="fa-solid fa-info"></i></button>
+            <a href="/products/{{_id}}">
+              <button class="btn btn-info" id="infoProduct{{_id}}"> 
+                  <i class="fa-solid fa-info"></i>
+              </button>
+            </a>
           </div>
           <div class="col">
-            <button class="btn btn-warning" id="addCartProduct{{_id}}"><i class="fa-solid fa-cart-shopping"></i></button>
+            <button class="btn btn-warning addToCartBtn" id="addCartProduct{{_id}}" productId = "{{_id}}" >
+              <i class="fa-solid fa-cart-shopping"></i>
+            </button>
           </div>
         </div>
       </h2>
@@ -74,3 +80,5 @@
   {{/each}}
 
 </div>
+
+<script src="/js/products.js"></script>

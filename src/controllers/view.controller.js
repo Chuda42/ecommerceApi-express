@@ -106,7 +106,8 @@ export default class ViewController{
       
       const data = {
         status : 'success',
-        cart : cart
+        cart : cart,
+        cartId: id
       }
       res.render('cart', {
         title: 'Cart',

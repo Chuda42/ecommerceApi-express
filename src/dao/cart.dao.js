@@ -96,66 +96,71 @@ export default class CartDao {
   }
 
   async addProductToCart(cid, pid){
-    try {
+    try{
       const objCid = mongoose.Types.ObjectId(cid);
-      const objPid = mongoose.Types.ObjectId(pid);
-
-      const existProduct = await this.productPersistenceController.existProduct(objPid);
-      if(!existProduct){
-        throw new Error('Product not found');
-      }
-
-      const query = [
-        //if product exist, add 1 to quantity
-        { $project: { 
-            products: { 
-              $map: { 
-                input: '$products',
-                as: 'product',
-                in: {
-                  $cond: [
-                    { $eq: ['$$product.product', objPid] },
-                    { product: '$$product.product', quantity: { $add: ['$$product.quantity', 1] } },
-                    "$$product"
-                  ]  
-                }
+      try {
+        const objPid = mongoose.Types.ObjectId(pid);
+  
+        const existProduct = await this.productPersistenceController.existProduct(objPid);
+        if(!existProduct){
+          throw new Error('Product not found');
+        }
+  
+        const query = [
+          //if product exist, add 1 to quantity
+          { $project: { 
+              products: { 
+                $map: { 
+                  input: '$products',
+                  as: 'product',
+                  in: {
+                    $cond: [
+                      { $eq: ['$$product.product', objPid] },
+                      { product: '$$product.product', quantity: { $add: ['$$product.quantity', 1] } },
+                      "$$product"
+                    ]  
+                  }
+                } 
               } 
             } 
-          } 
-        },
-
-        //if product not exist, add product to cart
-        { $addFields: {
-            products: {
-              $concatArrays: [
-                {
-                  $cond: [
-                    {$anyElementTrue: {
-                      $map: {
-                        input: "$products",
-                        as: "item",
-                        in: {
-                          $eq: [ "$$item.product", objPid ]
+          },
+  
+          //if product not exist, add product to cart
+          { $addFields: {
+              products: {
+                $concatArrays: [
+                  {
+                    $cond: [
+                      {$anyElementTrue: {
+                        $map: {
+                          input: "$products",
+                          as: "item",
+                          in: {
+                            $eq: [ "$$item.product", objPid ]
+                          }
                         }
                       }
-                    }
-                    },
-                    [],
-                    [ { product: objPid, quantity: 1 } ]
-                    
-                  ]
-                },
-                '$products'
-              ]
+                      },
+                      [],
+                      [ { product: objPid, quantity: 1 } ]
+                      
+                    ]
+                  },
+                  '$products'
+                ]
+              }
             }
           }
-        }
-      ]
-
-      const cart = await this.persistenceController.updateObject(objCid ,query);
-      return cart
-    } catch (error) {
-      throw error;
+        ]
+  
+        
+        const cart = await this.persistenceController.updateObject(objCid ,query);
+        return cart
+      } catch (error) {
+        throw error;
+      }
+    }catch (error) {
+      throw new Error('invalid cart id');
     }
   }
 
@@ -254,12 +259,19 @@ export default class CartDao {
 
   async updateProductsToCart(cid, products){
     try {
-      const objCid = mongoose.Types.ObjectId(cid);
+      
+      let productListParsed = products.map(product =>{
+        return {
+          product: mongoose.Types.ObjectId(product.product),
+          quantity: product.quantity
+        }
+      })
 
       const query = [
-        { $set: { products: products } }
+        { $set: { products: productListParsed } }
       ]
 
+      const objCid = mongoose.Types.ObjectId(cid);
       const cart = await this.persistenceController.updateObject(objCid ,query);
 
       if(!cart){
