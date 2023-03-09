@@ -121,4 +121,25 @@ export default class ViewController{
       });
     }
   }
+
+  async getCartsIds(req, res) {
+    try{
+      const cartsIds = await this.cartService.getCartsIds();
+      const data = {
+        status : 'success',
+        cartsIds : cartsIds
+      }
+      res.render('verIdCarts', {
+        title: 'verIdCarts',
+        data: data
+      });
+    }catch (error){
+      console.log(`[ERROR] ${error.message}`);
+      res.render('error', {
+        title: 'error',
+        error: error.message
+      });
+    }
+  }
+
 }

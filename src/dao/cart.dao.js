@@ -284,4 +284,14 @@ export default class CartDao {
     }
   }
 
+  async getCartsIds(){
+    try {
+      const carts = await this.persistenceController.getObjects();
+      const ids = carts.map(cart => cart._id);
+      return ids;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

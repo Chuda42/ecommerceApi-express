@@ -87,4 +87,13 @@ export default class CartService{
     }
   }
 
+  async getCartsIds(){
+    try {
+      const cartsIds = await this.persistenceController.getCartsIds();
+      return cartsIds
+    } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
+      throw error;
+    }
+  }
 }

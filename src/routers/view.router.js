@@ -30,5 +30,8 @@ viewRouter.route('/products/:id', httpLogMiddleware)
 viewRouter.route('/cart/:id', httpLogMiddleware)
           .get(viewController.getCart)
 
+viewRouter.route('/cartsIds', httpLogMiddleware)
+          .get(viewController.getCartsIds)
+
 /* export */
 export default viewRouter;
