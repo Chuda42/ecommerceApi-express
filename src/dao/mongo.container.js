@@ -44,6 +44,17 @@ export default class MongoContainer{
     }
   }
 
+  async getObject(filter){
+    try{
+
+      let object = await this.model.findOne(filter).lean();
+      return object;
+
+    }catch(err){
+      throw err;
+    }
+  }
+
   async updateObject(id, object){
     try {
 

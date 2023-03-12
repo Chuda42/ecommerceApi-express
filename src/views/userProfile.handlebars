@@ -1,0 +1,11 @@
+<div class="alert alert-dark m-2" role="alert">
+  <strong>First name: {{data.user.first_name}}</strong><br>
+  <strong>Last name: {{data.user.last_name}}</strong><br>
+  Email: {{data.user.email}}<br>
+  {{#if data.isAdmin}}
+    Rol: <code>Admin</code><br>
+  {{else}}
+    Age: <code>{{data.user.age}}</code><br>
+    Rol: <code>User</code><br>
+  {{/if}}
+</div>
