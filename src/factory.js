@@ -6,21 +6,26 @@ import ProductController from './controllers/product.controller.js';
 import ChatController from './controllers/chat.controller.js';
 import CartController from './controllers/cart.controller.js';
 import ViewController from './controllers/view.controller.js';
+import UserController from './controllers/user.controller.js';
+import SessionController from './controllers/session.controller.js';
 
 /* import services */
 import ProductService from './services/product.service.js';
 import ChatService from './services/chat.service.js';
 import CartService from './services/cart.service.js';
+import UserService from './services/user.service.js';
 
 /* import schemas */
 import ProductSchema from './dao/models/product.schema.js';
 import MessageSchema from './dao/models/message.schema.js';
 import CartSchema from './dao/models/cart.schema.js';
+import UserSchema from './dao/models/user.schema.js';
 
 /* import persistence */
 import ProductDao from './dao/product.dao.js';
 import CartDao from './dao/cart.dao.js';
 import MessageDao from './dao/message.dao.js';
+import UserDao from './dao/user.dao.js';
 import MongoContainer from './dao/mongo.container.js';
 
 /**
@@ -50,6 +55,12 @@ export default class Factory{
     return cartDao;
   }
 
+  static getUserDao(){
+    const persistenceController = new MongoContainer(Utils.DB_COLLECTION_USERS, UserSchema);
+    const userDao = new UserDao(persistenceController);
+    return userDao;
+  }
+
   /* SERVICES */
   static getProductService(){
     const productDao  = this.getProductDao();
@@ -67,6 +78,12 @@ export default class Factory{
     const cartDao = this.getCartDao();
     const cartService = new CartService(cartDao);
     return cartService;
+  }
+
+  static getUserService(){
+    const userDao = this.getUserDao();
+    const userService = new UserService(userDao);
+    return userService;
   }
 
   /* CONTROLLERS */
@@ -91,7 +108,20 @@ export default class Factory{
   static getViewController(){
     const cartService = this.getCartService();
     const productService = this.getProductService();
-    const viewController = new ViewController(productService, cartService);
+    const userService = this.getUserService();
+    const viewController = new ViewController({productService, cartService, userService});
     return viewController;
+  }
+
+  static getUserController(){
+    const userService = this.getUserService();
+    const userController = new UserController(userService);
+    return userController;
+  }
+
+  static getSessionController(){
+    const userService = this.getUserService();
+    const sessionController = new SessionController(userService);
+    return sessionController;
   }
 }

@@ -27,4 +27,9 @@ export default class Utils {
   static DB_COLLECTION_PRODUCTS = process.env.DB_COLLECTION_PRODUCTS || 'products';
   static DB_COLLECTION_MESSAGES = process.env.DB_COLLECTION_MESSAGES || 'messages';
   static DB_COLLECTION_CARTS = process.env.DB_COLLECTION_CARTS || 'carts';
+  static DB_COLLECTION_USERS = process.env.DB_COLLECTION_USERS || 'users';
+
+  /* SESSION */
+  static SESSION_SECRET = process.env.DB_SESSION_SECRET || 's3cr3t';
+  static SESSION_TTL = process.env.DB_SESSION_TTL || 15;
 }

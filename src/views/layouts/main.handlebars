@@ -25,6 +25,7 @@
 
 <body>
 
+{{#if inSession}}
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Ecommerce Api</a>
@@ -52,10 +53,17 @@
           <li class="nav-item">
             <a class="nav-link active" href ="/cartsIds" id = "cartsNavBarSelec">verCartsIds</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" href ="/profile" id = "cartsNavBarSelec">Profile</a>
+          </li>
+          <li class="nav-item">
+            <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i></button>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
+{{/if}}
 
   {{!-- handlebars body --}}
   {{{body}}}

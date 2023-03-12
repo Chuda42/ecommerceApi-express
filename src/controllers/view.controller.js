@@ -3,9 +3,10 @@
  */
 export default class ViewController{
 
-  constructor(productService, cartService){
+  constructor({productService, cartService, userService}){
     this.productService = productService;
     this.cartService = cartService;
+    this.userService = userService;
 
     Object.getOwnPropertyNames(ViewController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'productService') {
@@ -18,13 +19,21 @@ export default class ViewController{
     //getting products
     const productList = await this.productService.getProducts();
 
+    //getting user
+    const user = {
+      email: req.session.user,
+      rol: req.session.rol
+    } 
+    
     //building response
     const data = {
       status : 'success',
       payload : JSON.parse(JSON.stringify(productList)),
+      user: user
     }
 
     res.render('home', {
+      inSession: true,
       title: 'Home',
       data,
     });
@@ -58,6 +67,7 @@ export default class ViewController{
     }
 
     res.render('products', {
+      inSession: true,
       title: 'Products',
       data,
     });
@@ -72,12 +82,14 @@ export default class ViewController{
         product : product
       }
       res.render('productDetail', {
+        inSession: true,
         title: 'Product Detail',
         data,
       });
     }catch (error){
       console.log(`[ERROR] ${error.message}`);
       res.render('error', {
+        inSession: true,
         title: 'error',
         error: error.message
       });
@@ -87,12 +99,14 @@ export default class ViewController{
 
   async getRealTimeProducts(req, res) {
     res.render('realTimeProducts', {
+      inSession: true,
       title: 'Realtime Products'
     });
   }
 
   async getChat(req, res) {
     res.render('chat', {
+      inSession: true,
       title: 'Chat'
     });
   }
@@ -110,12 +124,14 @@ export default class ViewController{
         cartId: id
       }
       res.render('cart', {
+        inSession: true,
         title: 'Cart',
         data,
       });
     }catch (error){
       console.log(`[ERROR] ${error.message}`);
       res.render('error', {
+        inSession: true,
         title: 'error',
         error: error.message
       });
@@ -130,12 +146,73 @@ export default class ViewController{
         cartsIds : cartsIds
       }
       res.render('verIdCarts', {
+        inSession: true,
         title: 'verIdCarts',
         data: data
       });
     }catch (error){
       console.log(`[ERROR] ${error.message}`);
       res.render('error', {
+        inSession: true,
+        title: 'error',
+        error: error.message
+      });
+    }
+  }
+
+  async getLogin(req, res) {
+    res.render('login', {
+      inSession: false,
+      title: 'Login'
+    });
+  }
+
+  async getRegister(req, res) {
+    res.render('register', {
+      inSession: false,
+      title: 'Register'
+    });
+  }
+
+  async getUserProfile(req, res) {
+    try{
+      const email = req.session.user;
+      const isAdmin = req.session.rol == 'admin';
+
+      if(email === 'adminCoder@coder.com'){
+        res.render('userProfile', {
+          inSession: true,
+          title: 'userProfile',
+          data: {
+            status : 'success',
+            user: {
+              email: "adminCoder@coder.com",
+              first_name: "admin",
+              last_name: "admin",
+            },
+            isAdmin: isAdmin
+          },
+        });
+        return
+      }
+
+      const user = await this.userService.getUserByEmail(email);
+      const data = {
+        status : 'success',
+        user : user,
+        isAdmin: isAdmin
+      }
+
+      res.render('userProfile', {
+        inSession: true,
+        title: 'userProfile',
+        data,
+      });
+
+    }catch (error){
+      console.log(`[ERROR] ${error.message}`);
+      res.render('error', {
+        inSession: true,
         title: 'error',
         error: error.message
       });
