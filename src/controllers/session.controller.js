@@ -1,3 +1,6 @@
+/*imports*/
+import Utils from '../utils.js'
+
 export default class SessionController{
   constructor(userService){
     this.userService = userService;
@@ -32,7 +35,7 @@ export default class SessionController{
         if (!user){
           throw new Error('Email or password is incorrect');
         }
-        if (user.password !== password){
+        if (!Utils.isValidPassword(password, user.password)){
           throw new Error('Email or password is incorrect');
         }
       }

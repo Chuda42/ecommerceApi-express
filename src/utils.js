@@ -2,6 +2,7 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 /* .env config */
 dotenv.config();
@@ -32,4 +33,14 @@ export default class Utils {
   /* SESSION */
   static SESSION_SECRET = process.env.DB_SESSION_SECRET || 's3cr3t';
   static SESSION_TTL = process.env.DB_SESSION_TTL || 15;
+
+
+  /* BCRYPT */
+  static createHash = (pass) => {
+    return bcrypt.hashSync(pass, bcrypt.genSaltSync(10));
+  }
+
+  static isValidPassword = (pass, hash) => {
+    return bcrypt.compareSync(pass, hash);
+  }
 }

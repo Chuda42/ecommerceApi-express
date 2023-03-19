@@ -1,3 +1,6 @@
+/* imports */
+import Utils from '../utils.js'
+
 export default class UserService{
   constructor(persistenceController){
     this.persistenceController = persistenceController;
@@ -23,6 +26,8 @@ export default class UserService{
 
   async addUser(user){
     try {
+      user.password = Utils.createHash(user.password);
+
       let newUser = await this.persistenceController.addUser(user);
       return newUser;
     } catch (error) {
