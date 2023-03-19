@@ -74,4 +74,16 @@ export default class SessionController{
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
+
+  async gitHubSession(req, res){
+    try{
+      req.session.user = req.user.email;
+      req.session.rol = "user"
+      res.redirect('/');
+
+    }catch (error){
+      console.log(`[ERROR] ${error.message}`);
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
 }

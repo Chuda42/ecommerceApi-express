@@ -1,4 +1,5 @@
 const loginBtn = document.querySelector('#loginBtn');
+const githubBtn = document.querySelector('#githubBtn');
 
 loginBtn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -31,4 +32,9 @@ loginBtn.addEventListener('click', (event) => {
       console.log('There has been a problem with your fetch operation: ' + error.message);
       throw error;
     });
+});
+
+githubBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.location.replace('/api/sessions/github');
 });

@@ -1,5 +1,6 @@
 /* imports */
 import { Router } from 'express';
+import passport from 'passport'
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
 import Factory from '../factory.js';
@@ -22,6 +23,12 @@ sessionRouter.route('/register')
 
 sessionRouter.route('/logout')
              .post(sessionController.logoutUser)
+
+sessionRouter.route('/github')
+             .get(passport.authenticate('github', {scope:['user:email']}), async (req, res) => {})
+          
+sessionRouter.route('/githubcallback')
+             .get(passport.authenticate('github', {failureRedirect: '/login'}), sessionController.gitHubSession)
 
 
 /* export */

@@ -34,6 +34,13 @@ export default class Utils {
   static SESSION_SECRET = process.env.DB_SESSION_SECRET || 's3cr3t';
   static SESSION_TTL = process.env.DB_SESSION_TTL || 15;
 
+  /* GITHUB */
+  static GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+  static GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+  static GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
+  
+  /* AUTH SECURITY */
+  static SECRET_PASS = process.env.SECRET_PASS;
 
   /* BCRYPT */
   static createHash = (pass) => {
