@@ -1,3 +1,6 @@
+/*imports*/
+import Utils from '../utils.js'
+
 export default class SessionController{
   constructor(userService){
     this.userService = userService;
@@ -14,27 +17,10 @@ export default class SessionController{
   async loginUser(req, res){
     try{
       let rol = "user"
-      let user = {}
-      const { email, password } = req.body;
+      let user = req.user;
 
-      // admin user
-      if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
-        rol = "admin"
-        user = {
-          email: "adminCoder@coder.com",
-          first_name: "admin",
-          last_name: "admin",
-          Age: "admin",
-        }
-      }else{ // normal user
-        user = await this.userService.getUserByEmail(email);
-
-        if (!user){
-          throw new Error('Email or password is incorrect');
-        }
-        if (user.password !== password){
-          throw new Error('Email or password is incorrect');
-        }
+      if(user.email === "adminCoder@coder.com"){
+          rol = "admin"
       }
 
       /* set session */
@@ -49,11 +35,24 @@ export default class SessionController{
     }
   }
 
+  async failLogin(req, res){
+    console.log(`[ERROR] Error logging in`);
+    res.status(400).json({status: 'error', error: 'Error logging in'})
+  }
+
   async registerUser(req, res){
+    res.status(201).json({status: 'success', payload: 'User registered'})
+  }
+
+  async failRegister(req, res){
+    console.log(`[ERROR] Error logging in`);
+    res.status(400).json({status: 'error', error: 'Error registering user'})
+  }
+
+  async logoutUser(req, res){
     try{
-      const user = req.body;
-      const newUser = await this.userService.addUser(user);
-      res.status(201).json({ status: 'success', payload: newUser });
+      req.session.destroy();
+      res.status(200).json({ status: 'success', payload: 'User logged out' });
 
     }catch (error){
       console.log(`[ERROR] ${error.message}`);
@@ -61,10 +60,11 @@ export default class SessionController{
     }
   }
 
-  async logoutUser(req, res){
+  async gitHubSession(req, res){
     try{
-      req.session.destroy();
-      res.status(200).json({ status: 'success', payload: 'User logged out' });
+      req.session.user = req.user.email;
+      req.session.rol = "user"
+      res.redirect('/');
 
     }catch (error){
       console.log(`[ERROR] ${error.message}`);

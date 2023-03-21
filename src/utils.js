@@ -2,6 +2,7 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 /* .env config */
 dotenv.config();
@@ -32,4 +33,21 @@ export default class Utils {
   /* SESSION */
   static SESSION_SECRET = process.env.DB_SESSION_SECRET || 's3cr3t';
   static SESSION_TTL = process.env.DB_SESSION_TTL || 15;
+
+  /* GITHUB */
+  static GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+  static GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+  static GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
+
+  /* BCRYPT */
+  static createHash = (pass) => {
+    return bcrypt.hashSync(pass, bcrypt.genSaltSync(10));
+  }
+
+  static isValidPassword = (pass, hash) => {
+    if(!pass || !hash){
+      return false;
+    } 
+    return bcrypt.compareSync(pass, hash);
+  }
 }

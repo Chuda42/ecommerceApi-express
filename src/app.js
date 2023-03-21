@@ -7,9 +7,11 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import path from 'path';
+import passport from 'passport';
 
 import Utils from './utils.js';
 import Factory from './Factory.js'
+import initializePassport from './config/passport.config.js'
 
 import viewRouter from './routers/view.router.js';
 import productRouter from './routers/product.router.js';
@@ -48,6 +50,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
+
+initializePassport()
+app.use(passport.initialize());
+app.use(passport.session());
 
 /* Db conection */
 mongoose.set('strictQuery', true);

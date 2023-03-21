@@ -27,7 +27,11 @@ registerBtn.addEventListener('click', (event) => {
         if (res.status === 201) {
             window.location.replace('/login');
         } else {
-            alert('Registration failed');
+            swal.fire({
+                title: 'Error',
+                text: 'Registration failed',
+                icon: 'error'
+                })
         }
     });
 });
