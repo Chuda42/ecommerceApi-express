@@ -104,10 +104,10 @@ const initializePassport = () => {
           last_name: profile._json.login,
           email: profile.emails[0].value,
           age: 18,
-          password: Utils.SECRET_PASS
+          password: ''
         }
   
-        const userCreated = await userService.addUser(newUser);
+        const userCreated = await userService.addUserByThirdParty(newUser);
         return done(null, userCreated);
       }
     })

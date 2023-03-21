@@ -38,9 +38,6 @@ export default class Utils {
   static GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
   static GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
   static GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
-  
-  /* AUTH SECURITY */
-  static SECRET_PASS = process.env.SECRET_PASS;
 
   /* BCRYPT */
   static createHash = (pass) => {
@@ -48,6 +45,9 @@ export default class Utils {
   }
 
   static isValidPassword = (pass, hash) => {
+    if(!pass || !hash){
+      return false;
+    } 
     return bcrypt.compareSync(pass, hash);
   }
 }
