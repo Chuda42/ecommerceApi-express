@@ -17,27 +17,10 @@ export default class SessionController{
   async loginUser(req, res){
     try{
       let rol = "user"
-      let user = {}
-      const { email, password } = req.body;
+      let user = req.user;
 
-      // admin user
-      if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
-        rol = "admin"
-        user = {
-          email: "adminCoder@coder.com",
-          first_name: "admin",
-          last_name: "admin",
-          Age: "admin",
-        }
-      }else{ // normal user
-        user = await this.userService.getUserByEmail(email);
-
-        if (!user){
-          throw new Error('Email or password is incorrect');
-        }
-        if (!Utils.isValidPassword(password, user.password)){
-          throw new Error('Email or password is incorrect');
-        }
+      if(user.email === "adminCoder@coder.com"){
+          rol = "admin"
       }
 
       /* set session */
@@ -52,16 +35,16 @@ export default class SessionController{
     }
   }
 
-  async registerUser(req, res){
-    try{
-      const user = req.body;
-      const newUser = await this.userService.addUser(user);
-      res.status(201).json({ status: 'success', payload: newUser });
+  async failLogin(req, res){
+    res.status(400).json({status: 'error', error: 'Error logging in'})
+  }
 
-    }catch (error){
-      console.log(`[ERROR] ${error.message}`);
-      res.status(400).json({ status: 'error', error: error.message });
-    }
+  async registerUser(req, res){
+    res.status(201).json({status: 'success', payload: 'User registered'})
+  }
+
+  async failRegister(req, res){
+    res.status(400).json({status: 'error', error: 'Error registering user'})
   }
 
   async logoutUser(req, res){

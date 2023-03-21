@@ -16,10 +16,16 @@ sessionRouter.use(httpLogMiddleware);
 
 /* http methods */
 sessionRouter.route('/login')
-             .post(sessionController.loginUser)
+             .post(passport.authenticate('login', {failureRedirect: '/api/sessions/faillogin'}), sessionController.loginUser)
+
+sessionRouter.route('/faillogin')
+              .get(sessionController.failLogin)
       
 sessionRouter.route('/register')
-             .post(sessionController.registerUser)
+             .post(passport.authenticate('register', {failureRedirect: '/api/sessions/failregister'}), sessionController.registerUser)
+
+sessionRouter.route('/failregister')
+              .get(sessionController.failRegister)
 
 sessionRouter.route('/logout')
              .post(sessionController.logoutUser)
