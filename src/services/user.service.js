@@ -45,6 +45,9 @@ export default class UserService{
 
   async addUserByThirdParty(user){
     try {
+      const cart = await this.cartPersistenceController.addCart()
+      user.cart = cart._id
+
       let newUser = await this.persistenceController.addUser(user);
       return newUser;
     } catch (error) {
