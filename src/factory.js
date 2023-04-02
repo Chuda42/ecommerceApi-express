@@ -82,7 +82,8 @@ export default class Factory{
 
   static getUserService(){
     const userDao = this.getUserDao();
-    const userService = new UserService(userDao);
+    const cartDao = this.getCartDao();
+    const userService = new UserService(userDao, cartDao);
     return userService;
   }
 

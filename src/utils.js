@@ -32,7 +32,7 @@ export default class Utils {
 
   /* SESSION */
   static SESSION_SECRET = process.env.DB_SESSION_SECRET || 's3cr3t';
-  static SESSION_TTL = process.env.DB_SESSION_TTL || 15;
+  static SESSION_TTL = process.env.DB_SESSION_TTL || 120;
 
   /* GITHUB */
   static GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;

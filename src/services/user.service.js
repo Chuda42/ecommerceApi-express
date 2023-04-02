@@ -2,8 +2,9 @@
 import Utils from '../utils.js'
 
 export default class UserService{
-  constructor(persistenceController){
+  constructor(persistenceController, cartPersistenceController){
     this.persistenceController = persistenceController;
+    this.cartPersistenceController = cartPersistenceController;
   }
 
   async getUsers(){
@@ -30,6 +31,10 @@ export default class UserService{
         throw new Error("Password is required");
       }
       user.password = Utils.createHash(user.password);
+      user.rol = 'user'
+
+      const cart = await this.cartPersistenceController.addCart()
+      user.cart = cart._id
 
       let newUser = await this.persistenceController.addUser(user);
       return newUser;
