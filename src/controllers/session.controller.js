@@ -75,7 +75,15 @@ export default class SessionController{
     try{
       const user = await this.userService.getUserByEmail(req.session.user)
 
-      return res.status(200).json({ status: 'success', payload: user})
+      return res.status(200).json({ status: 'success', payload: {
+        id: user._id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        age: user.age,
+        cart: user.cart,
+        role: user.rol
+      }})
     }catch (error){
       console.log(`[ERROR] Not current user`);
       res.status(400).json({ status: 'error', error: 'Not current user' });
