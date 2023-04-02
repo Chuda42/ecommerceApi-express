@@ -13,7 +13,6 @@ export default class SessionController{
     });
   }
 
-
   async loginUser(req, res){
     try{
       let rol = "user"
@@ -71,4 +70,16 @@ export default class SessionController{
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
+
+  async getCurrentUser(req, res){
+    try{
+      const user = await this.userService.getUserByEmail(req.session.user)
+
+      return res.status(200).json({ status: 'success', payload: user})
+    }catch (error){
+      console.log(`[ERROR] Not current user`);
+      res.status(400).json({ status: 'error', error: 'Not current user' });
+    }
+  }
+
 }

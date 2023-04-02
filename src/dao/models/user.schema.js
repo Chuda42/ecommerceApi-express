@@ -1,6 +1,8 @@
 /* imports */
 import mongoose from 'mongoose';
 
+import Utils from '../../utils.js';
+
 const UserSchema = new mongoose.Schema({
   first_name:{
     type: String,
@@ -32,6 +34,16 @@ const UserSchema = new mongoose.Schema({
     max: 100
   },
   
+  cart:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Utils.DB_COLLECTION_CARTS
+  },
+
+  role:{
+    type: String,
+    default: 'user'
+  }
+
 });
 
 export default UserSchema;

@@ -36,6 +36,8 @@ sessionRouter.route('/github')
 sessionRouter.route('/githubcallback')
              .get(passport.authenticate('github', {failureRedirect: '/login'}), sessionController.gitHubSession)
 
+sessionRouter.route('/current')
+             .get(sessionController.getCurrentUser)
 
 /* export */
 export default sessionRouter;

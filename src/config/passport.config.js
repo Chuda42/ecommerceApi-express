@@ -11,6 +11,7 @@ const admin = {
   first_name: "admin",
   last_name: "admin",
   Age: 0,
+  rol: "admin"
 }
 
 const LocalStrategy = local.Strategy;
@@ -68,6 +69,7 @@ const initializePassport = () => {
             first_name: "admin",
             last_name: "admin",
             Age: 0,
+            rol: "admin"
           }
         }else{
           user = await userService.getUserByEmail(email);
