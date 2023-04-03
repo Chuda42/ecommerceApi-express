@@ -50,4 +50,8 @@ export default class Utils {
     } 
     return bcrypt.compareSync(pass, hash);
   }
+
+  /* JWT */
+  static JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY
+
 }

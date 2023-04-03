@@ -2,6 +2,7 @@
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
+import jwt from 'passport-jwt';
 
 import Factory from '../factory.js'
 import Utils from '../utils.js'
@@ -15,6 +16,16 @@ const admin = {
 }
 
 const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy
+const ExtractJWT = jwt.ExtractJwt
+
+const cookieExtractor = (req) => {
+  let token = null;
+  if (req && req.cookies){
+    token = req.cookies['cookieToken']
+  }
+  return token
+}
 
 const initializePassport = () => {
 
@@ -33,6 +44,17 @@ const initializePassport = () => {
     const user = await userService.getUserByEmail(email);
     return done(null, user);
   });
+
+  passport.use('jwt', new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+    secretOrKey: Utils.JWT_PRIVATE_KEY
+  }, async(jwt_payload, done) => {
+    try {
+      return done(null, jwt_payload)
+    }catch(error){
+      return done(null, false, { message: 'Error' })
+    }
+  }))
 
   passport.use('register', new LocalStrategy(
     {

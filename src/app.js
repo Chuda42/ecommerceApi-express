@@ -10,7 +10,7 @@ import path from 'path';
 import passport from 'passport';
 
 import Utils from './utils.js';
-import Factory from './Factory.js'
+import Factory from './factory.js'
 import initializePassport from './config/passport.config.js'
 
 import viewRouter from './routers/view.router.js';
