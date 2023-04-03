@@ -3,6 +3,7 @@ import { Router } from 'express';
 import passport from 'passport'
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
+import {passportCall} from '../middlewares/auth.middleware.js'
 import Factory from '../factory.js';
 
 /* controller */
@@ -37,7 +38,7 @@ sessionRouter.route('/githubcallback')
              .get(passport.authenticate('github', {failureRedirect: '/login'}), sessionController.gitHubSession)
 
 sessionRouter.route('/current')
-             .get(sessionController.getCurrentUser)
+             .get(passportCall('jwt'),sessionController.getCurrentUser)
 
 /* export */
 export default sessionRouter;

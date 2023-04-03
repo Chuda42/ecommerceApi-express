@@ -6,6 +6,7 @@ import jwt from 'passport-jwt';
 
 import Factory from '../factory.js'
 import Utils from '../utils.js'
+import { log } from 'console';
 
 const admin = {
   email: "adminCoder@coder.com",
@@ -52,6 +53,7 @@ const initializePassport = () => {
     try {
       return done(null, jwt_payload)
     }catch(error){
+      console.log('Entra aca error');
       return done(null, false, { message: 'Error' })
     }
   }))

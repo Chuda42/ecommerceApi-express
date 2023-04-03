@@ -1,5 +1,6 @@
 /*imports*/
 import Utils from '../utils.js'
+import jwt from 'jsonwebtoken'
 
 export default class SessionController{
   constructor(userService){
@@ -26,7 +27,11 @@ export default class SessionController{
       req.session.user = user.email;
       req.session.rol = rol
 
-      res.status(200).json({ status: 'success', payload: user });
+      let token = jwt.sign(user, Utils.JWT_PRIVATE_KEY, { expiresIn: '24h'})
+      res.cookie('cookieToken', token, {
+        maxAge: 60 * 60 * 1000,
+        httpOnly: true 
+      }).status(200).json({ status: 'success'});
 
     }catch (error){
       console.log(`[ERROR] ${error.message}`);
@@ -51,6 +56,7 @@ export default class SessionController{
   async logoutUser(req, res){
     try{
       req.session.destroy();
+      res.clearCookie("cookieToken");
       res.status(200).json({ status: 'success', payload: 'User logged out' });
 
     }catch (error){
@@ -72,22 +78,7 @@ export default class SessionController{
   }
 
   async getCurrentUser(req, res){
-    try{
-      const user = await this.userService.getUserByEmail(req.session.user)
-
-      return res.status(200).json({ status: 'success', payload: {
-        id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        age: user.age,
-        cart: user.cart,
-        role: user.rol
-      }})
-    }catch (error){
-      console.log(`[ERROR] Not current user`);
-      res.status(400).json({ status: 'error', error: 'Not current user' });
-    }
+    res.send(req.user)
   }
 
 }
