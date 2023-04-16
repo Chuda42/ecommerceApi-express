@@ -19,7 +19,7 @@ import productRouter from './routers/product.router.js';
 import cartRouter from './routers/cart.router.js';
 //import chatRouter from './routers/chat.router.js';
 //import sessionRouter from './routers/session.router.js';
-//import userRouter from './routers/user.router.js';
+import userRouter from './routers/user.router.js';
 
 /* app */
 const app = express();

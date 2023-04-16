@@ -25,4 +25,8 @@ export default class Config{
   /* PERSISTENCE */
   static PERSISTENCE = process.env.PERSISTENCE;
 
+  /* ADMIN */
+  static ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+  static ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 }
