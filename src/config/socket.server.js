@@ -26,4 +26,9 @@ export default class ServerIo {
         
     });
   }
+
+  emitSockets(event, data) {
+    this.io.sockets.emit(event, data)
+  }
+
 }

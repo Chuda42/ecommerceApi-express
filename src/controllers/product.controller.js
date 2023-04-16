@@ -65,7 +65,7 @@ export default class ProductController{
       let newProduct = await productService.addProduct(product);
   
       /* get io server */
-      //req.app.get('io').sockets.emit('newProduct', newProduct);
+      req.app.get('io').emitSockets('newProduct', newProduct);
   
       res.status(200).json({ status: 'ok', message: 'Added product' });
     } catch (error) {
@@ -103,7 +103,7 @@ export default class ProductController{
       await productService.deleteProduct(id);
   
       /* get io server */
-      //req.app.get('io').sockets.emit('deleteProduct', id);
+      req.app.get('io').emitSockets('deleteProduct', id);
   
       res.status(200).json({ status: 'ok', message: 'Deleted product' });
     } catch (error) {
