@@ -2,19 +2,20 @@
 import CartDao from './mongo/daos/cart.dao.js'
 //import MessageDao from './mongo/daos/message.dao.js'
 import ProductDao from './mongo/daos/product.dao.js'
-//import UserDao from './mongo/daos/user.dao.js'
+import UserDao from './mongo/daos/user.dao.js'
 
 
 export default class FactoryDaos {
   
-  /*static getUserDao(key) {    
+  static getUserDao(key) {    
     const userDao = new Map();
     userDao.set('mongo', UserDao);
 
-    const dao = new userDao.get(key);
+    const DaoClass = userDao.get(key);
+    const dao = new DaoClass();
     return dao;
 
-  }*/
+  }
 
   static getProductDao(key) {
     const productDao = new Map();

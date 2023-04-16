@@ -39,7 +39,7 @@ export default class SessionController{
   }
 
   async failLogin(req, res){
-    console.log(`[ERROR] Error logging in`);
+    console.log(`[ERROR] Error registreing user`);
     res.status(400).json({status: 'error', error: 'Error logging in'})
   }
 

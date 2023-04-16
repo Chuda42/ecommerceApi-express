@@ -1,0 +1,36 @@
+<div class="accordion accordion-flush" id="productsAccordion">
+<h2>Cart: {{data.cartId}} </h2>
+  {{#each data.cart}}
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-heading{{product._id}}">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapse{{product._id}}" aria-expanded="false" aria-controls="flush-collapse{{product._id}}">
+          Product Id: {{product._id}}. Product title: {{product.title}}
+        </button>
+      </h2>
+      <div id="flush-collapse{{product._id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{product._id}}"
+        data-bs-parent="#productsAccordion">
+        <div class="accordion-body">
+          <ul>
+            <li>Description: {{product.description}}</li>
+            <li>Price: ${{product.price}}</li>
+            <li>Code: {{product.code}}</li>
+            <li>Stock: {{product.stock}}</li>
+            <li>
+              {{#if product.status}}
+              Status: Active
+              {{else}}
+              Status: Inactive
+              {{/if}}
+            </li>
+            <li>Thumbnails: {{product.thumbnails}}</li>
+            <li>quantity: {{quantity}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  {{/each}}
+
+</div>

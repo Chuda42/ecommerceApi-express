@@ -74,6 +74,7 @@ export default class UserDao extends MongooseDao {
         role: role
       }
       let newUser = await this.saveObject(user);
+      newUser = new UserDto(newUser);
       return newUser;
     } catch (error) {
       throw error;

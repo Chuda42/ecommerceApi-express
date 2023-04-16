@@ -13,15 +13,15 @@ const LocalStrategy = local.Strategy;
 const initializePassport = () => {
 
   passport.serializeUser((user, done) => {
-    if(user.email === admin.email){
-      return done(null, admin.email)
+    if(user.email === Config.ADMIN_EMAIL){
+      return done(null, Config.ADMIN_EMAIL)
     } 
     return done(null, user.email);
   });
 
   passport.deserializeUser(async (email, done) => {
-    if(email === admin.email){
-      return done(null, admin)
+    if(email === Config.ADMIN_EMAIL){
+      return done(null, userService.getAdmin(Config.ADMIN_EMAIL));
     }
     const user = await userService.getUserByEmail(email);
     return done(null, user);

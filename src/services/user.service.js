@@ -55,7 +55,7 @@ export default class UserService{
 
   async addUser(user){
     try {
-      if(email === Config.ADMIN_EMAIL) {
+      if(user.email === Config.ADMIN_EMAIL) {
         throw new Error("Email is not valid");
       }
       if(user.password === undefined || user.password === null || user.password === ""){
@@ -84,6 +84,19 @@ export default class UserService{
     } catch (error) {
       throw error;
     }
+  }
+
+  getAdmin(email) {
+    if(email === Config.ADMIN_EMAIL){
+      return {
+        email: Config.ADMIN_EMAIL,
+        first_name: "admin",
+        last_name: "admin",
+        Age: 0,
+        rol: "admin"
+      }
+    }
+    return null;
   }
 
 }
