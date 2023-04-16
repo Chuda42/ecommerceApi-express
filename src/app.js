@@ -1,6 +1,5 @@
 /* imports */
 import express from 'express';
-//import { Server } from 'socket.io';
 import handlebars from 'express-handlebars';
 import cookieParser from 'cookie-parser';
 //import session from 'express-session';
@@ -9,6 +8,7 @@ import path from 'path';
 
 import Utils from './utils.js';
 import Config from './config/config.js'
+//import ServerIo from './config/socket.server.js';
 //import Factory from './factory.js'
 //import initializePassport from './config/passport.config.js'
 
@@ -52,3 +52,10 @@ const httpServer = app.listen(Config.SERVER_PORT, () => {
 httpServer.on('error', (err) =>{
   console.log(`[SERVER] Server error: ${err}`);
 })
+
+/* websocket server */
+//const io = new ServerIo(httpServer);
+//io.init();
+
+/* set io server */
+//app.set('io', io);
