@@ -13,7 +13,7 @@ export default class ServerIo {
   }
 
   init() {
-    io.on('connection', async (socket) => {
+    this.io.on('connection', async (socket) => {
       console.log(`[SOCKET] New client connected -> ${socket.id}`);
     
       let products = await productService.getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]

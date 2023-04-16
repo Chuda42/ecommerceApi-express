@@ -5,11 +5,10 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import path from 'path';
 import passport from 'passport';
-import MongoStore from 'connect-mongo';
 
 import Utils from './utils.js';
 import Config from './config/config.js'
-//import ServerIo from './config/socket.server.js';
+import ServerIo from './config/socket.server.js';
 //import Factory from './factory.js'
 import initializePassport from './config/passport.config.js'
 
@@ -65,8 +64,8 @@ httpServer.on('error', (err) =>{
 })
 
 /* websocket server */
-//const io = new ServerIo(httpServer);
-//io.init();
+const io = new ServerIo(httpServer);
+io.init();
 
 /* set io server */
-//app.set('io', io);
+app.set('io', io);

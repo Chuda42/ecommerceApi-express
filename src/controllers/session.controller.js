@@ -80,7 +80,7 @@ export default class SessionController{
       const user = await userService.getUserByEmail(req.session.user)
 
       return res.status(200).json({ status: 'success', payload: {
-        id: user._id,
+        id: user.id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,

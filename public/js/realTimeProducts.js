@@ -115,21 +115,21 @@ const addEvents = (id) => {
 const createAccordionItem = (product) => {
   let status = (product.status) ? 'Active' : 'Inactive';
   return `
-    <div class="accordion-item" id="accordion-tiem${product._id}">
-      <h2 class="accordion-header" id="flush-heading${product._id}">
+    <div class="accordion-item" id="accordion-tiem${product.id}">
+      <h2 class="accordion-header" id="flush-heading${product.id}">
         <div class="row">
           <div class="col-11">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapse${product._id}" aria-expanded="false" aria-controls="flush-collapse${product._id}">
-              Product Id: ${product._id}. Product title: ${product.title}
+              data-bs-target="#flush-collapse${product.id}" aria-expanded="false" aria-controls="flush-collapse${product.id}">
+              Product Id: ${product.id}. Product title: ${product.title}
             </button>
           </div>
           <div class="col">
-            <button class="btn btn-danger" id="deleteProduct${product._id}"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn btn-danger" id="deleteProduct${product.id}"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </h2>
-      <div id="flush-collapse${product._id}" class="accordion-collapse collapse" aria-labelledby="flush-heading${product._id}"
+      <div id="flush-collapse${product.id}" class="accordion-collapse collapse" aria-labelledby="flush-heading${product.id}"
         data-bs-parent="#productsAccordion">
         <div class="accordion-body">
           <ul>
@@ -154,7 +154,7 @@ socket.on('productsList', (products) => {
   products.forEach(product => {
     html = createAccordionItem(product);
     container.insertAdjacentHTML('beforeend', html ); 
-    addEvents(product._id);
+    addEvents(product.id);
   })
 })
 
@@ -162,7 +162,7 @@ socket.on('productsList', (products) => {
 socket.on('newProduct', (product) => {
   let html = createAccordionItem(product);
   container.insertAdjacentHTML('beforeend', html );
-  addEvents(product._id);
+  addEvents(product.id);
 })
 
 socket.on('deleteProduct', (id) => {

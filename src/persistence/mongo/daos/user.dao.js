@@ -27,7 +27,6 @@ export default class UserDao extends MongooseDao {
       user = new UserDto(user);
       return user;
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
       throw error;
     }
   }
