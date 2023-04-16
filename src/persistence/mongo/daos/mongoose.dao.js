@@ -106,4 +106,17 @@ export default class MongooseDao{
       throw error;
     }
   }
+
+  async existsOverAll(collection, objectId) {
+    try {
+      const result = await mongoose.model(collection).exists({ _id: objectId });
+      if (!result) {
+        throw new Error(`Object with id ${objectId} not found in ${collection}`);
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

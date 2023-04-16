@@ -16,7 +16,7 @@ import MongoConnection from './persistence/mongo/config/mongoConnection.config.j
 
 //import viewRouter from './routers/view.router.js';
 import productRouter from './routers/product.router.js';
-//import cartRouter from './routers/cart.router.js';
+import cartRouter from './routers/cart.router.js';
 //import chatRouter from './routers/chat.router.js';
 //import sessionRouter from './routers/session.router.js';
 //import userRouter from './routers/user.router.js';
@@ -44,6 +44,7 @@ MongoConnection.connect(Config.DB_URL)
 /* routes */
 //app.use('/', viewRouter);
 app.use('/api/products', productRouter);
+app.use('/api/carts', cartRouter);
 
 /* http server */
 const httpServer = app.listen(Config.SERVER_PORT, () => {

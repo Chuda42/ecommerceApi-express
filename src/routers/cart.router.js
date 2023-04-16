@@ -15,6 +15,7 @@ cartRouter.use(httpLogMiddleware);
 
 /* http methods */
 cartRouter.route('/')
+          .get(cartController.getCartsIds)
           .post(cartController.addCart)
 
 cartRouter.route('/:cid')

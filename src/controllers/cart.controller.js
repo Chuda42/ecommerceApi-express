@@ -145,4 +145,17 @@ export default class CartController{
       });
     }
   }
+
+  async getCartsIds(req, res) {
+    try {
+      const cartsIds = await cartService.getCartsIds();
+      res.status(200).json({
+        status: 'success',
+        payload: cartsIds
+      });
+    } catch (error) {
+      console.log(`[ERROR] ${error.message}`);
+    }
+  }
+
 }
