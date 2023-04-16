@@ -1,7 +1,7 @@
 /* imports */
 import mongoose from "mongoose";
 
-export default class MongoContainer{
+export default class MongooseDao{
   constructor(collection, schema){
     this.collection = collection;
     this.schema = schema;
