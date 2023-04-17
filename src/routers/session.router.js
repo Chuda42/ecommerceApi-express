@@ -31,7 +31,7 @@ sessionRouter.route('/logout')
              .post(sessionController.logoutUser)
 
 sessionRouter.route('/github')
-             .get(passport.authenticate('github', {scope:['user:email']}), async (req, res) => {})
+             .get(passport.authenticate('github', {scope:['user:email']}), sessionController.none)
           
 sessionRouter.route('/githubcallback')
              .get(passport.authenticate('github', {failureRedirect: '/login'}), sessionController.gitHubSession)

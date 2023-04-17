@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import ChatController from ''
+import ChatController from '../controllers/chat.controller.js'
 
 /* controller */
 const chatController = new ChatController();

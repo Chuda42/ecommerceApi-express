@@ -1,5 +1,5 @@
 /* imports */
-import ChatRepository from ''
+import ChatRepository from '../repositories/chat.repository.js'
 
 /* const */
 const chatRepository = new ChatRepository();
@@ -14,7 +14,7 @@ export default class ChatService{
   async getMessages(){
     try {
 
-      let messages = chatRepository.getMessages();
+      let messages = await chatRepository.getMessages();
       return messages;
 
     } catch (error) {

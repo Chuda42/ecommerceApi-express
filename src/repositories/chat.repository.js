@@ -1,7 +1,7 @@
 /* imports */
 import FactoryDaos from '../persistence/factory.js'
 import Config from '../config/config.js'
-import MessageDto from '../dtos/message.entity.js'
+import MessageDto from '../dtos/message.dto.js'
 
 
 export default class ChatRepository {

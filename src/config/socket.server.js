@@ -2,9 +2,11 @@
 import { Server } from 'socket.io';
 
 import ProductService from '../services/product.service.js';
+import ChatService from '../services/chat.service.js'
 
 /* services */
 const productService = new ProductService();
+const chatService = new ChatService();
 
 /* websocket server */
 export default class ServerIo {
@@ -18,11 +20,10 @@ export default class ServerIo {
     
       let products = await productService.getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
     
-      //let chatService = Factory.getChatService();
-      //let messages = await chatService.getMessages();
+      let messages = await chatService.getMessages();
     
       socket.emit('productsList', products);
-      //socket.emit('messagesList', messages);
+      socket.emit('messagesList', messages);
         
     });
   }

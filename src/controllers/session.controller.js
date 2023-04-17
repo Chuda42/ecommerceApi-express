@@ -94,4 +94,8 @@ export default class SessionController{
     }
   }
 
+  async none(req, res) {
+
+  }
+
 }

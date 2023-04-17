@@ -16,7 +16,7 @@ export default class MessageDao extends MongooseDao {
   async getMessages(){
     try {
 
-      let messages = this.getObjects();
+      let messages = await this.getObjects();
       messages = messages.map(message => new MessageDto(message));
       return messages;
 
@@ -27,7 +27,7 @@ export default class MessageDao extends MongooseDao {
 
   async addMessage(message){
     try {
-      let newMessage = parseMessage(message);
+      let newMessage = this.parseMessageDto(message);
       newMessage = await this.saveObject(newMessage);
       newMessage = new MessageDto(newMessage);
       return newMessage;

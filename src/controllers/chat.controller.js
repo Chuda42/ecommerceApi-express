@@ -1,5 +1,5 @@
 /* imports */
-import ChatService from ''
+import ChatService from '../services/chat.service.js'
 
 
 /* services */
@@ -36,7 +36,7 @@ export default class ChatController{
       let newMessage = await chatService.addMessage(message);
 
       /* get io server */
-      req.app.get('io').sockets.emit('newMessage', message);
+      req.app.get('io').emitSockets('newMessage', message);
 
       res.status(200).json({ status: 'ok', message: 'Added message' });
     } catch (error) {

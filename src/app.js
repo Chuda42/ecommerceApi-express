@@ -9,7 +9,6 @@ import passport from 'passport';
 import Utils from './utils.js';
 import Config from './config/config.js'
 import ServerIo from './config/socket.server.js';
-//import Factory from './factory.js'
 import initializePassport from './config/passport.config.js'
 
 import MongoConnection from './persistence/mongo/config/mongoConnection.config.js';
@@ -17,7 +16,7 @@ import MongoConnection from './persistence/mongo/config/mongoConnection.config.j
 import viewRouter from './routers/view.router.js';
 import productRouter from './routers/product.router.js';
 import cartRouter from './routers/cart.router.js';
-//import chatRouter from './routers/chat.router.js';
+import chatRouter from './routers/chat.router.js';
 import sessionRouter from './routers/session.router.js';
 //import userRouter from './routers/user.router.js';
 
@@ -52,7 +51,7 @@ MongoConnection.connect(Config.DB_URL)
 app.use('/', viewRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-//app.use('/api/chats', chatRouter);
+app.use('/api/chats', chatRouter);
 app.use('/api/sessions', sessionRouter);
 
 /* http server */
