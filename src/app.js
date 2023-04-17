@@ -1,17 +1,17 @@
 /* imports */
 import express from 'express';
-import { Server } from 'socket.io';
-import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import path from 'path';
 import passport from 'passport';
 
 import Utils from './utils.js';
-import Factory from './factory.js'
+import Config from './config/config.js'
+import ServerIo from './config/socket.server.js';
 import initializePassport from './config/passport.config.js'
+
+import MongoConnection from './persistence/mongo/config/mongoConnection.config.js';
 
 import viewRouter from './routers/view.router.js';
 import productRouter from './routers/product.router.js';
@@ -37,34 +37,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 /* session settings */
-app.use(session({
-  store: MongoStore.create({ 
-    mongoUrl: Utils.DB_URL,
-    mongoOptions: {
-			useNewUrlParser: true,
-			useUnifiedTopology:true
-		},
-    ttl: Utils.SESSION_TTL
-  }),
-  secret: Utils.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-}));
+app.use(session(MongoConnection.getSessionStore(Config.DB_URL, Config.SESSION_TTL, Config.SESSION_SECRET)));
 
+/* passport settings */
 initializePassport()
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Db conection */
-mongoose.set('strictQuery', true);
-mongoose.connect(Utils.DB_URL, (error) => {
-  if (error) {
-    console.log(`[DB] Error: ${error.message}`);
-    process.exit()
-  } else {
-    console.log(`[DB] Connected`);
-  }
-})
+/* db connection */
+MongoConnection.connect(Config.DB_URL)
 
 /* routes */
 app.use('/', viewRouter);
@@ -74,30 +55,16 @@ app.use('/api/chats', chatRouter);
 app.use('/api/sessions', sessionRouter);
 
 /* http server */
-const httpServer = app.listen(Utils.SERVER_PORT, () => {
-  console.log(`[SERVER] Server listen on port ${Utils.SERVER_PORT}`);
+const httpServer = app.listen(Config.SERVER_PORT, () => {
+  console.log(`[SERVER] Server listen on port ${Config.SERVER_PORT}`);
 });
 httpServer.on('error', (err) =>{
   console.log(`[SERVER] Server error: ${err}`);
 })
 
 /* websocket server */
-const io = new Server(httpServer);
+const io = new ServerIo(httpServer);
+io.init();
 
 /* set io server */
 app.set('io', io);
-
-/* websockets */
-io.on('connection', async (socket) => {
-  console.log(`[SOCKET] New client connected -> ${socket.id}`);
-
-  let productService = Factory.getProductService();
-  let products = await productService.getProducts(); //[{title: 'product1', price:8}, {title: 'product2', price:81}]
-
-  let chatService = Factory.getChatService();
-  let messages = await chatService.getMessages();
-
-  socket.emit('productsList', products);
-  socket.emit('messagesList', messages);
-    
-});

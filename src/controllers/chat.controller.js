@@ -1,10 +1,15 @@
+/* imports */
+import ChatService from '../services/chat.service.js'
+
+
+/* services */
+const chatService = new ChatService();
+
 /**
  * class ChatController
  */
 export default class ChatController{
-  constructor(chatService){
-    this.chatService = chatService;
-
+  constructor(){
     //setting context to this
     Object.getOwnPropertyNames(ChatController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'productService') {
@@ -15,7 +20,7 @@ export default class ChatController{
 
   async getMessages(req, res){
     try {
-      const messageList = await this.chatService.getMessages();
+      const messageList = await chatService.getMessages();
 
       res.status(200).json(messageList);
     } catch (error) {
@@ -28,10 +33,10 @@ export default class ChatController{
     try {
       const message = req.body;
 
-      let newMessage = await this.chatService.addMessage(message);
+      let newMessage = await chatService.addMessage(message);
 
       /* get io server */
-      req.app.get('io').sockets.emit('newMessage', message);
+      req.app.get('io').emitSockets('newMessage', message);
 
       res.status(200).json({ status: 'ok', message: 'Added message' });
     } catch (error) {

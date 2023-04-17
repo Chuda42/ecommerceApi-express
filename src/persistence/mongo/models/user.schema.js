@@ -1,7 +1,8 @@
 /* imports */
 import mongoose from 'mongoose';
 
-import Utils from '../../utils.js';
+/* const */
+const cartCollection = 'carts';
 
 const UserSchema = new mongoose.Schema({
   first_name:{
@@ -36,7 +37,7 @@ const UserSchema = new mongoose.Schema({
   
   cart:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: Utils.DB_COLLECTION_CARTS
+    ref: cartCollection
   },
 
   role:{

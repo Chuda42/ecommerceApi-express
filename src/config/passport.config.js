@@ -3,33 +3,26 @@ import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
 
-import Factory from '../factory.js'
-import Utils from '../utils.js'
+import UserService from '../services/user.service.js';
+import Config from './config.js'
 
-const admin = {
-  email: "adminCoder@coder.com",
-  first_name: "admin",
-  last_name: "admin",
-  Age: 0,
-  rol: "admin"
-}
 
+const userService = new UserService();
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
 
   passport.serializeUser((user, done) => {
-    if(user.email === admin.email){
-      return done(null, admin.email)
+    if(user.email === Config.ADMIN_EMAIL){
+      return done(null, Config.ADMIN_EMAIL)
     } 
     return done(null, user.email);
   });
 
   passport.deserializeUser(async (email, done) => {
-    if(email === admin.email){
-      return done(null, admin)
-    } 
-    const userService = Factory.getUserService();
+    if(email === Config.ADMIN_EMAIL){
+      return done(null, userService.getAdmin(Config.ADMIN_EMAIL));
+    }
     const user = await userService.getUserByEmail(email);
     return done(null, user);
   });
@@ -40,10 +33,6 @@ const initializePassport = () => {
       usernameField: 'email',
     },
     async (req, email, password, done) => {
-      const userService = Factory.getUserService();
-      if(email === admin.email) {
-        return done(null, false, { message: 'Error creating user' });
-      }
       try {
         const newUser = req.body;
         const userCreated = await userService.addUser(newUser);
@@ -60,26 +49,11 @@ const initializePassport = () => {
       usernameField: 'email',
     },
     async (email, password, done) => {
-      const userService = Factory.getUserService();
       try {
-        let user = {}
-        if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
-          user = {
-            email: "adminCoder@coder.com",
-            first_name: "admin",
-            last_name: "admin",
-            Age: 0,
-            rol: "admin"
-          }
-        }else{
-          user = await userService.getUserByEmail(email);
+        const user = await userService.authUser(email, password);
           if (!user){
             return done(null, false, { message: 'Email or password is incorrect' });
           }
-          if (!Utils.isValidPassword(password, user.password)){
-            return done(null, false, { message: 'Email or password is incorrect' });
-          }
-        }
         return done(null, user);
       } catch (error) {
         console.log(`[ERROR] ${error.message}`);
@@ -90,13 +64,11 @@ const initializePassport = () => {
   ))
 
   passport.use(new GitHubStrategy({
-      clientID: Utils.GITHUB_CLIENT_ID,
-      clientSecret: Utils.GITHUB_CLIENT_SECRET,
-      callbackURL: Utils.GITHUB_CALLBACK_URL,
+      clientID: Config.GITHUB_CLIENT_ID,
+      clientSecret: Config.GITHUB_CLIENT_SECRET,
+      callbackURL: Config.GITHUB_CALLBACK_URL,
       scope : ['user:email']
     }, async (accessToken, refreshToken, profile, done) => {
-
-      const userService = Factory.getUserService();
       try{
         const user = await userService.getUserByEmail(profile.emails[0].value);
         return done(null, user);

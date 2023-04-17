@@ -1,7 +1,7 @@
 /* imports */
 import mongoose from "mongoose";
 
-export default class MongoContainer{
+export default class MongooseDao{
   constructor(collection, schema){
     this.collection = collection;
     this.schema = schema;
@@ -106,4 +106,17 @@ export default class MongoContainer{
       throw error;
     }
   }
+
+  async existsOverAll(collection, objectId) {
+    try {
+      const result = await mongoose.model(collection).exists({ _id: objectId });
+      if (!result) {
+        throw new Error(`Object with id ${objectId} not found in ${collection}`);
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

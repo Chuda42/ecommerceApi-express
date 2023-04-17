@@ -2,10 +2,10 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import Factory from '../factory.js';
+import CartController from '../controllers/cart.controller.js';
 
 /* controller */
-const cartController = Factory.getCartController();
+const cartController = new CartController();
 
 /* Router */
 const cartRouter = Router();
@@ -15,6 +15,7 @@ cartRouter.use(httpLogMiddleware);
 
 /* http methods */
 cartRouter.route('/')
+          .get(cartController.getCartsIds)
           .post(cartController.addCart)
 
 cartRouter.route('/:cid')

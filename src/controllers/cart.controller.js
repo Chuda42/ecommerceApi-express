@@ -1,11 +1,14 @@
+/* imports */
+import CartService from '../services/cart.service.js';
+
+/* cart service */
+const cartService = new CartService();
+
 /**
  * class CartController
  */
 export default class CartController{
-  //dependency injection
-  constructor(cartService){
-    this.cartService = cartService;
-    
+  constructor(){
     //bind all methods
     Object.getOwnPropertyNames(CartController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'cartService') {
@@ -16,7 +19,7 @@ export default class CartController{
 
   async addCart(req, res) {
     try {
-      await this.cartService.addCart();
+      await cartService.addCart();
       
       res.status(200).json({
         status: 'success',
@@ -32,7 +35,7 @@ export default class CartController{
     try {
       const { cid } = req.params;
 
-      const products = await this.cartService.getProductsCart(cid);
+      const products = await cartService.getProductsCart(cid);
       res.status(200).json(products);
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
@@ -48,7 +51,7 @@ export default class CartController{
     try {
       const { cid, pid } = req.params;
 
-      await this.cartService.addProductToCart(cid, pid);
+      await cartService.addProductToCart(cid, pid);
 
       res.status(200).json({
         status: 'success',
@@ -66,7 +69,7 @@ export default class CartController{
     try {
       const { cid, pid } = req.params;
 
-      await this.cartService.deleteProductFromCart(cid, pid);
+      await cartService.deleteProductFromCart(cid, pid);
 
       res.status(200).json({
         status: 'success',
@@ -88,7 +91,7 @@ export default class CartController{
       let { quantity } = req.body;
       quantity = parseInt(quantity);
 
-      await this.cartService.udateProductQuantityInCart(cid, pid, quantity);
+      await cartService.udateProductQuantityInCart(cid, pid, quantity);
 
       res.status(200).json({
         status: 'success',
@@ -107,7 +110,7 @@ export default class CartController{
     try {
       const { cid } = req.params;
 
-      await this.cartService.deleteAllProductsFromCart(cid);
+      await cartService.deleteAllProductsFromCart(cid);
 
       res.status(200).json({
         status: 'success',
@@ -128,7 +131,7 @@ export default class CartController{
 
       const products  = req.body;
 
-      await this.cartService.updateProductsToCart(cid, products);
+      await cartService.updateProductsToCart(cid, products);
 
       res.status(200).json({
         status: 'success',
@@ -142,4 +145,17 @@ export default class CartController{
       });
     }
   }
+
+  async getCartsIds(req, res) {
+    try {
+      const cartsIds = await cartService.getCartsIds();
+      res.status(200).json({
+        status: 'success',
+        payload: cartsIds
+      });
+    } catch (error) {
+      console.log(`[ERROR] ${error.message}`);
+    }
+  }
+
 }

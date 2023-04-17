@@ -1,11 +1,14 @@
+/* imports */
+import ProductService from '../services/product.service.js'
+
+/* Product service */
+const productService = new ProductService();
+
 /**
  * class ProductController
  */
 export default class ProductController{
-  //dependency injection
-  constructor(productService){
-    this.productService = productService;
-
+  constructor(){
     //setting context to this
     Object.getOwnPropertyNames(ProductController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'productService') {
@@ -26,7 +29,7 @@ export default class ProductController{
       
       const options = { limit, page, sort : {price: sort} , query };
       //getting products
-      const productList = await this.productService.getProductsPaginate(options);
+      const productList = await productService.getProductsPaginate(options);
       
       //linking pagination
       const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?limit=${limit}&page=${productList.prevPage}&sort=${sort}&query=${JSON.stringify(query)}` : null;
@@ -59,10 +62,10 @@ export default class ProductController{
       product.price = parseInt(product.price);
       product.stock = parseInt(product.stock);
   
-      let newProduct = await this.productService.addProduct(product);
+      let newProduct = await productService.addProduct(product);
   
       /* get io server */
-      req.app.get('io').sockets.emit('newProduct', newProduct);
+      req.app.get('io').emitSockets('newProduct', newProduct);
   
       res.status(200).json({ status: 'ok', message: 'Added product' });
     } catch (error) {
@@ -74,7 +77,7 @@ export default class ProductController{
   async getProductById(req, res){
     try {
       const id = req.params.pid;
-      const product = await this.productService.getProductById(id);
+      const product = await productService.getProductById(id);
       res.status(200).json(product);
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
@@ -86,7 +89,7 @@ export default class ProductController{
     try {
       const product = req.body;
       const id = req.params.pid 
-      await this.productService.updateProduct(id, product);
+      await productService.updateProduct(id, product);
       res.status(200).json({ status: 'ok', message: 'Updated product' });
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
@@ -97,10 +100,10 @@ export default class ProductController{
   async deleteProduct(req, res){
     try {
       const id = req.params.pid;
-      await this.productService.deleteProduct(id);
+      await productService.deleteProduct(id);
   
       /* get io server */
-      req.app.get('io').sockets.emit('deleteProduct', id);
+      req.app.get('io').emitSockets('deleteProduct', id);
   
       res.status(200).json({ status: 'ok', message: 'Deleted product' });
     } catch (error) {

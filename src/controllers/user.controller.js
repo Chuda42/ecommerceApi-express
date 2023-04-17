@@ -1,7 +1,11 @@
-export default class UserController{
-  constructor(userService){
-    this.userService = userService;
+/* imports */
+import UserService from '../services/user.service.js';
 
+/* user service */
+const userService = new UserService();
+
+export default class UserController{
+  constructor(){
     //setting context to this
     Object.getOwnPropertyNames(UserController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'UserService') {
@@ -10,10 +14,9 @@ export default class UserController{
     });
   }
 
-
   async getUsers(req, res){
     try{
-      const users = await this.userService.getUsers();
+      const users = await userService.getUsers();
       res.status(200).json({ status: 'success', payload: users });
 
     }catch (error){
@@ -25,7 +28,7 @@ export default class UserController{
   async addUser(req, res){
     try{
       const user = req.body;
-      const newUser = await this.userService.addUser(user);
+      const newUser = await userService.addUser(user);
       res.status(201).json({ status: 'success', payload: newUser });
 
     }catch (error){

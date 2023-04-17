@@ -3,10 +3,10 @@ import { Router } from 'express';
 import passport from 'passport'
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import Factory from '../factory.js';
+import SessionController from '../controllers/session.controller.js';	
 
 /* controller */
-const sessionController = Factory.getSessionController();
+const sessionController = new SessionController();
 
 /* Router */
 const sessionRouter = Router();
@@ -31,7 +31,7 @@ sessionRouter.route('/logout')
              .post(sessionController.logoutUser)
 
 sessionRouter.route('/github')
-             .get(passport.authenticate('github', {scope:['user:email']}), async (req, res) => {})
+             .get(passport.authenticate('github', {scope:['user:email']}), sessionController.none)
           
 sessionRouter.route('/githubcallback')
              .get(passport.authenticate('github', {failureRedirect: '/login'}), sessionController.gitHubSession)

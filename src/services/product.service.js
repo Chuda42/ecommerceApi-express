@@ -1,12 +1,14 @@
+import ProductRepository from '../repositories/product.repository.js'
+
+/* Product Repository */
+const productRepository = new ProductRepository();
+
 export default class ProductService{
-  constructor(persistenceController){
-    this.persistenceController = persistenceController;
-  }
 
   async getProductsPaginate(options){
     try {
 
-      let products = this.persistenceController.getProductsPaginate(options);
+      let products = productRepository.getProductsPaginate(options);
       return products;
 
     } catch (error) {
@@ -18,7 +20,7 @@ export default class ProductService{
   async getProducts(){
     try {
 
-      let products = this.persistenceController.getProducts();
+      let products = productRepository.getProducts();
       return products;
 
     } catch (error) {
@@ -30,7 +32,7 @@ export default class ProductService{
   async addProduct(product){
     try {
 
-      let newProduct = await this.persistenceController.addProduct(product);
+      let newProduct = await productRepository.addProduct(product);
       return newProduct;
 
     }catch (error) {
@@ -42,7 +44,7 @@ export default class ProductService{
   async getProductById(pid){
     try {
         
-      let product = await this.persistenceController.getProductById(pid);
+      let product = await productRepository.getProductById(pid);
       return product;
     
     }catch (error) {
@@ -54,7 +56,7 @@ export default class ProductService{
   async updateProduct(pid, product){
     try {
         
-      let updatedProduct = await this.persistenceController.updateProduct(pid, product);
+      let updatedProduct = await productRepository.updateProduct(pid, product);
       return updatedProduct;
 
     }catch (error) {
@@ -66,7 +68,7 @@ export default class ProductService{
   async deleteProduct(pid){
     try {
         
-      let deleted = await this.persistenceController.deleteProduct(pid);
+      let deleted = await productRepository.deleteProduct(pid);
       return deleted;
 
     }catch (error) {

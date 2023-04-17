@@ -2,10 +2,10 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import Factory from '../factory.js';
+import ProductController from '../controllers/product.controller.js';
 
 /* controller */
-const proController = Factory.getProductController();
+const proController = new ProductController();
 
 /* Router */
 const productRouter = Router();

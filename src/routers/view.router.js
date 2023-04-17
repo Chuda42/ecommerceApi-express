@@ -3,10 +3,10 @@ import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
 import {auth, isLogged} from '../middlewares/auth.middleware.js';
-import Factory from '../factory.js';
+import ViewController from '../controllers/view.controller.js'
 
 /* controller */
-const viewController = Factory.getViewController();
+const viewController = new ViewController();
 
 /* router */
 const viewRouter = Router();

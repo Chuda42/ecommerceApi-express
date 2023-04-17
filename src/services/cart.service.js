@@ -1,11 +1,16 @@
+/* imports */
+import CartRepository from '../repositories/cart.repository.js';
+
+/* cart repository */
+const cartRepository = new CartRepository();
+
 export default class CartService{
-  constructor(persistenceController){
-    this.persistenceController = persistenceController;
+  constructor(){
   }
 
   async addCart(){
     try{
-      const newCart = await this.persistenceController.addCart();
+      const newCart = await cartRepository.addCart();
       return newCart;
     }catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -15,7 +20,7 @@ export default class CartService{
 
   async getProductsCart(cid){
     try {
-      const products = await this.persistenceController.getProductsCart(cid);
+      const products = await cartRepository.getProductsCart(cid);
       return products
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -25,7 +30,7 @@ export default class CartService{
 
   async addProductToCart(cid, pid){
     try {
-      const cart = await this.persistenceController.addProductToCart(cid, pid);
+      const cart = await cartRepository.addProductToCart(cid, pid);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -35,7 +40,7 @@ export default class CartService{
 
   async deleteProductFromCart(cid, pid){
     try {
-      const cart = await this.persistenceController.deleteProductFromCart(cid, pid);
+      const cart = await cartRepository.deleteProductFromCart(cid, pid);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -55,7 +60,7 @@ export default class CartService{
         return cart;
       }
 
-      const cart = await this.persistenceController.udateProductQuantityInCart(cid, pid, quantity);
+      const cart = await cartRepository.udateProductQuantityInCart(cid, pid, quantity);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -65,7 +70,7 @@ export default class CartService{
 
   async deleteAllProductsFromCart(cid){
     try {
-      const cart = await this.persistenceController.deleteAllProductsFromCart(cid);
+      const cart = await cartRepository.deleteAllProductsFromCart(cid);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -79,7 +84,7 @@ export default class CartService{
         throw new Error('Products list is empty');
       }
 
-      const cart = await this.persistenceController.updateProductsToCart(cid, products);
+      const cart = await cartRepository.updateProductsToCart(cid, products);
       return cart
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
@@ -89,7 +94,7 @@ export default class CartService{
 
   async getCartsIds(){
     try {
-      const cartsIds = await this.persistenceController.getCartsIds();
+      const cartsIds = await cartRepository.getCartsIds();
       return cartsIds
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);

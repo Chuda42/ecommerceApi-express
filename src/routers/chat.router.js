@@ -2,10 +2,10 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import Factory from '../factory.js';
+import ChatController from '../controllers/chat.controller.js'
 
 /* controller */
-const chatController = Factory.getChatController();
+const chatController = new ChatController();
 
 /* Router */
 const chatRouter = Router();

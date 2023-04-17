@@ -1,15 +1,20 @@
+/* imports */
+import ChatRepository from '../repositories/chat.repository.js'
+
+/* const */
+const chatRepository = new ChatRepository();
+
 /**
  * class ChatService
  */
 export default class ChatService{
-  constructor(messagesPersistence){
-    this.messagesPersistence = messagesPersistence;
+  constructor(){
   }
 
   async getMessages(){
     try {
 
-      let messages = this.messagesPersistence.getMessages();
+      let messages = await chatRepository.getMessages();
       return messages;
 
     } catch (error) {
@@ -21,7 +26,7 @@ export default class ChatService{
   async addMessage(message){
     try {
 
-      let newMessage = await this.messagesPersistence.addMessage(message);
+      let newMessage = await chatRepository.addMessage(message);
       return newMessage;
 
     }catch (error) {

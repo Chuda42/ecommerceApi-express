@@ -1,10 +1,14 @@
 /*imports*/
+import Config from '../config/config.js'	
 import Utils from '../utils.js'
 
-export default class SessionController{
-  constructor(userService){
-    this.userService = userService;
+import UserService from '../services/user.service.js';	
 
+/* user service */
+const userService = new UserService();
+
+export default class SessionController{
+  constructor(){
     //setting context to this
     Object.getOwnPropertyNames(SessionController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'UserService') {
@@ -18,7 +22,7 @@ export default class SessionController{
       let rol = "user"
       let user = req.user;
 
-      if(user.email === "adminCoder@coder.com"){
+      if(user.email === Config.ADMIN_EMAIL){
           rol = "admin"
       }
 
@@ -35,7 +39,7 @@ export default class SessionController{
   }
 
   async failLogin(req, res){
-    console.log(`[ERROR] Error logging in`);
+    console.log(`[ERROR] Error registreing user`);
     res.status(400).json({status: 'error', error: 'Error logging in'})
   }
 
@@ -73,10 +77,10 @@ export default class SessionController{
 
   async getCurrentUser(req, res){
     try{
-      const user = await this.userService.getUserByEmail(req.session.user)
+      const user = await userService.getUserByEmail(req.session.user)
 
       return res.status(200).json({ status: 'success', payload: {
-        id: user._id,
+        id: user.id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -88,6 +92,10 @@ export default class SessionController{
       console.log(`[ERROR] Not current user`);
       res.status(400).json({ status: 'error', error: 'Not current user' });
     }
+  }
+
+  async none(req, res) {
+
   }
 
 }

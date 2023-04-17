@@ -1,13 +1,20 @@
+/* imports */
+import ProductService from '../services/product.service.js';
+import CartService from '../services/cart.service.js';
+import UserService from '../services/user.service.js';
+
+/* services */
+const productService = new ProductService();
+const cartService = new CartService();
+const userService = new UserService();
+
 /**
  * class ViewController
  */
 export default class ViewController{
 
-  constructor({productService, cartService, userService}){
-    this.productService = productService;
-    this.cartService = cartService;
-    this.userService = userService;
-
+  constructor(){
+    //setting context to this
     Object.getOwnPropertyNames(ViewController.prototype).forEach((key) => {
       if (key !== 'constructor' && key !== 'productService') {
         this[key] = this[key].bind(this);
@@ -17,7 +24,7 @@ export default class ViewController{
   
   async getHome(req, res){
     //getting products
-    const productList = await this.productService.getProducts();
+    const productList = await productService.getProducts();
 
     //getting user
     const user = {
@@ -48,7 +55,7 @@ export default class ViewController{
 
     const options = { limit, page, sort : {price: sort} , query};
     //getting products
-    const productList = await this.productService.getProductsPaginate(options);
+    const productList = await productService.getProductsPaginate(options);
     
     //linking pagination
     const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?page=${productList.prevPage}` : null;
@@ -76,7 +83,7 @@ export default class ViewController{
   async getProductDetail(req, res){
     try{
       const { id } = req.params;
-      const product = await this.productService.getProductById(id);
+      const product = await productService.getProductById(id);
       const data = {
         status : 'success',
         product : product
@@ -115,7 +122,7 @@ export default class ViewController{
     try{
       const { id } = req.params;
 
-      let cart = await this.cartService.getProductsCart(id);
+      let cart = await cartService.getProductsCart(id);
       cart = JSON.parse(JSON.stringify(cart));
       
       const data = {
@@ -140,7 +147,7 @@ export default class ViewController{
 
   async getCartsIds(req, res) {
     try{
-      const cartsIds = await this.cartService.getCartsIds();
+      const cartsIds = await cartService.getCartsIds();
       const data = {
         status : 'success',
         cartsIds : cartsIds
@@ -196,7 +203,7 @@ export default class ViewController{
         return
       }
 
-      const user = await this.userService.getUserByEmail(email);
+      const user = await userService.getUserByEmail(email);
       const data = {
         status : 'success',
         user : user,
