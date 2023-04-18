@@ -31,7 +31,8 @@ export default class CartRepository {
 
   async addProductToCart(cid, pid){
     try {
-      const cart = await this.dao.addProductToCart(cid, pid);
+      let cart = await this.dao.addProductToCart(cid, pid);
+      cart = new Cart(cart);
       return cart;
     } catch (error) {
       throw error;
@@ -40,7 +41,8 @@ export default class CartRepository {
 
   async deleteProductFromCart(cid, pid){
     try {
-      const cart = await this.dao.deleteProductFromCart(cid, pid);
+      let cart = await this.dao.deleteProductFromCart(cid, pid);
+      cart = new Cart(cart);
       return cart;
     } catch (error) {
       throw error;
@@ -49,7 +51,8 @@ export default class CartRepository {
 
   async udateProductQuantityInCart(cid, pid, quantity){
     try {
-      const cart = await this.dao.udateProductQuantityInCart(cid, pid, quantity);
+      let cart = await this.dao.udateProductQuantityInCart(cid, pid, quantity);
+      cart = new Cart(cart);
       return cart;
     } catch (error) {
       throw error;
@@ -58,7 +61,8 @@ export default class CartRepository {
 
   async deleteAllProductsFromCart(cid){
     try {
-      const cart = await this.dao.deleteAllProductsFromCart(cid);
+      let cart = await this.dao.deleteAllProductsFromCart(cid);
+      cart = new Cart(cart);
       return cart;
     } catch (error) {
       throw error;
@@ -73,7 +77,8 @@ export default class CartRepository {
   */
   async updateProductsToCart(cid, products){
     try {
-      const cart = await this.dao.updateProductsToCart(cid, products);
+      let cart = await this.dao.updateProductsToCart(cid, products);
+      cart = new Cart(cart);
       return cart;
     } catch (error) {
       throw error;
