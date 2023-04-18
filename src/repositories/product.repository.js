@@ -22,6 +22,7 @@ export default class ProductRepository {
   async getProducts() {
     try {
       let products = await this.dao.getProducts();
+      products = products.map(product => new Product(product));
       return products;
     } catch (error) {
       console.log(`[ERROR REPOSITORY] ${error.message}`);
@@ -33,6 +34,7 @@ export default class ProductRepository {
     try {
       const newProductDto = new ProductDto(product);
       let newProduct = await this.dao.addProduct(newProductDto);
+      newProduct = new Product(newProduct);
       return newProduct;
     } catch (error) {
       console.log(`[ERROR REPOSITORY] ${error.message}`);
@@ -43,6 +45,7 @@ export default class ProductRepository {
   async getProductById(pid) {
     try {
       let product = await this.dao.getProductById(pid);
+      product = new Product(product);
       return product;
     } catch (error) {
       console.log(`[ERROR REPOSITORY] ${error.message}`);
@@ -54,6 +57,7 @@ export default class ProductRepository {
     try {
       const updatedProductDto = new ProductDto(product);
       let updatedProduct = await this.dao.updateProduct(pid, updatedProductDto);
+      updatedProduct = new Product(updatedProduct);
       return updatedProduct;
     } catch (error) {
       console.log(`[ERROR REPOSITORY] ${error.message}`);
@@ -64,6 +68,7 @@ export default class ProductRepository {
   async deleteProduct(pid) {
     try {
       let deletedProduct = await this.dao.deleteProduct(pid);
+      deletedProduct = new Product(deletedProduct);
       return deletedProduct;
     } catch (error) {
       console.log(`[ERROR REPOSITORY] ${error.message}`);

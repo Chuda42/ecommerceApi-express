@@ -2,6 +2,7 @@
 import FactoryDaos from '../persistence/factory.js'
 import Config from '../config/config.js'
 import MessageDto from '../dtos/message.dto.js'
+import Message from '../entities/message.entity.js'
 
 
 export default class ChatRepository {
@@ -12,6 +13,7 @@ export default class ChatRepository {
     async getMessages() {
         try {
           let messages = await this.dao.getMessages();
+          messages = messages.map(message => new Message(message));
           return messages;
         } catch (error) {
           console.log(`[ERROR REPOSITORY] ${error.message}`);
@@ -23,6 +25,7 @@ export default class ChatRepository {
         try {
           let newMessage = new MessageDto(message);
           newMessage = await this.dao.addMessage(newMessage);
+          newMessage = new Message(newMessage);
           return newMessage;
         } catch (error) {
             console.log(`[ERROR REPOSITORY] ${error.message}`);
