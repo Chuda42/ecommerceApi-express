@@ -152,7 +152,12 @@ export default class CartService{
       }
 
       ticket = await ticketService.addTicket(ticket);
-      await mailService.sendMail(userEmail, 'Ticket', `Your ticket id is ${ticket.id} and the amount is ${ticket.amount}`);
+      await mailService.sendMail(userEmail, 'Ticket', `
+      Your ticket id is: ${ticket.id},
+      the code is: ${ticket.code},
+      the amount is: ${ticket.amount},
+      the purchase_datetime is: ${ticket.purchase_datetime}
+      `);
 
       return productsNotProcessed
     } catch (error) {
