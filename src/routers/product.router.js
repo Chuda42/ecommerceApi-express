@@ -12,7 +12,7 @@ const proController = new ProductController();
 const productRouter = Router();
 
 /* Routes middlewares */
-//productRouter.use(httpLogMiddleware);
+productRouter.use(httpLogMiddleware);
 
 /* http methods */
 productRouter.route('/')
