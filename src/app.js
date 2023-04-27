@@ -20,6 +20,7 @@ import cartRouter from './routers/cart.router.js';
 import chatRouter from './routers/chat.router.js';
 import sessionRouter from './routers/session.router.js';
 import smsRouter  from './routers/sms.router.js';
+import mailRouter from './routers/mail.router.js';
 import userRouter from './routers/user.router.js';
 
 /* app */
@@ -56,6 +57,7 @@ app.use('/api/carts', cartRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/sessions', sessionRouter);
 app.use('/api/sms', smsRouter);
+app.use('/api/mail', mailRouter);
 app.use('/api/users', userRouter);
 
 /* http server */
