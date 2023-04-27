@@ -32,8 +32,8 @@ export default class UserService{
           rol: "admin"
         }
       }else{
-        user = await this.getUserByEmail(email);
-        if (!user || !Utils.isValidPassword(password, user.password)){
+        user = await this.repository.auth(email, password)
+        if (!user){
           return null;
         }
       }

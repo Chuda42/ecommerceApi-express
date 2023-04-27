@@ -50,8 +50,9 @@ export default class CartController{
   async addProductToCart(req, res) {
     try {
       const { cid, pid } = req.params;
+      const userEmail = req.session.user
 
-      await cartService.addProductToCart(cid, pid);
+      await cartService.addProductToCart(userEmail, cid, pid);
 
       res.status(200).json({
         status: 'success',
@@ -155,6 +156,27 @@ export default class CartController{
       });
     } catch (error) {
       console.log(`[ERROR] ${error.message}`);
+    }
+  }
+
+  async purchaseCart(req, res) {
+    try {
+      const { cid } = req.params;
+      const userEmail = req.session.user
+
+      productsNotProcessed = await cartService.purchaseCart(userEmail, cid);
+
+      res.status(200).json({
+        status: 'success',
+        message: `Cart: ${cid} purchased`,
+        payload: {'productsNotProcessed': productsNotProcessed}
+      });
+
+    } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message
+      });
     }
   }
 

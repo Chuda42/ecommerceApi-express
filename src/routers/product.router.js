@@ -2,6 +2,7 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
+import {isLogged, isAdmin} from '../middlewares/auth.middleware.js';
 import ProductController from '../controllers/product.controller.js';
 
 /* controller */
@@ -11,17 +12,17 @@ const proController = new ProductController();
 const productRouter = Router();
 
 /* Routes middlewares */
-productRouter.use(httpLogMiddleware);
+//productRouter.use(httpLogMiddleware);
 
 /* http methods */
 productRouter.route('/')
-             .get(proController.getProducts)
-             .post(proController.addProduct)
+             .get(isLogged, proController.getProducts)
+             .post(isAdmin, proController.addProduct)
 
 productRouter.route('/:pid')
-             .get(proController.getProductById)
-             .put(proController.updateProduct)
-             .delete(proController.deleteProduct)
+             .get(isLogged, proController.getProductById)
+             .put( isAdmin, proController.updateProduct)
+             .delete(isAdmin, proController.deleteProduct)
 
 /* export */
 export default productRouter;

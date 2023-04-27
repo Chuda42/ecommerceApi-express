@@ -2,7 +2,9 @@
 import Config from '../config/config.js'	
 import Utils from '../utils.js'
 
-import UserService from '../services/user.service.js';	
+import UserService from '../services/user.service.js';
+
+import UserEntity from '../entities/user.entity.js'
 
 /* user service */
 const userService = new UserService();
@@ -79,15 +81,12 @@ export default class SessionController{
     try{
       const user = await userService.getUserByEmail(req.session.user)
 
-      return res.status(200).json({ status: 'success', payload: {
-        id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        age: user.age,
-        cart: user.cart,
-        role: user.rol
-      }})
+      const userEntity = new UserEntity(user)
+
+      return res.status(200).json({ 
+        status: 'success',
+        payload: userEntity 
+      })
     }catch (error){
       console.log(`[ERROR] Not current user`);
       res.status(400).json({ status: 'error', error: 'Not current user' });
