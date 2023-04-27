@@ -164,7 +164,7 @@ export default class CartController{
       const { cid } = req.params;
       const userEmail = req.session.user
 
-      productsNotProcessed = await cartService.purchaseCart(userEmail, cid);
+      const productsNotProcessed = await cartService.purchaseCart(userEmail, cid);
 
       res.status(200).json({
         status: 'success',

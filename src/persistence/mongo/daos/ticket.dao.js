@@ -4,7 +4,7 @@ import TicketSchema from '../models/ticket.schema.js'
 import TicketDto from '../../../dtos/ticket.dto.js'
 
 /* const */
-const collection = 'products';
+const collection = 'tickets';
 const schema = TicketSchema;
 
 export default class TicketDao extends MongooseDao{
@@ -26,8 +26,8 @@ export default class TicketDao extends MongooseDao{
 
   async addTicket(ticket){
     try {
-      const parsedTicket = this.parseDto(ticket);
-      let newTicket = await this.saveObject(parsedTicket);
+      //const parsedTicket = this.parseDto(ticket);
+      let newTicket = await this.saveObject(ticket);
       newTicket = new TicketDto(newTicket);
       return newTicket;
 

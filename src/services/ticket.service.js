@@ -23,7 +23,6 @@ export default class TicketService{
 
       const ticket = {
         code: Utils.generateCode(),
-        purchase_datetime: new Date(),
         amount: amount,
         purchaser: emailUser
       }

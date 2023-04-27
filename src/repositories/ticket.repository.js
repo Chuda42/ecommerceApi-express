@@ -1,8 +1,8 @@
 /* imports */
 import FactoryDaos from '../persistence/factory.js'
 import Config from '../config/config.js'
-import TicketDto from '../dtos/user.dto.js'
-import Ticket from '../entities/user.entity.js'
+import TicketDto from '../dtos/ticket.dto.js'
+import Ticket from '../entities/ticket.entity.js'
 
 import Utils from '../utils.js'
 
@@ -23,8 +23,7 @@ export default class TicketRepository {
 
   async addTicket(ticket){
     try {
-      const ticketDto = new TicketDto(ticket);
-      let newTicket = await this.dao.addTicket(ticketDto);
+      let newTicket = await this.dao.addTicket(ticket);
       newTicket = new Ticket(newTicket);
       return newTicket;
     } catch (error) {
