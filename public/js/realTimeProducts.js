@@ -85,27 +85,29 @@ const addEvents = (id) => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              Swal.fire(
-                'Deleted!',
-                `${JSON.parse(xhr.response).message}`,
-                'success'
-              )
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: `${JSON.parse(xhr.response).error}`
-              })
-            }
+
+        fetch(`/api/products/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
           }
-        }
-        xhr.open('DELETE', `/api/products/${id}`, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send();
+        }).then((res) => {
+          if (res.status === 403) {
+            window.location.replace('/');
+          } else {
+            Swal.fire(
+              'Deleted!',
+              `${data.message}`,
+              'success'
+            )
+          }
+        }).catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${error.message}`
+          })
+        });
       }
     })
   });

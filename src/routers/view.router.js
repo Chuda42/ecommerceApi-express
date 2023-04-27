@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import {auth, isLogged} from '../middlewares/auth.middleware.js';
+import { isLogged, isNotLogged, isUser } from '../middlewares/auth.middleware.js';
 import ViewController from '../controllers/view.controller.js'
 
 /* controller */
@@ -14,34 +14,34 @@ const viewRouter = Router();
 /* http methods */
 
 viewRouter.route('/')
-          .get(httpLogMiddleware, auth, viewController.getHome) 
+          .get(httpLogMiddleware, isLogged, viewController.getHome) 
 
 viewRouter.route('/realtimeproducts')
-          .get(httpLogMiddleware, auth, viewController.getRealTimeProducts)
+          .get(httpLogMiddleware, isLogged, viewController.getRealTimeProducts)
 
 viewRouter.route('/chat')
-          .get(httpLogMiddleware, auth, viewController.getChat)
+          .get(httpLogMiddleware, isUser, viewController.getChat)
 
 viewRouter.route('/products')
-          .get(httpLogMiddleware, auth, viewController.getProducts)
+          .get(httpLogMiddleware, isLogged, viewController.getProducts)
           
 viewRouter.route('/products/:id')
-          .get(httpLogMiddleware, auth, viewController.getProductDetail)
+          .get(httpLogMiddleware, isLogged, viewController.getProductDetail)
 
 viewRouter.route('/cart/:id')
-          .get(httpLogMiddleware, auth, viewController.getCart)
+          .get(httpLogMiddleware, isLogged, viewController.getCart)
 
 viewRouter.route('/login')
-          .get(httpLogMiddleware, isLogged, viewController.getLogin)
+          .get(httpLogMiddleware, isNotLogged, viewController.getLogin)
 
 viewRouter.route('/register')
-          .get(httpLogMiddleware, isLogged, viewController.getRegister)
+          .get(httpLogMiddleware, isNotLogged, viewController.getRegister)
 
 viewRouter.route('/cartsIds')
-          .get(httpLogMiddleware, auth, viewController.getCartsIds)
+          .get(httpLogMiddleware, isLogged, viewController.getCartsIds)
 
 viewRouter.route('/profile')
-          .get(httpLogMiddleware, auth, viewController.getUserProfile)
+          .get(httpLogMiddleware, isLogged, viewController.getUserProfile)
 
 /* export */
 export default viewRouter;

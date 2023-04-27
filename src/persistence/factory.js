@@ -46,4 +46,13 @@ export default class FactoryDaos {
     return dao;
   }
 
+  static getTicketDao(key) {
+    const ticketDao = new Map();
+    ticketDao.set('mongo', TicketDao);
+
+    const DaoClass = ticketDao.get(key);
+    const dao = new DaoClass()
+    return dao;
+  }
+
 }

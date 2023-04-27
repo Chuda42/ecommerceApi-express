@@ -4,6 +4,7 @@ import Config from '../config/config.js'
 import UserDto from '../dtos/user.dto.js'
 import User from '../entities/user.entity.js'
 
+import Utils from '../utils.js'
 
 export default class UserRepository {
 
@@ -37,6 +38,19 @@ export default class UserRepository {
       const user = await this.dao.getUserByEmail(email);
       const userEntity = new User(user);
       return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async auth(email, password){
+    try {
+      const user = await this.dao.getUserByEmail(email);
+      if(Utils.isValidPassword(password, user.password)){
+        const userEntity = new User(user);
+        return userEntity;
+      }
+      return null;
     } catch (error) {
       throw error;
     }

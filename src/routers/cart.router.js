@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
 import CartController from '../controllers/cart.controller.js';
+import {isLogged, isAdmin, isUser} from '../middlewares/auth.middleware.js';
 
 /* controller */
 const cartController = new CartController();
@@ -20,13 +21,16 @@ cartRouter.route('/')
 
 cartRouter.route('/:cid')
           .get(cartController.getProductsCart)
-          .put(cartController.updateProductsToCart)
+          .put(isUser, cartController.updateProductsToCart)
           .delete(cartController.deleteAllProductsFromCart)
 
 cartRouter.route('/:cid/product/:pid')
-          .post(cartController.addProductToCart)
-          .put(cartController.udateProductQuantityInCart)
+          .post(isUser, cartController.addProductToCart)
+          .put(isUser, cartController.udateProductQuantityInCart)
           .delete(cartController.deleteProductFromCart)
+
+cartRouter.route('/:cid/purchase')
+          .post(isUser, cartController.purchaseCart)
 
 /* export */
 export default cartRouter;

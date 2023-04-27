@@ -2,6 +2,7 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 /* const */
 const __filename = fileURLToPath(import.meta.url);
@@ -21,5 +22,11 @@ export default class Utils {
       return false;
     } 
     return bcrypt.compareSync(pass, hash);
+  }
+
+  static generateCode = () => {
+    /* uuid */
+    const code = uuidv4();
+    return code;
   }
 }

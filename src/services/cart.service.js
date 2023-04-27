@@ -1,8 +1,17 @@
 /* imports */
 import CartRepository from '../repositories/cart.repository.js';
+import UserService from '../services/user.service.js';
+import ProductService from '../services/product.service.js';
+import TicketService from './ticket.service.js';
 
 /* cart repository */
 const cartRepository = new CartRepository();
+
+/* user service */
+const userService = new UserService();
+
+/* product service */
+const productService = new ProductService();
 
 export default class CartService{
   constructor(){
@@ -28,8 +37,12 @@ export default class CartService{
     }
   }
 
-  async addProductToCart(cid, pid){
+  async addProductToCart(userEmail, cid, pid){
     try {
+      const user = await userService.getUserByEmail(userEmail);
+      if(user.cart !== cid){
+        throw new Error('User does not have this cart');
+      }
       const cart = await cartRepository.addProductToCart(cid, pid);
       return cart
     } catch (error) {
@@ -101,4 +114,42 @@ export default class CartService{
       throw error;
     }
   }
+
+  async purchaseCart(userEmail, cid){
+    try {
+      const user = await userService.getUserByEmail(userEmail);
+
+      
+      if(user.cart !== cid){
+        throw new Error('User does not have this cart');
+      }
+      const productsCart = await this.getProductsCart(cid);
+
+      let ticket = {
+        'user': userEmail,
+        'amount': 0,
+      }
+
+      let productsNotProcessed = []
+      
+      for (product in productsCart){
+        const productInBase = await productService.getProductById(product.product.id);
+        const productStock = productInBase.stock
+        if(productStock >= product.quantity){
+          await productService.updateProduct(product.product.id, {stock: productStock - product.quantity})
+          await this.deleteProductFromCart(cid, product.product.id)
+          ticket.amount += product.product.price * product.quantity
+        }else{
+          productsNotProcessed.push(product.product.id)
+        }
+      }
+
+      ticket = await TicketService.addTicket(ticket);
+      return productsNotProcessed
+    } catch (error) {
+      console.log(`[ERROR SERVICE] ${error.message}`);
+      throw error;
+    }
+  }
+
 }
