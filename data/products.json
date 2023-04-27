@@ -1,0 +1,30 @@
+{
+  "products": [
+    {
+      "_id": "3624ac28-610d-47db-aa49-882287ae0585",
+      "title": "Harry Potter y la piedra filosofal",
+      "description": "Libro 1 de la saga de Harry Potter",
+      "price": 201,
+      "stock": 25,
+      "code": "hp1",
+      "thumbnails": [
+        "hola"
+      ],
+      "category": "adventure",
+      "status": true
+    },
+    {
+      "_id": "3a22b7bf-e7c6-4b79-8324-c001c7d6f235",
+      "title": "ootro",
+      "description": "3",
+      "price": 8,
+      "stock": 25,
+      "code": "o",
+      "thumbnails": [
+        "hola"
+      ],
+      "category": "23",
+      "status": false
+    }
+  ]
+}

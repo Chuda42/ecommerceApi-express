@@ -1,46 +1,23 @@
 /* imports */
 import fs from 'fs';
 
-/**
- * ProductManager class, provides a persistence manager to store products
- */
+import ProductModel from '../models/product.model.js'
+import ProductDto from '../../../dtos/product.dto.js'
+
 export default class ProductManager {
-  /*Atributes*/
-  #path
+  #path = './data/products.json'
 
-  /* Methods */
-
-  /* Constructors */
-  /**
-  * @param {string} path - path to persistence file
-  * @return {ProductManager}
-  */
-  constructor() {
-    this.#path = './products.json';
-  }
-
-  /* PRIVATE METHODS */
-  /**
-  *  Check if persistence file exists, if not, create it
-  */
   async #dontExist() {
     if (!fs.existsSync(this.#path)) {
       await fs.promises.writeFile(this.#path, JSON.stringify({
-        lastId: 0,
         products: []
       }));
     }
   }
 
-  /** 
-  * Commit changes to persistence
-  * @param {int} lastId - lastId of products
-  * @param {Array<object>} products - array of products
-  */
-  async #save(lastId, products) {
+  async #save(products) {
     try {
       await fs.promises.writeFile(this.#path, JSON.stringify({
-        lastId: lastId,
         products: products
       }));
     } catch (error) {
@@ -48,10 +25,7 @@ export default class ProductManager {
     }
   }
 
-  /**
-  * Get object from persistence, parse it into object and return it
-  * @return {Promise<{lastId: int, products: Array<object>}>}
-  */
+ 
   async #getObject() {
     try {
       const content = await fs.promises.readFile(this.#path);
@@ -61,18 +35,7 @@ export default class ProductManager {
     }
   }
 
-  /**
-  *  Check if product has one or more void fields
-  *  @param {{
-  *    title: string,
-  *    description: string,
-  *    price: int,
-  *    code: string,
-  *    stock: int,
-  *    category: string
-  *  }} product
-  *  @throws {Error} - if product has one or more void fields
-  */
+
   async #isNotVoid(product) {
     let { title, description, price, code, stock, category } = product;
     /* void validations */
@@ -82,13 +45,11 @@ export default class ProductManager {
     if (!notVoid) throw new Error('Any field can be void, except thumbnails and status');
   }
 
-  /**
-  * Check if product with product.code equals code already exists
-  * @param {string} code
-  */
+ 
   async #isValidCode(code) {
     try {
-      let products = await this.getProducts();
+      let { products } = await this.#getObject();
+
       const sameCode = products.find(product => product.code === code);
       if (!!sameCode) {
         throw new Error(`Product with value code: ${code} already exists `);
@@ -99,20 +60,6 @@ export default class ProductManager {
     }
   }
 
-  /**
-  *  Check if product has one or more invalid types fields
-  *  @param {{
-  *    title: string,
-  *    description: string,
-  *    price: int,
-  *    thumbnails: Array<string> | undefined,
-  *    code: string,
-  *    stock: int,
-  *    status: boolean | undefined,
-  *    category: string
-  *   }} product
-  *  @throws {Error} if product has one or invalid types fields
-  */
   async #isValidTypes(product) {
     let { title, description, price, code, stock, category, thumbnails, status } = product;
     /* types validations */
@@ -128,85 +75,55 @@ export default class ProductManager {
     if (!isValidTypes) throw new Error('Invalid types');
   }
 
-  /* PUBLIC METHODS */
-
-  /**
-  *  Store new product in persistence
-  *  @param {{
-  *    id: string,
-  *    title: string,
-  *    description: string,
-  *    price: int,
-  *    thumbnails: Array<string> | undefined,
-  *    code: string,
-  *    stock: int,
-  *    status: boolean | undefined,
-  *    category: string
-  *   }} product 
-  *  @throws {Error} - if product has one or more void fields, or if product has one or more invalid types 
-  */
   async addProduct(product) {
     try {
       await this.#dontExist();
 
-      let { lastId, products } = await this.#getObject();
+      let { products } = await this.#getObject();
 
       await this.#isValidCode(product.code);
       await this.#isNotVoid(product);
       await this.#isValidTypes(product);
 
-      lastId++;
-      product.id = lastId;
       product.thumbnails = product.thumbnails ?? [];
       product.status = product.status ?? true;
-      products.push(product);
+      const newProduct = new ProductModel(product)
+      products.push(newProduct);
 
-      await this.#save(lastId, products);
-
-      console.log(`Product added successfully with id ${lastId}`);
-
+      await this.#save(products);
+      console.log(`Product added successfully with id ${newProduct._id}`);
+      return new ProductDto(newProduct);
     } catch (error) {
       throw error;
     }
   }
 
-  /**
-  * Return products in persistence
-  * @returns {Promise<Array<object>>} products
-  */
   async getProducts() {
     try {
       await this.#dontExist();
       const { products } = await this.#getObject();
-      return products;
+
+      let productsDtos = products.map(product => new ProductDto(product));
+
+      if(!!productsDtos){
+        productsDtos = []
+      }
+
+      return productsDtos;
     } catch (error) {
       console.log(error.message);
     }
   }
 
-  /**
-  * Return product in persistence where product.id equals parameter id
-  * @param {int} id 
-  * @returns {Promise<{
-  *   id: string,
-  *   title: string,
-  *   description: string,
-  *   price: int,
-  *   thumbnails: Array<string>,
-  *   code: string,
-  *   stock: int,
-  *   status: boolean,
-  *   category: string}>} product
-  * @throws {Error} if product where product.id equals id does not exist
-  */
   async getProductById(id) {
     try {
       await this.#dontExist();
 
-      const products = await this.getProducts();
+      let { products } =  await this.#getObject();
 
-      let prod = products.find(product => product.id == id);
+      let prod = products.find(product => product._id === id);
       if (!!prod) {
+        prod = new ProductDto(prod);
         return prod;
       };
       console.error('Not found');
@@ -218,35 +135,20 @@ export default class ProductManager {
 
   }
 
-  /**
-  * Update product in persistence where product.id equals parameter id
-  * @param {int} id 
-  * @param {{
-  *   title: string | undefined,
-  *   description: string | undefined,
-  *   price: int | undefined,
-  *   thumbnails: Array<string> | undefined,
-  *   code: string | undefined,
-  *   stock: int | undefined,
-  *   status: boolean | undefined,
-  *   category: string | undefined
-  *  }} updateProduct 
-  * @throws {Error} if product where product.id equals id does not exist
-  * @throws {Error} if updateProduct has one or more invalid types
-  */
   async updateProduct(id, updateProduct) {
     try {
       await this.#dontExist();
       if (!await this.getProductById(id))
         throw new Error(`Product ${id} does not exist`);
 
-      let { lastId, products } = await this.#getObject();
+      let { products } = await this.#getObject()
 
       await this.#isValidCode(updateProduct.code);
+      await this.#isNotVoid(updateProduct);
       await this.#isValidTypes(updateProduct);
 
       products.map(product => {
-        if (product.id === parseInt(id)) {
+        if (product._id === id) {
           product.title = (updateProduct.title) ?? product.title;
           product.description = (updateProduct.description) ?? product.description;
           product.price = (updateProduct.price) ?? product.price;
@@ -259,28 +161,33 @@ export default class ProductManager {
         }
       })
 
-      await this.#save(lastId, products);
+      console.log(products);
+      await this.#save(products);
+      console.log(`Product with id ${id}, updated successfully`);
+
+      let product = await this.getProductById(id);
+      product = new ProductDto(product);
+      return product;
 
     } catch (error) {
+      console.log(`[ERROR DAO] ${error.message}`);
       throw error;
     }
   }
 
-  /**
-  * Delete product in persistence where product.id equals parameter id
-  * @param {int} id
-  * @throws {Error} if product where product.id equals id does not exist
-  */
   async deleteProduct(id) {
     try {
       await this.#dontExist();
-      let { lastId, products } = await this.#getObject();
+      let { products } = await this.#getObject();
 
       const initialLength = products.length;
       let finalProducts = [];
+      let product = {}
       for (const element of products) {
         if (element.id != id) {
           finalProducts.push(element);
+        }else {
+          product = element;
         }
       }
       const finalLength = finalProducts.length;
@@ -289,10 +196,13 @@ export default class ProductManager {
       }
 
       await this.#save(lastId, finalProducts);
-
+      product = new ProductDto(product);
       console.log(`Product with id ${id}, deleted successfully`);
+      return product;
+
     } catch (error) {
       throw error;
     }
   }
+
 }

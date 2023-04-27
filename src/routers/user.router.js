@@ -18,8 +18,6 @@ userRouter.route('/')
              .get(userController.getUsers)
              .post(userController.addUser)
 
-userRouter.route('/:email')
-             .get(userController.getUserByEmail)
 
 /* export */
 export default userRouter;
