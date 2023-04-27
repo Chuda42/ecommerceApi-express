@@ -3,6 +3,9 @@ import CartDao from './mongo/daos/cart.dao.js'
 import MessageDao from './mongo/daos/message.dao.js'
 import ProductDao from './mongo/daos/product.dao.js'
 import UserDao from './mongo/daos/user.dao.js'
+import TicketDao from './mongo/daos/ticket.dao.js'
+import ProductManager from './filesystem/daos/ProductManager.js'
+import CartManager from './filesystem/daos/CartManager.js'
 
 
 export default class FactoryDaos {
@@ -20,7 +23,7 @@ export default class FactoryDaos {
   static getProductDao(key) {
     const productDao = new Map();
     productDao.set('mongo', ProductDao);
-    //productDao.set('filesystem', ProductDaoFileSystem)
+    productDao.set('filesystem', ProductManager)
 
     const DaoClass = productDao.get(key);
     const dao = new DaoClass();
@@ -30,7 +33,7 @@ export default class FactoryDaos {
   static getCartDao(key) {
     const cartDao = new Map();
     cartDao.set('mongo', CartDao);
-    //cartDao.set('filesystem', CartDaoFileSystem)
+    cartDao.set('filesystem', CartManager)
 
     const DaoClass = cartDao.get(key);
     const dao = new DaoClass();

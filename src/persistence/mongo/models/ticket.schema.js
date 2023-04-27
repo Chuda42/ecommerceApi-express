@@ -9,9 +9,8 @@ const TicketSchema = new mongoose.Schema({
   },
 
   purchase_datetime: {
-    type: date,
-    required: true,
-    max: 255,
+    type: Date,
+    default: Date.now
   },
 
   amount: {

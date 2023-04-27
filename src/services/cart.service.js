@@ -3,6 +3,7 @@ import CartRepository from '../repositories/cart.repository.js';
 import UserService from '../services/user.service.js';
 import ProductService from '../services/product.service.js';
 import TicketService from './ticket.service.js';
+import MailService from '../services/mail.service.js';
 
 /* cart repository */
 const cartRepository = new CartRepository();
@@ -12,6 +13,12 @@ const userService = new UserService();
 
 /* product service */
 const productService = new ProductService();
+
+/* ticket service */
+const ticketService = new TicketService();
+
+/* mail service */
+const mailService = new MailService();
 
 export default class CartService{
   constructor(){
@@ -126,13 +133,13 @@ export default class CartService{
       const productsCart = await this.getProductsCart(cid);
 
       let ticket = {
-        'user': userEmail,
+        'emailUser': userEmail,
         'amount': 0,
       }
 
       let productsNotProcessed = []
       
-      for (product in productsCart){
+      for (let product of productsCart){
         const productInBase = await productService.getProductById(product.product.id);
         const productStock = productInBase.stock
         if(productStock >= product.quantity){
@@ -144,7 +151,14 @@ export default class CartService{
         }
       }
 
-      ticket = await TicketService.addTicket(ticket);
+      ticket = await ticketService.addTicket(ticket);
+      await mailService.sendMail(userEmail, 'Ticket', `
+      Your ticket id is: ${ticket.id},
+      the code is: ${ticket.code},
+      the amount is: ${ticket.amount},
+      the purchase_datetime is: ${ticket.purchase_datetime}
+      `);
+
       return productsNotProcessed
     } catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);

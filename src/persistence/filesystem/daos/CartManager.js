@@ -2,10 +2,9 @@
 import fs from 'fs';
 import ProductManager from './ProductManager.js';
 
-import Utils from '../utils.js';
 
 /* const */
-const PRODUCT_PATH = Utils.PRODUCT_PATH;
+const PRODUCT_PATH = './products.json';
 
 class CartManager {
   /*Atributes*/
@@ -13,8 +12,8 @@ class CartManager {
   #carts
   #lastId
   /*Methods*/
-  constructor(path) {
-    this.#path = path;
+  constructor() {
+    this.#path = './carts.json';
   }
 
   async dontExist() {

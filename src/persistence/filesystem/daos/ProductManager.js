@@ -15,8 +15,8 @@ export default class ProductManager {
   * @param {string} path - path to persistence file
   * @return {ProductManager}
   */
-  constructor(path) {
-    this.#path = path;
+  constructor() {
+    this.#path = './products.json';
   }
 
   /* PRIVATE METHODS */

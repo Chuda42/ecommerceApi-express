@@ -29,4 +29,16 @@ export default class Config{
   static ADMIN_EMAIL = process.env.ADMIN_EMAIL;
   static ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+  /* MAIL */
+  static MAIL_SERVICE = process.env.MAIL_SERVICE;
+  static MAIL_PORT = process.env.MAIL_PORT;
+  static MAIL_USER = process.env.MAIL_USER;
+  static MAIL_PASS = process.env.MAIL_PASS;
+
+  /* SMS */
+  static SMS_SERVICE = process.env.SMS_SERVICE;
+  static SMS_SID = process.env.SMS_SID;
+  static SMS_TOKEN = process.env.SMS_TOKEN;
+  static SMS_FROM = process.env.SMS_FROM;
+
 }
