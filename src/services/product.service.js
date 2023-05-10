@@ -1,4 +1,7 @@
 import ProductRepository from '../repositories/product.repository.js'
+import ProductErrors from './errors/products.errors.js'
+import {generateProductErrorInfo} from './errors/error.info.js'
+import {EErrors} from './errors/error.enums.js'
 
 /* Product Repository */
 const productRepository = new ProductRepository();
@@ -37,7 +40,12 @@ export default class ProductService{
 
     }catch (error) {
       console.log(`[ERROR SERVICE] ${error.message}`);
-      throw error;
+      ProductErrors.createError({ 
+        name: 'Product creation error',
+        cause: generateProductErrorInfo(product),
+        message: error.message, 
+        code: EErrors.REQUIRED_PARAMS
+      })
     }
   }
 

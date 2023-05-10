@@ -22,6 +22,7 @@ import sessionRouter from './routers/session.router.js';
 import smsRouter  from './routers/sms.router.js';
 import mailRouter from './routers/mail.router.js';
 import userRouter from './routers/user.router.js';
+import mockingRouter from './routers/mocking.router.js'
 
 /* app */
 const app = express();
@@ -59,6 +60,7 @@ app.use('/api/sessions', sessionRouter);
 app.use('/api/sms', smsRouter);
 app.use('/api/mail', mailRouter);
 app.use('/api/users', userRouter);
+app.use('/api/mockingproducts', mockingRouter);
 
 /* http server */
 const httpServer = app.listen(Config.SERVER_PORT, () => {

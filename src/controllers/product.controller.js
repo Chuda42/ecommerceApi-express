@@ -55,8 +55,8 @@ export default class ProductController{
     }
   }
 
-  async addProduct(req, res){
-    try {
+  async addProduct(req, res, next){
+    try{
       const product = req.body;
   
       product.price = parseInt(product.price);
@@ -68,10 +68,10 @@ export default class ProductController{
       req.app.get('io').emitSockets('newProduct', newProduct);
   
       res.status(200).json({ status: 'ok', message: 'Added product' });
-    } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
-      res.status(400).json({ status: 'error', error: error.message });
+    }catch(e){
+      next(e);
     }
+    
   }
 
   async getProductById(req, res){
