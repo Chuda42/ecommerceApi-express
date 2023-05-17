@@ -1,7 +1,7 @@
 import {EErrors} from '../services/errors/error.enums.js';
 
 export default (err, req, res, next) => {
-  console.log(err.cause);
+  req.logger.error(err.cause);
 
   switch (err.code) {
     case (EErrors.REQUIRED_PARAMS):

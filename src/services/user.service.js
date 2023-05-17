@@ -1,4 +1,5 @@
 /* imports */
+import { logger } from '../logger.js';
 import Utils from '../utils.js'
 import UserRepository from '../repositories/user.repository.js';
 import CartRepository from '../repositories/cart.repository.js';
@@ -39,7 +40,7 @@ export default class UserService{
       }
       return user;
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      logger.error(`[ERROR] ${error.message}`);
       return null;
     }
   }

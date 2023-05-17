@@ -1,4 +1,6 @@
 /* imports */
+import { logger } from '../logger.js';
+
 import CartRepository from '../repositories/cart.repository.js';
 import UserService from '../services/user.service.js';
 import ProductService from '../services/product.service.js';
@@ -29,7 +31,7 @@ export default class CartService{
       const newCart = await cartRepository.addCart();
       return newCart;
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -39,7 +41,7 @@ export default class CartService{
       const products = await cartRepository.getProductsCart(cid);
       return products
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -53,7 +55,7 @@ export default class CartService{
       const cart = await cartRepository.addProductToCart(cid, pid);
       return cart
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -63,7 +65,7 @@ export default class CartService{
       const cart = await cartRepository.deleteProductFromCart(cid, pid);
       return cart
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -83,7 +85,7 @@ export default class CartService{
       const cart = await cartRepository.udateProductQuantityInCart(cid, pid, quantity);
       return cart
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -93,7 +95,7 @@ export default class CartService{
       const cart = await cartRepository.deleteAllProductsFromCart(cid);
       return cart
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -107,7 +109,7 @@ export default class CartService{
       const cart = await cartRepository.updateProductsToCart(cid, products);
       return cart
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -117,7 +119,7 @@ export default class CartService{
       const cartsIds = await cartRepository.getCartsIds();
       return cartsIds
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -161,7 +163,7 @@ export default class CartService{
 
       return productsNotProcessed
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }

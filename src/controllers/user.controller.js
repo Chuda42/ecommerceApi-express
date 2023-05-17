@@ -20,7 +20,7 @@ export default class UserController{
       res.status(200).json({ status: 'success', payload: users });
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -32,7 +32,7 @@ export default class UserController{
       res.status(201).json({ status: 'success', payload: newUser });
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }

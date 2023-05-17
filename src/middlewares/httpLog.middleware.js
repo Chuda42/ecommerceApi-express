@@ -1,5 +1,5 @@
 const httpLogMiddleware = (req, res, next) => {
-  console.log(`[${req.method}] ${req.ip} -> ${req.originalUrl}`);
+  req.logger.http(`[${req.method}] ${req.ip} -> ${req.originalUrl} - ${new Date().toLocaleString()}`);
   next();
 }
 

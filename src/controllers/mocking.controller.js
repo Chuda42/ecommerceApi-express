@@ -25,7 +25,7 @@ export default class MockingController{
       res.status(200).json(response);
       
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }

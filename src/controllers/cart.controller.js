@@ -27,6 +27,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       console.log(error.message);
     }
   }
@@ -38,7 +39,7 @@ export default class CartController{
       const products = await cartService.getProductsCart(cid);
       res.status(200).json(products);
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
 
       res.status(400).json({
         status: 'error',
@@ -60,6 +61,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error', message: error.message
       });
@@ -78,6 +80,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error',
         message: error.message
@@ -100,6 +103,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error',
         message: error.message
@@ -119,6 +123,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error',
         message: error.message
@@ -140,6 +145,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error',
         message: error.message
@@ -155,7 +161,7 @@ export default class CartController{
         payload: cartsIds
       });
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
     }
   }
 
@@ -173,6 +179,7 @@ export default class CartController{
       });
 
     } catch (error) {
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({
         status: 'error',
         message: error.message
