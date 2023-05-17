@@ -24,7 +24,7 @@ export default class ChatController{
 
       res.status(200).json(messageList);
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -40,7 +40,7 @@ export default class ChatController{
 
       res.status(200).json({ status: 'ok', message: 'Added message' });
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }

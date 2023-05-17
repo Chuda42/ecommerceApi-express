@@ -21,7 +21,7 @@ export default class MailController{
       res.status(201).json({ status: 'success', payload: 'Mail sent' });
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }

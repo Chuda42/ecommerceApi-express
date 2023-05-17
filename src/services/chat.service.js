@@ -1,4 +1,6 @@
 /* imports */
+import { logger } from '../logger.js';
+
 import ChatRepository from '../repositories/chat.repository.js'
 
 /* const */
@@ -18,7 +20,7 @@ export default class ChatService{
       return messages;
 
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+     logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }    
   }
@@ -30,7 +32,7 @@ export default class ChatService{
       return newMessage;
 
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+     logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }

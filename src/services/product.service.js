@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 import ProductRepository from '../repositories/product.repository.js'
 import ProductErrors from './errors/products.errors.js'
 import {generateProductErrorInfo} from './errors/error.info.js'
@@ -15,7 +16,7 @@ export default class ProductService{
       return products;
 
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -27,7 +28,7 @@ export default class ProductService{
       return products;
 
     } catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -39,7 +40,7 @@ export default class ProductService{
       return newProduct;
 
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       ProductErrors.createError({ 
         name: 'Product creation error',
         cause: generateProductErrorInfo(product),
@@ -56,7 +57,7 @@ export default class ProductService{
       return product;
     
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -68,7 +69,7 @@ export default class ProductService{
       return updatedProduct;
 
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }
@@ -80,7 +81,7 @@ export default class ProductService{
       return deleted;
 
     }catch (error) {
-      console.log(`[ERROR SERVICE] ${error.message}`);
+      logger.error(`[ERROR SERVICE] ${error.message}`);
       throw error;
     }
   }

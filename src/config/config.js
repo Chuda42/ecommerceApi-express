@@ -41,4 +41,7 @@ export default class Config{
   static SMS_TOKEN = process.env.SMS_TOKEN;
   static SMS_FROM = process.env.SMS_FROM;
 
+  /* LOGS */
+  static LOGS_ENV = process.env.LOGS_ENV;
+
 }

@@ -35,13 +35,13 @@ export default class SessionController{
       res.status(200).json({ status: 'success', payload: user });
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
 
   async failLogin(req, res){
-    console.log(`[ERROR] Error registreing user`);
+    req.logger.error(`[ERROR CONTROLLER] Error registreing user`);
     res.status(400).json({status: 'error', error: 'Error logging in'})
   }
 
@@ -50,7 +50,7 @@ export default class SessionController{
   }
 
   async failRegister(req, res){
-    console.log(`[ERROR] Error logging in`);
+    req.logger.error(`[ERROR CONTROLLER] Error logging in`);
     res.status(400).json({status: 'error', error: 'Error registering user'})
   }
 
@@ -60,7 +60,7 @@ export default class SessionController{
       res.status(200).json({ status: 'success', payload: 'User logged out' });
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -72,7 +72,7 @@ export default class SessionController{
       res.redirect('/');
 
     }catch (error){
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -88,7 +88,7 @@ export default class SessionController{
         payload: userEntity 
       })
     }catch (error){
-      console.log(`[ERROR] Not current user`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: 'Not current user' });
     }
   }

@@ -8,7 +8,8 @@ import passport from 'passport';
 
 
 import Utils from './utils.js';
-import Config from './config/config.js'
+import { addLogger, logger } from './logger.js';
+import Config from './config/config.js';
 import ServerIo from './config/socket.server.js';
 import initializePassport from './config/passport.config.js'
 
@@ -23,6 +24,7 @@ import smsRouter  from './routers/sms.router.js';
 import mailRouter from './routers/mail.router.js';
 import userRouter from './routers/user.router.js';
 import mockingRouter from './routers/mocking.router.js'
+import loggerTestRouter from './routers/loggerTest.router.js'
 
 /* app */
 const app = express();
@@ -51,6 +53,9 @@ app.use(passport.session());
 /* db connection */
 MongoConnection.connect(Config.DB_URL)
 
+/* logger */
+app.use(addLogger)
+
 /* routes */
 app.use('/', viewRouter);
 app.use('/api/products', productRouter);
@@ -61,13 +66,14 @@ app.use('/api/sms', smsRouter);
 app.use('/api/mail', mailRouter);
 app.use('/api/users', userRouter);
 app.use('/api/mockingproducts', mockingRouter);
+app.use('/api/loggerTest', loggerTestRouter);
 
 /* http server */
 const httpServer = app.listen(Config.SERVER_PORT, () => {
-  console.log(`[SERVER] Server listen on port ${Config.SERVER_PORT}`);
+  logger.info(`[SERVER] Server listen on port ${Config.SERVER_PORT}`);
 });
 httpServer.on('error', (err) =>{
-  console.log(`[SERVER] Server error: ${err}`);
+  logger.info(`[SERVER] Server error: ${err}`);
 })
 
 /* websocket server */

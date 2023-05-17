@@ -1,4 +1,6 @@
 /* imports */
+import { logger } from '../../../logger.js'
+
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 
@@ -13,7 +15,7 @@ export default class MongoConnection {
         console.log(`[DB] Error: ${error.message}`);
         process.exit()
       } else {
-        console.log(`[DB] Connected`);
+        logger.info(`[DB] Connected`);
       }
     })
   }

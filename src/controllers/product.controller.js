@@ -50,7 +50,7 @@ export default class ProductController{
       res.status(200).json(response);
       
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -80,7 +80,7 @@ export default class ProductController{
       const product = await productService.getProductById(id);
       res.status(200).json(product);
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -92,7 +92,7 @@ export default class ProductController{
       await productService.updateProduct(id, product);
       res.status(200).json({ status: 'ok', message: 'Updated product' });
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
@@ -107,7 +107,7 @@ export default class ProductController{
   
       res.status(200).json({ status: 'ok', message: 'Deleted product' });
     } catch (error) {
-      console.log(`[ERROR] ${error.message}`);
+      req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
     }
   }
