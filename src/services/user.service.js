@@ -155,4 +155,23 @@ export default class UserService{
     }
   }
 
+  async upgradeToPremium(uid){
+    try {
+      let user = await this.repository.getUserById(uid);
+
+      if (!user){
+        throw new Error("User not found");
+      }
+
+      if (user.role === 'user'){
+        user = await this.repository.upgradeToPremium(uid);
+      } else if (user.role === 'premium'){
+        user = await this.repository.downgradeToUser(uid);
+      }
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

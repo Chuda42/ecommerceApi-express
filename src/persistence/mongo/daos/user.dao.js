@@ -91,4 +91,42 @@ export default class UserDao extends MongooseDao {
     }
   }
 
+  async upgradeToPremium(uid){
+    try {
+      const filter = {_id: uid}
+      const update = {role: 'premium'}
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserById(uid){
+    try {
+        
+      let user = await this.getObjectById(uid);
+
+      if (user === null) {
+        throw new Error(`User with id ${uid} not found`);
+      }
+
+      user = new UserDto(user);
+      return user;
+    }catch (error) {
+      throw error;
+    }
+  }
+
+  async downgradeToUser(uid){
+    try {
+      const filter = {_id: uid}
+      const update = {role: 'user'}
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

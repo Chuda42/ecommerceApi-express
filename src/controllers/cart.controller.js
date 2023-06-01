@@ -53,6 +53,8 @@ export default class CartController{
       const { cid, pid } = req.params;
       const userEmail = req.session.user
 
+      console.log('entra');
+
       await cartService.addProductToCart(userEmail, cid, pid);
 
       res.status(200).json({

@@ -54,10 +54,9 @@ export default class Utils {
     };
 
     setTimeout(() => {
-      console.log('se ejecuta el timeout');
       Utils.tokens[token] = null
     }
-    , 5000);
+    , 1000 * 60 * 60);
 
   }
 

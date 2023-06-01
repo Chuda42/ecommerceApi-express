@@ -64,4 +64,20 @@ export default class UserController{
     }
   }
 
+  async upgradeToPremium(req, res){
+    try{
+      const { uid } = req.params;
+
+      const user = await userService.upgradeToPremium(uid);
+
+      req.session.rol = 'premium';
+      res.status(200).json({ status: 'success', payload: user });
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
 }

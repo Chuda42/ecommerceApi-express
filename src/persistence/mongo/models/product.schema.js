@@ -2,6 +2,8 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
+import config from '../../../config/config.js'
+
 const ProductSchema = new mongoose.Schema({
   title:{
     type: String,
@@ -48,7 +50,12 @@ const ProductSchema = new mongoose.Schema({
   status:{
     type: Boolean,
     default: true
-  }
+  },
+
+  owner:{
+    type: String,
+    default: config.ADMIN_EMAIL
+  },
   
 });
 

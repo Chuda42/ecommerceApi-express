@@ -52,7 +52,7 @@ export default class CartService{
       if(user.cart !== cid){
         throw new Error('User does not have this cart');
       }
-      const cart = await cartRepository.addProductToCart(cid, pid);
+      const cart = await cartRepository.addProductToCart(userEmail, cid, pid);
       return cart
     } catch (error) {
       logger.error(`[ERROR SERVICE] ${error.message}`);

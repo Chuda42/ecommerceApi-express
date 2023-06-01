@@ -24,6 +24,9 @@ userRouter.route('/sendResetPassword')
 userRouter.route('/resetPassword')
               .post(userController.resetPassword)
 
+userRouter.route('/premium/:uid')
+              .get(userController.upgradeToPremium)
+
 
 /* export */
 export default userRouter;

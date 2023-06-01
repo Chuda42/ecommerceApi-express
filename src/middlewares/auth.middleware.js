@@ -28,9 +28,17 @@ export const isAdmin = (req, res, next) => {
 };
 
 export const isUser = async (req, res, next) => { 
-  if (req.session && req.session.user && req.session.rol === 'user') { // User is authenticated and is admin
+  if (req.session && req.session.user && req.session.rol === 'user' || req.session.rol === 'premium') { // User is authenticated and is admin
     return next();
 }
 return res.redirect('/login'); // User is not authenticated or is not admin, redirect to home
   
+}
+
+export const isAdminOrPremium = (req, res, next) => {
+  if (req.session && req.session.user && (req.session.rol === 'admin' || req.session.rol === 'premium')) { // User is authenticated and is admin
+      return next();
+  }
+  req.logger.error(`[ERROR] ${req.session.user} is not admin or premium`)
+  return res.redirect('/login'); // User is not authenticated or is not admin, redirect to home
 }

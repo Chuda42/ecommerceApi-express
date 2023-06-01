@@ -21,7 +21,7 @@ export default class SessionController{
 
   async loginUser(req, res){
     try{
-      let rol = "user"
+      let rol = req.user.role;
       let user = req.user;
 
       if(user.email === Config.ADMIN_EMAIL){
