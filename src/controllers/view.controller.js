@@ -8,6 +8,8 @@ const productService = new ProductService();
 const cartService = new CartService();
 const userService = new UserService();
 
+import Utils from '../utils.js'
+
 /**
  * class ViewController
  */
@@ -224,6 +226,32 @@ export default class ViewController{
         error: error.message
       });
     }
+  }
+
+  async getResetPasswordForm(req, res) {
+
+    const code = req.query.code;
+    const email = req.query.email;
+
+    if(!Utils.isValidToken(code)){
+      res.redirect('/forgotPassword')
+    }
+
+    res.render('resetPasswordForm', {
+      inSession: false,
+      title: 'Reset Password',
+      data: {
+        code: code,
+        email: email
+      }
+    });
+  }
+
+  async getForgotPassword(req, res) {
+    res.render('forgotPassword', {
+      inSession: false,
+      title: 'Forgot Password'
+    });
   }
 
 }

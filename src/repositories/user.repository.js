@@ -55,4 +55,40 @@ export default class UserRepository {
       throw error;
     }
   }
+
+  async updateUserPassword(email, password){
+    try {
+      const user = await this.dao.updateUserPassword(email, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  async upgradeToPremium(uid){
+    try {
+      const user = await this.dao.upgradeToPremium(uid);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserById(uid){
+    try {
+      const user = await this.dao.getUserById(uid);
+      const userEntity = new User(user);
+      return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async downgradeToUser(uid){
+    try {
+      const user = await this.dao.downgradeToUser(uid);
+      const userEntity = new User(user);
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

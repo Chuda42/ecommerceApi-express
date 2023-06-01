@@ -8,6 +8,7 @@ export default class CartRepository {
 
   constructor(){
     this.dao = FactoryDaos.getCartDao(Config.PERSISTENCE);
+    this.productDao = FactoryDaos.getProductDao(Config.PERSISTENCE);
   }
   
   async addCart(){
@@ -29,8 +30,18 @@ export default class CartRepository {
     }
   }
 
-  async addProductToCart(cid, pid){
+  async addProductToCart(userEmail, cid, pid){
     try {
+      
+      const product = await this.productDao.getProductById(pid);
+
+      console.log(product);
+      console.log(userEmail);
+
+      if(product.owner === userEmail){
+        throw new Error('User can not add your own product to cart');
+      }
+
       let cart = await this.dao.addProductToCart(cid, pid);
       cart = new Cart(cart);
       return cart;

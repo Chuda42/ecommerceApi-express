@@ -62,6 +62,8 @@ export default class ProductController{
       product.price = parseInt(product.price);
       product.stock = parseInt(product.stock);
   
+      product.owner = req.session.user;
+
       let newProduct = await productService.addProduct(product);
   
       /* get io server */
@@ -88,8 +90,9 @@ export default class ProductController{
   async updateProduct(req, res){
     try {
       const product = req.body;
+      const user = req.session.user;
       const id = req.params.pid 
-      await productService.updateProduct(id, product);
+      await productService.updateProduct(id, product, user);
       res.status(200).json({ status: 'ok', message: 'Updated product' });
     } catch (error) {
       req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
@@ -100,7 +103,8 @@ export default class ProductController{
   async deleteProduct(req, res){
     try {
       const id = req.params.pid;
-      await productService.deleteProduct(id);
+      const user = req.session.user;
+      await productService.deleteProduct(id, user);
   
       /* get io server */
       req.app.get('io').emitSockets('deleteProduct', id);

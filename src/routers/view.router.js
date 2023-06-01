@@ -43,5 +43,12 @@ viewRouter.route('/cartsIds')
 viewRouter.route('/profile')
           .get(httpLogMiddleware, isLogged, viewController.getUserProfile)
 
+viewRouter.route('/resetPasswordForm')
+          .get(httpLogMiddleware, isNotLogged, viewController.getResetPasswordForm)
+
+viewRouter.route('/forgotPassword')
+          .get(httpLogMiddleware, isNotLogged, viewController.getForgotPassword)
+
+
 /* export */
 export default viewRouter;

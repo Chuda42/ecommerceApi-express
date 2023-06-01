@@ -36,7 +36,7 @@ btns.forEach((btn) => {
           window.location.replace(`/cart/${cartId}`)
           return
         }
-        throw new Error('Cart not found');
+        throw new Error('Cart not found or you are the owner');
       }).catch(error => {
         swal.fire({
           title: 'Error',

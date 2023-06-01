@@ -92,12 +92,15 @@ const addEvents = (id) => {
             'Content-Type': 'application/json'
           }
         }).then((res) => {
-          if (res.status === 403) {
-            window.location.replace('/');
+          if (res.status === 403 || res.status === 401 || res.status === 500 || res.status === 400) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `you have no permissions to delete this product`
+            })
           } else {
             Swal.fire(
               'Deleted!',
-              `${data.message}`,
               'success'
             )
           }

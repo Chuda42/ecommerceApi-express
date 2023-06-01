@@ -114,7 +114,8 @@ export default class ProductDao extends MongooseDao{
       code: product.code,
       thumbnails: product.thumbnails,
       category: product.category,
-      status: product.status
+      status: product.status,
+      owner: product.owner
     }
     return parsedProduct;
   }

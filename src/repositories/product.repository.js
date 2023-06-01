@@ -53,9 +53,16 @@ export default class ProductRepository {
     }
   }
 
-  async updateProduct(pid, product) {
+  async updateProduct(pid, product, user) {
     try {
       const updatedProductDto = new ProductDto(product);
+
+      const prod = await this.getProductById(pid);
+
+      if (prod.owner !== user && user !== Config.ADMIN_EMAIL) {
+        throw new Error('You are not the owner of this product');
+      }
+
       let updatedProduct = await this.dao.updateProduct(pid, updatedProductDto);
       updatedProduct = new Product(updatedProduct);
       return updatedProduct;
@@ -65,8 +72,15 @@ export default class ProductRepository {
     }
   }
 
-  async deleteProduct(pid) {
+  async deleteProduct(pid, user) {
     try {
+
+      const product = await this.getProductById(pid);
+
+      if (product.owner !== user && user !== Config.ADMIN_EMAIL) {
+        throw new Error('You are not the owner of this product');
+      }
+
       let deletedProduct = await this.dao.deleteProduct(pid);
       deletedProduct = new Product(deletedProduct);
       return deletedProduct;

@@ -1,5 +1,5 @@
 export default class ProductDto {
-  constructor({_id, title, description, price, stock, code, thumbnails, category, status}) {
+  constructor({_id, title, description, price, stock, code, thumbnails, category, status, owner}) {
     this.id = _id?_id.toString():'' ;
     this.title = title;
     this.description = description;
@@ -9,5 +9,6 @@ export default class ProductDto {
     this.thumbnails = thumbnails;
     this.category = category;
     this.status = status;
+    this.owner = owner;
   }
 }

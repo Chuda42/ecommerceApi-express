@@ -62,10 +62,10 @@ export default class ProductService{
     }
   }
 
-  async updateProduct(pid, product){
+  async updateProduct(pid, product, user){
     try {
         
-      let updatedProduct = await productRepository.updateProduct(pid, product);
+      let updatedProduct = await productRepository.updateProduct(pid, product, user);
       return updatedProduct;
 
     }catch (error) {
@@ -74,10 +74,10 @@ export default class ProductService{
     }
   }
 
-  async deleteProduct(pid){
+  async deleteProduct(pid, user){
     try {
         
-      let deleted = await productRepository.deleteProduct(pid);
+      let deleted = await productRepository.deleteProduct(pid, user);
       return deleted;
 
     }catch (error) {
