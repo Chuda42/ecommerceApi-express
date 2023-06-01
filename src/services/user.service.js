@@ -1,5 +1,6 @@
 /* imports */
 import { logger } from '../logger.js';
+import MailService from './mail.service.js';
 import Utils from '../utils.js'
 import UserRepository from '../repositories/user.repository.js';
 import CartRepository from '../repositories/cart.repository.js';
@@ -98,6 +99,60 @@ export default class UserService{
       }
     }
     return null;
+  }
+
+  async sendResetPassword(email){
+    try {
+
+      let user = await this.repository.getUserByEmail(email);
+
+      if (!user){
+        throw new Error("User not found");
+      }
+
+      const newCode = await Utils.generateToken();
+      Utils.saveToken(newCode);
+      const link = `http://localhost:8080/resetPasswordForm?code=${newCode}&&email=${email}`
+
+      const mailService = new MailService();
+
+      const to = user.email;
+      const subject = 'Reset Password';
+      const body = `<h1>link to reset password </h1>
+      <a href='${link}'>link</a>`
+
+      mailService.sendMail(to, subject, body);
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async resetPassword(token, email, newPassword){
+    try {
+      let user = await this.repository.getUserByEmail(email);
+
+      if (!user){
+        throw new Error("User not found");
+      }
+
+      if (!Utils.isValidToken(token)){
+        throw new Error("Expired or invalid token");
+      }else {
+        user = await this.repository.auth(email, newPassword)
+        if (user){
+          throw new Error("New password must be different from old password");
+        }
+      }
+
+      const password = Utils.createHash(newPassword);
+
+      await this.repository.updateUserPassword(email, password);
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 
 }

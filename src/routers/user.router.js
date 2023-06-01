@@ -18,6 +18,12 @@ userRouter.route('/')
              .get(userController.getUsers)
              .post(userController.addUser)
 
+userRouter.route('/sendResetPassword')
+              .get(userController.sendResetPassword)
+
+userRouter.route('/resetPassword')
+              .post(userController.resetPassword)
+
 
 /* export */
 export default userRouter;

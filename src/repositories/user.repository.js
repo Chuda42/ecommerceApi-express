@@ -55,4 +55,12 @@ export default class UserRepository {
       throw error;
     }
   }
+
+  async updateUserPassword(email, password){
+    try {
+      const user = await this.dao.updateUserPassword(email, password);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -66,6 +66,17 @@ export default class MongooseDao{
     }
   }
 
+  async updateObjectByFilter(filter, object){
+    try {
+
+      let updateObject = await this.model.findOneAndUpdate(filter, object);
+      return updateObject;
+
+    }catch (err){
+      throw err;
+    }
+  }
+
   async deleteObject(id){
     try {
         

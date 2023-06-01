@@ -2,9 +2,10 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
-import mongoose from 'mongoose';
+import mongoose, { set } from 'mongoose';
 
 /* const */
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +31,42 @@ export default class Utils {
     /* uuid */
     const code = uuidv4();
     return code;
+  }
+
+  static generateToken = () => {
+    /* crypto */
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(20, (err, buf) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(buf.toString('hex'));
+      });
+    })
+  }
+
+  static tokens = {}
+
+  static saveToken = (token) => {
+    Utils.tokens[token] = {
+      token,
+      createdAt: new Date()
+    };
+
+    setTimeout(() => {
+      console.log('se ejecuta el timeout');
+      Utils.tokens[token] = null
+    }
+    , 5000);
+
+  }
+
+  static isValidToken = (token) => {
+    if(!token){
+      return false;
+    }
+    console.log(Utils.tokens[token]);
+    return Utils.tokens[token] ? true : false;
   }
 
   static generateProduct = () => {

@@ -37,4 +37,31 @@ export default class UserController{
     }
   }
 
+  async sendResetPassword(req, res){
+    try{
+      const { email } = req.query;
+
+      const user = await userService.sendResetPassword(email);
+      res.status(200).json({ status: 'success', payload: user });
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
+  async resetPassword(req, res){
+    try{
+      const { email, token, newPassword } = req.body;
+
+      const user = await userService.resetPassword(token, email, newPassword);
+      res.status(200).json({ status: 'success', payload: user });
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
 }

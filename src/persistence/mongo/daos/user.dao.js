@@ -80,4 +80,15 @@ export default class UserDao extends MongooseDao {
     }
   }
 
+  async updateUserPassword(email, password){
+    try {
+      const filter = {email: email}
+      const update = {password: password}
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
