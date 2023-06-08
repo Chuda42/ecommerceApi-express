@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import path from 'path';
 import passport from 'passport';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 
 import Utils from './utils.js';
@@ -28,6 +30,21 @@ import loggerTestRouter from './routers/loggerTest.router.js'
 
 /* app */
 const app = express();
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Ecommerce API',
+      version: '1.0.0',
+      description: 'Ecommerce API. This API offers a simplified set of endpoints to manage crucial e-commerce operations. It enables users to create, read, update, and delete product listings, providing essential details such as product name, description, price, and availability. Additionally, the API supports user authentication and authorization mechanisms to ensure secure access to sensitive data. ',
+    }
+  },
+  apis: [`${Utils.__dirname}/docs/**/*.yaml`]
+}
+
+const spects = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spects));
 
 /* handlebars settings */
 app.engine('handlebars', handlebars.engine());
