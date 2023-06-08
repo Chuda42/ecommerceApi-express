@@ -1,0 +1,349 @@
+paths:
+  /api/products/:
+    get:
+      summary: Returns all products.
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Limit the number of products displayed per page. Default is 10.
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: Page number you are on
+          schema:
+            type: number
+        - name: sort
+          in: query
+          description: sorts the products according to the price, it can be ascending (asc) or descending (desc)
+          schema:
+            type: string
+        - name: query
+          in: query
+          description: Filter the products according to the query conditions
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The products were successfully extracted from the database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductConID'
+                  totalPages:
+                    type: integer
+                    example: 5
+                  page:
+                    type: integer
+                    example: 2
+                  nextPage:
+                    type: integer
+                    example: 3
+                  prevPage:
+                    type: integer
+                    example: 1
+                  hasPrevPage:
+                    type: boolean
+                    example: true
+                  hasNextPage:
+                    type: boolean
+                    example: true
+        "400":
+          description: The products were not found.
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: error
+                error:
+                  type: string
+                  example: "The products where not found"
+
+      description: |
+        Precondition:
+        - The user must be authenticated.
+    
+    post:
+      summary: Add a new product.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSinID'
+      responses:
+        "200":
+          description: Product successfully added.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Added product
+        "400":
+          description: Invalid request body or error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: "One or more of the following fields are missing or invalid: 
+                        List of requiered properties:
+                        - title: string, received undefine
+                        - description: string, received undefine
+                        - price: number, received undefine
+                        - stock: number, received undefine
+                        - code: string, received undefine
+                        - category: string, received undefine
+                        "
+      description: |
+        Precondition:
+        - The user must be authenticated.
+        - The user must be admin or premium.
+
+  /api/products/{pid}:
+    get:
+      summary: Get a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product to retrieve.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation. Returns the product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid request or error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: "Product not found"
+      description: |
+        Precondition:
+        - The user must be authenticated.
+
+      put:
+        summary: Update a product by ID.
+        tags:
+          - Products
+        parameters:
+          - name: pid
+            in: path
+            description: ID of the product to update.
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        responses:
+          "200":
+            description: Product successfully updated.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: ok
+                    message:
+                      type: string
+                      example: Updated product
+          "400":
+            description: Invalid request or error occurred.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: error
+                    error:
+                      type: string
+                      example: Error message
+          description: |
+            Precondition:
+            - The user must be authenticated.
+            - The user must be admin or premium.
+            - The user must be the owner of product, or be admin.
+
+    delete:
+      summary: Delete a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product successfully deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: Deleted product
+        "400":
+          description: Invalid request or error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Error message
+        description: |
+          Precondition:
+          - The user must be authenticated.
+          - The user must be admin or premium.
+          - The user must be the owner of product, or be admin.
+
+components:
+  schemas:
+    ProductSinID:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        code:
+          type: string
+        thumbnails:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        status:
+          type: string
+        owner:
+          type: string
+      required:
+        - title
+        - description
+        - code
+        - category
+        - price
+        - stock
+
+    ProductConID:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        code:
+          type: string
+        thumbnails:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        status:
+          type: string
+        owner:
+          type: string
+      required:
+        - id
+        - title
+        - description
+        - code
+        - category
+        - price
+        - stock
+
+
+    ProductResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        code:
+          type: string
+        thumbnails:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        status:
+          type: string
+        owner:
+          type: string
