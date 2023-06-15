@@ -19,11 +19,12 @@ export default class CartController{
 
   async addCart(req, res) {
     try {
-      await cartService.addCart();
+      const newCart = await cartService.addCart();
       
       res.status(200).json({
         status: 'success',
-        message: 'Cart created'
+        message: 'Cart created',
+        payload: newCart
       });
 
     } catch (error) {
