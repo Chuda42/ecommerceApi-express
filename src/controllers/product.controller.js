@@ -69,7 +69,7 @@ export default class ProductController{
       /* get io server */
       req.app.get('io').emitSockets('newProduct', newProduct);
   
-      res.status(200).json({ status: 'ok', message: 'Added product' });
+      res.status(200).json({ status: 'ok', message: 'Added product', payload: newProduct });
     }catch(e){
       next(e);
     }
@@ -93,7 +93,7 @@ export default class ProductController{
       const user = req.session.user;
       const id = req.params.pid 
       await productService.updateProduct(id, product, user);
-      res.status(200).json({ status: 'ok', message: 'Updated product' });
+      res.status(200).json({ status: 'ok', message: 'Updated product', payload: product });
     } catch (error) {
       req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
@@ -109,7 +109,7 @@ export default class ProductController{
       /* get io server */
       req.app.get('io').emitSockets('deleteProduct', id);
   
-      res.status(200).json({ status: 'ok', message: 'Deleted product' });
+      res.status(200).json({ status: 'ok', message: 'Deleted product', payload: id });
     } catch (error) {
       req.logger.error(`[ERROR CONTROLLER] ${error.message}`);
       res.status(400).json({ status: 'error', error: error.message });
