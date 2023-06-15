@@ -44,4 +44,8 @@ export default class Config{
   /* LOGS */
   static LOGS_ENV = process.env.LOGS_ENV;
 
+  /* TEST */
+  static TEST_EMAIL = process.env.TEST_EMAIL;
+  static TEST_PASSWORD = process.env.TEST_PASSWORD;
+
 }

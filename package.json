@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx mocha src/test/*.test.js",
     "start": "node src/app.js",
     "dev": "nodemon --watch src src/app.js"
   },
@@ -44,5 +44,10 @@
     "twilio": "^4.10.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

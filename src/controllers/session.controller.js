@@ -50,7 +50,7 @@ export default class SessionController{
   }
 
   async failRegister(req, res){
-    req.logger.error(`[ERROR CONTROLLER] Error logging in`);
+    req.logger.error(`[ERROR CONTROLLER] Error register in`);
     res.status(400).json({status: 'error', error: 'Error registering user'})
   }
 
