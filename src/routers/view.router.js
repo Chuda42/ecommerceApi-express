@@ -49,6 +49,8 @@ viewRouter.route('/resetPasswordForm')
 viewRouter.route('/forgotPassword')
           .get(httpLogMiddleware, isNotLogged, viewController.getForgotPassword)
 
+viewRouter.route('/uploadDocuments')
+          .get(httpLogMiddleware, isLogged, viewController.getUploadDocuments)
 
 /* export */
 export default viewRouter;

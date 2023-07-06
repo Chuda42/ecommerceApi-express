@@ -91,4 +91,24 @@ export default class UserRepository {
     }
   }
 
+  async updateLastConnection(email){
+    try {
+      const user = await this.dao.updateLastConnection(email);
+      const userEntity = new User(user);
+      return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async uploadDocuments (uid, documents){
+    try {
+      const user = await this.dao.uploadDocuments(uid, documents);
+      const userEntity = new User(user);
+      return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

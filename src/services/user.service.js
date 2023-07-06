@@ -174,4 +174,22 @@ export default class UserService{
     }
   }
 
+  async updateLastConnection(email){
+    try {
+      let user = await this.repository.updateLastConnection(email);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async uploadDocuments(uid, documents){
+    try {
+      let user = await this.repository.uploadDocuments(uid, documents);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

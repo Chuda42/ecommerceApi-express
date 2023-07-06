@@ -254,4 +254,15 @@ export default class ViewController{
     });
   }
 
+  async getUploadDocuments(req, res) {
+    const user = await userService.getUserByEmail(req.session.user);
+    res.render('uploadDocuments', {
+      inSession: true,
+      title: 'Upload Documents',
+      data: {
+        uid: user.id
+      }
+    });
+  }
+
 }

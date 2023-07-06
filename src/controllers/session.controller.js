@@ -32,6 +32,9 @@ export default class SessionController{
       req.session.user = user.email;
       req.session.rol = rol
 
+      /* update last connection */
+      const usr = await userService.updateLastConnection(user.email);
+
       res.status(200).json({ status: 'success', payload: user });
 
     }catch (error){
@@ -56,7 +59,11 @@ export default class SessionController{
 
   async logoutUser(req, res){
     try{
+
+      /* update last connection */
+      const usr = await userService.updateLastConnection(req.session.user);
       req.session.destroy();
+
       res.status(200).json({ status: 'success', payload: 'User logged out' });
 
     }catch (error){
