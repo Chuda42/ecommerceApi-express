@@ -67,6 +67,8 @@ export default class UserRepository {
   async upgradeToPremium(uid){
     try {
       const user = await this.dao.upgradeToPremium(uid);
+      const userEntity = new User(user);
+      return userEntity;
     } catch (error) {
       throw error;
     }
@@ -86,6 +88,7 @@ export default class UserRepository {
     try {
       const user = await this.dao.downgradeToUser(uid);
       const userEntity = new User(user);
+      return userEntity;
     } catch (error) {
       throw error;
     }
@@ -101,9 +104,9 @@ export default class UserRepository {
     }
   }
 
-  async uploadDocuments (uid, documents){
+  async uploadDocuments (uid, documents, addressProof=false, identityProof=false, accountStatementProof=false){
     try {
-      const user = await this.dao.uploadDocuments(uid, documents);
+      const user = await this.dao.uploadDocuments(uid, documents, addressProof, identityProof, accountStatementProof);
       const userEntity = new User(user);
       return userEntity;
     } catch (error) {

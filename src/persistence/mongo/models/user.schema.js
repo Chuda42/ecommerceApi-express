@@ -53,6 +53,21 @@ const UserSchema = new mongoose.Schema({
     default: []
   },
 
+  addressProof:{
+    type: Boolean,
+    default: false
+  },
+
+  identityProof:{
+    type: Boolean,
+    default: false
+  },
+
+  accountStatamentProof:{
+    type: Boolean,
+    default: false
+  },
+
   last_connection:{
     type: Date,
   }

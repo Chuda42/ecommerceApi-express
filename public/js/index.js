@@ -73,7 +73,19 @@ premiumBtn.addEventListener('click', (e) => {
         }).then((res) => {
           if (res.status === 200) {
             window.location.replace('/');
+          }else{
+            swal.fire({
+              title: 'Error',
+              text: 'Not allowed to upgrade to premium, please upload the documents first',
+              icon: 'error'
+            })
           }
+        }).catch((err) => {
+          swal.fire({
+            title: 'Error',
+            text: err.message,
+            icon: 'error'
+          })
         });
       });
     } else {

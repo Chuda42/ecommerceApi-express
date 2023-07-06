@@ -165,8 +165,10 @@ export default class UserService{
 
       if (user.role === 'user'){
         user = await this.repository.upgradeToPremium(uid);
+        user.role = 'premium';
       } else if (user.role === 'premium'){
         user = await this.repository.downgradeToUser(uid);
+        user.role = 'user';
       }
       return user;
     } catch (error) {
@@ -183,9 +185,9 @@ export default class UserService{
     }
   }
 
-  async uploadDocuments(uid, documents){
+  async uploadDocuments(uid, documents, addressProof=false, identityProof=false, accountStatementProof=false){
     try {
-      let user = await this.repository.uploadDocuments(uid, documents);
+      let user = await this.repository.uploadDocuments(uid, documents, addressProof, identityProof, accountStatementProof);
       return user;
     } catch (error) {
       throw error;

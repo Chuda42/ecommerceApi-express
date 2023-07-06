@@ -94,6 +94,15 @@ export default class UserDao extends MongooseDao {
   async upgradeToPremium(uid){
     try {
       const filter = {_id: uid}
+      const usr = await this.getUserById(uid);
+      if(usr.identityProof === undefined || usr.addressProof === undefined || usr.accountStatamentProof === undefined){
+        await this.updateObjectByFilter(filter, {accountStatamentProof: false, identityProof: false, addressProof: false})
+      }
+
+      if(usr.identityProof === false || usr.addressProof === false || usr.accountStatamentProof === false){
+        throw new Error("You must upload all the documents to upgrade to premium");
+      }
+
       const update = {role: 'premium'}
       const user = await this.updateObjectByFilter(filter, update);
       return user;
@@ -140,9 +149,25 @@ export default class UserDao extends MongooseDao {
     }
   }
 
-  async uploadDocuments(uid, documents){
+  async uploadDocuments(uid, documents, addressProof=false, identityProof=false, accountStatementProof=false){
     try {
       const filter = {_id: uid}
+
+      if (addressProof){
+        const update = {addressProof: true}
+        await this.updateObjectByFilter(filter, update);
+      }
+
+      if (identityProof){
+        const update = {identityProof: true}
+        await this.updateObjectByFilter(filter, update);
+      }
+
+      if (accountStatementProof){
+        const update = {accountStatamentProof: true}
+        await this.updateObjectByFilter(filter, update);
+      }
+
       const update =  { $push: { documents: { $each: documents } } }
       const user = await this.updateObjectByFilter(filter, update);
       return user;
