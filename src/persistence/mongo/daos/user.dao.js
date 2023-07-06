@@ -129,4 +129,26 @@ export default class UserDao extends MongooseDao {
     }
   }
 
+  async updateLastConnection(email){
+    try {
+      const filter = {email: email}
+      const update = {last_connection: Date.now()}
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async uploadDocuments(uid, documents){
+    try {
+      const filter = {_id: uid}
+      const update =  { $push: { documents: { $each: documents } } }
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

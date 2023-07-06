@@ -50,3 +50,34 @@ logoutBtn.addEventListener('click', (e) => {
     }
   });
 });
+
+const premiumBtn = document.querySelector('#premiumBtn');
+
+premiumBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  fetch('/api/sessions/current', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((res) => {
+    if (res.status === 200) {
+      const json = res.json();
+      Promise.resolve(json).then((res) => {
+        fetch(`/api/users/premium/${res.payload.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            window.location.replace('/');
+          }
+        });
+      });
+    } else {
+      alert('Upgrade failed');
+    }
+  });
+});
