@@ -70,7 +70,7 @@ export default class UserController{
 
       const user = await userService.upgradeToPremium(uid);
 
-      req.session.rol = 'premium';
+      req.session.rol = user.role;
       res.status(200).json({ status: 'success', payload: user });
 
     }catch (error){
@@ -86,6 +86,9 @@ export default class UserController{
       const files = req.files;
 
       let documents = [];
+      let identityProof = false;
+      let addressProof = false;
+      let accountStatement = false;
 
       if (files.profile){
         documents.push({
@@ -99,6 +102,7 @@ export default class UserController{
           name: files.identity[0].filename,
           reference: files.identity[0].destination
         })
+        identityProof = true;
       }
 
       if (files.addressProof){
@@ -106,6 +110,7 @@ export default class UserController{
           name: files.addressProof[0].filename,
           reference: files.addressProof[0].destination
         })
+        addressProof = true;
       }
 
       if (files.accountStatement){
@@ -113,11 +118,12 @@ export default class UserController{
           name: files.accountStatement[0].filename,
           reference: files.accountStatement[0].destination
         })
+        accountStatement = true;
       }
 
-      const user = await userService.uploadDocuments(uid, documents);
+      const user = await userService.uploadDocuments(uid, documents, identityProof, addressProof, accountStatement);
 
-      res.status(200).json({ status: 'success', payload: user });
+      res.status(200).redirect('/')
 
     }catch (error){
       req.logger.error(`[ERROR] ${error.message}`);
