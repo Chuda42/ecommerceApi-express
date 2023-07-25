@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express'
+import Config from './config/config.js'
 const app = express();
-const Config = { SERVER_PORT: 3000 }; // Asume que SERVER_PORT está definido correctamente en tu código.
 
 app.get('/hola', (req, res) => {
   res.send('Hola Mundo');
