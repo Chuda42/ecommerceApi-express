@@ -20,6 +20,18 @@ export default class MongooseDao{
     }
   }
 
+  async getObjectsFilter(filter = {}){
+    try{
+      
+      //lean: convert mongoose object to json
+      let objects = await this.model.find(filter).lean();
+      return objects;
+    
+    }catch(err){
+      throw err;
+    }
+  }
+
   async saveObject(object){
     try{
 
@@ -124,6 +136,15 @@ export default class MongooseDao{
       if (!result) {
         throw new Error(`Object with id ${objectId} not found in ${collection}`);
       }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+    async deleteObjects(filter = {}) {
+    try {
+      const result = await mongoose.model(this.collection).deleteMany(filter);
       return result;
     } catch (error) {
       throw error;

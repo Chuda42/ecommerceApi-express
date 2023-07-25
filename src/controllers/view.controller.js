@@ -34,11 +34,23 @@ export default class ViewController{
       rol: req.session.rol
     } 
     
-    //building response
-    const data = {
-      status : 'success',
-      payload : JSON.parse(JSON.stringify(productList)),
-      user: user
+    let data = null;
+
+    if(user.rol === 'admin'){
+      data = {
+        status : 'success',
+        payload : JSON.parse(JSON.stringify(productList)),
+        user: user,
+        isAdmin: true
+      }
+    }else{
+      //building response
+      data = {
+        status : 'success',
+        payload : JSON.parse(JSON.stringify(productList)),
+        user: user,
+        isAdmin: false
+      }
     }
 
     res.render('home', {
@@ -261,6 +273,17 @@ export default class ViewController{
       title: 'Upload Documents',
       data: {
         uid: user.id
+      }
+    });
+  }
+
+  async getModifyUser(req, res) {
+    const users = await userService.getUsers();
+    res.render('modifyUsers', {
+      inSession: true,
+      title: 'Modify User',
+      data: {
+        users: users
       }
     });
   }

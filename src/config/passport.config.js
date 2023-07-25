@@ -82,6 +82,7 @@ const initializePassport = () => {
         }
   
         const userCreated = await userService.addUserByThirdParty(newUser);
+        const usr = await userService.updateLastConnection(userCreated.email);
         return done(null, userCreated);
       }
     })

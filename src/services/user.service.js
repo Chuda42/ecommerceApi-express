@@ -194,4 +194,37 @@ export default class UserService{
     }
   }
 
+  async deleteInactiveUsers(){
+    try {
+      const mailService = new MailService();
+      const deleteUsers = await this.repository.deleteInactiveUsers();
+      for (const user of deleteUsers) {
+        const to = user.email;
+        const subject = 'Delete User';
+        const body = '<h1>Your account was deleted due to inactivity</h1>';
+        await mailService.sendMail(to, subject, body);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserRol(uid, role){
+    try {
+      let user = await this.repository.updateUserRol(uid, role);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteUser(uid){
+    try {
+      let user = await this.repository.deleteUser(uid);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

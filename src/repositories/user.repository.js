@@ -114,4 +114,34 @@ export default class UserRepository {
     }
   }
 
+  async deleteInactiveUsers(){
+    try {
+      let deletedUsers = await this.dao.deleteInactiveUsers();
+      deletedUsers = deletedUsers.map(user => new User(user));
+      return deletedUsers;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserRol(uid, rol){
+    try {
+      const user = await this.dao.updateUserRol(uid, rol);
+      const userEntity = new User(user);
+      return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteUser(uid){
+    try {
+      const user = await this.dao.deleteUser(uid);
+      const userEntity = new User(user);
+      return userEntity;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

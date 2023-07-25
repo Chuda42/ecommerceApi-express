@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 import httpLogMiddleware from '../middlewares/httpLog.middleware.js';
-import { isLogged, isNotLogged, isUser } from '../middlewares/auth.middleware.js';
+import { isLogged, isNotLogged, isUser, isAdmin } from '../middlewares/auth.middleware.js';
 import ViewController from '../controllers/view.controller.js'
 
 /* controller */
@@ -52,5 +52,7 @@ viewRouter.route('/forgotPassword')
 viewRouter.route('/uploadDocuments')
           .get(httpLogMiddleware, isLogged, viewController.getUploadDocuments)
 
+viewRouter.route('/modifyUser')
+          .get(httpLogMiddleware, /*isAdmin,*/ viewController.getModifyUser)
 /* export */
 export default viewRouter;

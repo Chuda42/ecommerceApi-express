@@ -16,7 +16,14 @@ export default class UserController{
 
   async getUsers(req, res){
     try{
-      const users = await userService.getUsers();
+      const userList = await userService.getUsers();
+      const users = userList.map((user) => {
+        return {
+          name: user.first_name ,
+          email: user.email,
+          role: user.role,
+        }
+      })
       res.status(200).json({ status: 'success', payload: users });
 
     }catch (error){
@@ -124,6 +131,47 @@ export default class UserController{
       const user = await userService.uploadDocuments(uid, documents, identityProof, addressProof, accountStatement);
 
       res.status(200).redirect('/')
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
+  async deleteInactiveUsers(req, res){
+    try{
+      await userService.deleteInactiveUsers();
+      res.status(200).json({ status: 'success' });
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
+  async updateUserRol(req, res){
+    try{
+      const { uid } = req.params;
+      const { rol } = req.body;
+
+      const user = await userService.updateUserRol(uid, rol);
+      res.status(200).json({ status: 'success', payload: user });
+
+    }catch (error){
+      req.logger.error(`[ERROR] ${error.message}`);
+
+      res.status(400).json({ status: 'error', error: error.message });
+    }
+  }
+
+  async deleteUser(req, res){
+    try{
+      const { uid } = req.params;
+
+      await userService.deleteUser(uid);
+      res.status(200).json({ status: 'success' });
 
     }catch (error){
       req.logger.error(`[ERROR] ${error.message}`);
