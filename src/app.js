@@ -8,7 +8,6 @@ import passport from 'passport';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-
 import Utils from './utils.js';
 import { addLogger, logger } from './logger.js';
 import Config from './config/config.js';
