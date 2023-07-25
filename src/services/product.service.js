@@ -1,6 +1,7 @@
 import { logger } from '../logger.js';
 import ProductRepository from '../repositories/product.repository.js'
 import ProductErrors from './errors/products.errors.js'
+import MailService from './mail.service.js';
 import {generateProductErrorInfo} from './errors/error.info.js'
 import {EErrors} from './errors/error.enums.js'
 
@@ -78,6 +79,10 @@ export default class ProductService{
     try {
         
       let deleted = await productRepository.deleteProduct(pid, user);
+      if (deleted.owner) {
+        const mailService = new MailService();
+        await mailService.sendMail(deleted.owner, 'Product deleted', `The product ${deleted.title} has been deleted`);
+      }
       return deleted;
 
     }catch (error) {

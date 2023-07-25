@@ -176,4 +176,40 @@ export default class UserDao extends MongooseDao {
     }
   }
 
+  async deleteInactiveUsers(){
+    try {
+      const filter = {
+        last_connection: {
+          $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2)
+        }
+      }
+      const deletedUsers = await this.getObjectsFilter(filter);
+      await this.deleteObjects(filter);
+      return deletedUsers;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserRol(uid, role){
+    try {
+      const filter = {_id: uid}
+      const update = {role: role}
+      const user = await this.updateObjectByFilter(filter, update);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteUser(uid){
+    try {
+      const filter = {_id: uid}
+      const user = await this.deleteObject(filter);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

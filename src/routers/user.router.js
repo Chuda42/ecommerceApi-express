@@ -18,6 +18,11 @@ userRouter.use(httpLogMiddleware);
 userRouter.route('/')
              .get(userController.getUsers)
              .post(userController.addUser)
+             .delete(userController.deleteInactiveUsers)
+
+userRouter.route('/:uid')
+              .put(userController.updateUserRol)
+              .delete(userController.deleteUser)
 
 userRouter.route('/sendResetPassword')
               .get(userController.sendResetPassword)

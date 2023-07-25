@@ -29,16 +29,26 @@ export default class ViewController{
     const productList = await productService.getProducts();
 
     //getting user
-    const user = {
-      email: req.session.user,
-      rol: req.session.rol
-    } 
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
     
-    //building response
-    const data = {
-      status : 'success',
-      payload : JSON.parse(JSON.stringify(productList)),
-      user: user
+    let data = null;
+
+    if(user.rol === 'admin'){
+      data = {
+        status : 'success',
+        payload : JSON.parse(JSON.stringify(productList)),
+        user,
+        isAdmin: true
+      }
+    }else{
+      //building response
+      data = {
+        status : 'success',
+        payload : JSON.parse(JSON.stringify(productList)),
+        user: user,
+        isAdmin: false
+      }
     }
 
     res.render('home', {
@@ -63,6 +73,10 @@ export default class ViewController{
     const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?page=${productList.prevPage}` : null;
     const nextPage = (productList.hasNextPage) ? `${req.baseUrl}?page=${productList.nextPage}` : null;
 
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
+    const isAdmin = req.session.rol == 'admin';
+
     //building response
     const data = {
       status : 'success',
@@ -72,7 +86,9 @@ export default class ViewController{
       hasPrevPage : productList.hasPrevPage,
       hasNextPage : productList.hasNextPage,
       prevPage,
-      nextPage
+      nextPage,
+      user,
+      isAdmin: isAdmin
     }
 
     res.render('products', {
@@ -261,6 +277,17 @@ export default class ViewController{
       title: 'Upload Documents',
       data: {
         uid: user.id
+      }
+    });
+  }
+
+  async getModifyUser(req, res) {
+    const users = await userService.getUsers();
+    res.render('modifyUsers', {
+      inSession: true,
+      title: 'Modify User',
+      data: {
+        users: users
       }
     });
   }

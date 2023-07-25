@@ -48,7 +48,7 @@
             <a class="nav-link active" href="/products">Products</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href ="#" id = "cartsNavBarSelec">Carts</a>
+            <a class="nav-link active" href ="/cart/{{data.user.cart}}">Cart</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href ="/cartsIds" id = "cartsNavBarSelec">verCartsIds</a>
@@ -59,9 +59,15 @@
           <li class="nav-item">
             <a class="nav-link active" href ="/uploadDocuments" id = "cartsNavBarSelec">Upload documents</a>
           </li>
-          <li class="nav-item">
-            <button id="premiumBtn">premium</button>
-          </li>
+          {{#if data.isAdmin}}
+            <li class="nav-item">
+              <a class="nav-link active" href="/modifyUser" id="cartsNavBarSelec">Users</a>
+            </li>
+          {{else}}
+            <li class="nav-item">
+              <button id="premiumBtn">premium</button>
+            </li>
+          {{/if}}
           <li class="nav-item">
             <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i></button>
           </li>

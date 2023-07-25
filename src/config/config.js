@@ -48,4 +48,7 @@ export default class Config{
   static TEST_EMAIL = process.env.TEST_EMAIL;
   static TEST_PASSWORD = process.env.TEST_PASSWORD;
 
+  /* STRIPE */
+  static STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+
 }

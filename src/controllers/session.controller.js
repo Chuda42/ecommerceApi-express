@@ -33,8 +33,10 @@ export default class SessionController{
       req.session.rol = rol
 
       /* update last connection */
-      const usr = await userService.updateLastConnection(user.email);
-
+      if(user.email != Config.ADMIN_EMAIL){
+        const usr = await userService.updateLastConnection(user.email);
+      }
+      
       res.status(200).json({ status: 'success', payload: user });
 
     }catch (error){
@@ -61,7 +63,9 @@ export default class SessionController{
     try{
 
       /* update last connection */
-      const usr = await userService.updateLastConnection(req.session.user);
+      if(req.session.user != Config.ADMIN_EMAIL){
+        const usr = await userService.updateLastConnection(req.session.user);
+      }
       req.session.destroy();
 
       res.status(200).json({ status: 'success', payload: 'User logged out' });
