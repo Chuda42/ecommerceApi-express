@@ -29,10 +29,8 @@ export default class ViewController{
     const productList = await productService.getProducts();
 
     //getting user
-    const user = {
-      email: req.session.user,
-      rol: req.session.rol
-    } 
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
     
     let data = null;
 
@@ -40,7 +38,7 @@ export default class ViewController{
       data = {
         status : 'success',
         payload : JSON.parse(JSON.stringify(productList)),
-        user: user,
+        user,
         isAdmin: true
       }
     }else{
@@ -75,6 +73,10 @@ export default class ViewController{
     const prevPage = (productList.hasPrevPage) ? `${req.baseUrl}?page=${productList.prevPage}` : null;
     const nextPage = (productList.hasNextPage) ? `${req.baseUrl}?page=${productList.nextPage}` : null;
 
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
+    const isAdmin = req.session.rol == 'admin';
+
     //building response
     const data = {
       status : 'success',
@@ -84,7 +86,9 @@ export default class ViewController{
       hasPrevPage : productList.hasPrevPage,
       hasNextPage : productList.hasNextPage,
       prevPage,
-      nextPage
+      nextPage,
+      user,
+      isAdmin: isAdmin
     }
 
     res.render('products', {

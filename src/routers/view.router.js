@@ -53,6 +53,6 @@ viewRouter.route('/uploadDocuments')
           .get(httpLogMiddleware, isLogged, viewController.getUploadDocuments)
 
 viewRouter.route('/modifyUser')
-          .get(httpLogMiddleware, /*isAdmin,*/ viewController.getModifyUser)
+          .get(httpLogMiddleware, isAdmin, viewController.getModifyUser)
 /* export */
 export default viewRouter;

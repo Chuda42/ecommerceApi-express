@@ -7,6 +7,7 @@ import path from 'path';
 import passport from 'passport';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 
 import Utils from './utils.js';
@@ -50,6 +51,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spects));
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(Utils.__dirname, 'views'));
+app.use(cors())
 
 /* settings */
 app.use(express.static('public'));
