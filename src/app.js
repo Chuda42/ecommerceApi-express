@@ -85,8 +85,8 @@ app.use('/api/mockingproducts', mockingRouter);
 app.use('/api/loggerTest', loggerTestRouter);
 
 /* http server */
-const httpServer = app.listen(Config.SERVER_PORT, () => {
-  logger.info(`[SERVER] Server listen on port ${Config.SERVER_PORT}`);
+const httpServer = app.listen(process.env.SERVER_PORT, () => {
+  logger.info(`[SERVER] Server listen on port ${process.env.SERVER_PORT}`);
 });
 httpServer.on('error', (err) =>{
   logger.info(`[SERVER] Server error: ${err}`);
