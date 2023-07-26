@@ -100,11 +100,15 @@ export default class ViewController{
 
   async getProductDetail(req, res){
     try{
+        //getting user
+      let user = req.session.user;
+      user = await userService.getUserByEmail(user);
       const { id } = req.params;
       const product = await productService.getProductById(id);
       const data = {
         status : 'success',
-        product : product
+        product : product,
+        user
       }
       res.render('productDetail', {
         inSession: true,
@@ -123,21 +127,35 @@ export default class ViewController{
   }
 
   async getRealTimeProducts(req, res) {
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
+    const data = {
+      user
+    }
     res.render('realTimeProducts', {
       inSession: true,
-      title: 'Realtime Products'
+      title: 'Realtime Products',
+      data
     });
   }
 
   async getChat(req, res) {
+    let user = req.session.user;
+    user = await userService.getUserByEmail(user);
+    const data = {
+      user
+    }
     res.render('chat', {
       inSession: true,
-      title: 'Chat'
+      title: 'Chat',
+      data
     });
   }
 
   async getCart(req, res) {
     try{
+      let user = req.session.user;
+      user = await userService.getUserByEmail(user);
       const { id } = req.params;
 
       let cart = await cartService.getProductsCart(id);
@@ -146,7 +164,8 @@ export default class ViewController{
       const data = {
         status : 'success',
         cart : cart,
-        cartId: id
+        cartId: id,
+        user
       }
       res.render('cart', {
         inSession: true,
@@ -276,18 +295,21 @@ export default class ViewController{
       inSession: true,
       title: 'Upload Documents',
       data: {
-        uid: user.id
+        uid: user.id,
+        user
       }
     });
   }
 
   async getModifyUser(req, res) {
+    const user = await userService.getUserByEmail(req.session.user);
     const users = await userService.getUsers();
     res.render('modifyUsers', {
       inSession: true,
       title: 'Modify User',
       data: {
-        users: users
+        users: users,
+        user
       }
     });
   }

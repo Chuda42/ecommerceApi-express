@@ -48,6 +48,15 @@ export default class UserService{
 
   async getUserByEmail(email){
     try {
+      if(email === Config.ADMIN_EMAIL ){
+        return {
+          email: Config.ADMIN_EMAIL,
+          first_name: "admin",
+          last_name: "admin",
+          Age: 0,
+          rol: "admin"
+        }
+      }
       let user = await this.repository.getUserByEmail(email);
       return user;
     } catch (error) {

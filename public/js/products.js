@@ -1,16 +1,11 @@
-// Select all the buttons with the class 'addToCartBtn'
 const btns = document.querySelectorAll('.addToCartBtn');
 
-const userIdInput = document.getElementById('userIdInput').value;
-console.log(userIdInput);
-
-// Loop through the buttons
 btns.forEach((btn) => {
-btn.addEventListener('click', (e) => {
-  e.preventDefault();
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
 
-  const productId = btn.getAttribute('productId')
-  let cartId = userIdInput;
+    const productId = btn.getAttribute('productId');
+    const cartId = document.getElementById('userIdInput').value;
 
     const url = `/api/carts/${cartId}/product/${productId}`;
     fetch(url, {
@@ -21,25 +16,18 @@ btn.addEventListener('click', (e) => {
     })
     .then(response => {
       if(response.status === 200){
-        window.location.replace(`/cart/${cartId}`)
-        return
+        window.location.replace(`/cart/${cartId}`);
+        return;
       }
-      throw new Error('Cart not found or you are the owner');
-    }).catch(error => {
+      throw new Error('Carrito no encontrado o eres el propietario');
+    })
+    .catch(error => {
       swal.fire({
         title: 'Error',
         text: error.message,
         icon: 'error'
-      })
+      });
       console.error(error);
     });
-  }).catch(error => {
-    swal.fire({
-      title: 'Error',
-      text: error.message,
-      icon: 'error'
-    })
-    console.error(error);
-  }) ;
+  });
 });
-
