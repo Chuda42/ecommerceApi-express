@@ -73,10 +73,7 @@ MongoConnection.connect(Config.DB_URL)
 app.use(addLogger)
 
 /* routes */
-//app.use('/', viewRouter);
-app.get('/', (req, res) => {
-  res.send('Hola Mundo');
-});
+app.use('/', viewRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/chats', chatRouter);

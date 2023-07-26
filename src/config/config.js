@@ -2,12 +2,12 @@
 import dotenv from 'dotenv';
 
 /* .env config */
-dotenv.config();
+//dotenv.config();
 
 export default class Config{
 
   /* PORTS */
-  static SERVER_PORT = process.env.SERVER_PORT || 8080;
+  static SERVER_PORT = process.env.SERVER_PORT;
 
   /* DB */
   static DB_URL = process.env.DB_URL;  
