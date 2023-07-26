@@ -29,6 +29,7 @@ import loggerTestRouter from './routers/loggerTest.router.js'
 
 /* app */
 const app = express();
+const config = new Config();
 
 const swaggerOptions = {
   definition: {

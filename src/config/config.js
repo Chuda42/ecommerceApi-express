@@ -2,10 +2,13 @@
 import dotenv from 'dotenv';
 
 /* .env config */
-//dotenv.config();
+dotenv.config();
 
 export default class Config{
 
+  constructor(){
+    
+  }
   /* PORTS */
   static SERVER_PORT = process.env.SERVER_PORT;
 
